@@ -1,0 +1,51 @@
+---
+- debug:
+    msg: "Update Git Email to {{ git_email }}"
+
+- name: Ensure SELinux is set to permissive mode
+  become: yes
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: "^SELINUX="
+    line: SELINUX=permissive
+
+- name: "Import Repositories GPG keys"
+  become: yes
+  rpm_key:
+    state: present
+    key: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: "Install basic packages"
+  become: yes
+  dnf:
+    name:
+      - ansible
+      - git
+      - htop
+      - wget
+      - curl
+      - tmux
+      - vim
+      - firefox
+      - rsync
+      - vlc
+      - flatpak
+      # TODO vscode
+    state: latest
+
+- name: Install the spotify flatpak
+  flatpak:
+    name: https://s3.amazonaws.com/alexlarsson/spotify-repo/spotify.flatpakref
+    state: present
+
+- name: Update dotfiles symlinks
+  file:
+    src: ~/dotfiles/home/{{ item }}
+    dest: ~/{{ item }}
+    state: link
+    force: yes
+  with_items:
+    # - .vimrc
+    # - .gitignore
+    # - .gitconfig
+    - .tmux.conf

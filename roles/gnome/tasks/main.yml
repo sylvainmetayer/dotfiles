@@ -1,0 +1,3 @@
+---
+- debug:
+    msg: "TODO Configure various things in GNOME env"

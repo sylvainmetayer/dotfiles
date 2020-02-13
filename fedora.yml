@@ -1,0 +1,13 @@
+---
+- hosts: local
+  vars_prompt:
+    - name: git_email
+      prompt: "What is your git email config ?"
+      private: no
+      default: "contact@sylvainmetayer.fr"
+
+  roles:
+    # - geerlingguy.docker
+    # TODO Specify variables
+    - commons
+
