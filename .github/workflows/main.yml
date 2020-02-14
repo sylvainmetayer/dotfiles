@@ -24,6 +24,6 @@ jobs:
         pip install ansible-lint ansible==${{ matrix.ansible-version }}
     - name: Lint playbook
       run: |
-        ansible-galaxy install install -r requirements.yml
+        ansible-galaxy install -r requirements.yml
         ansible-playbook fedora.yml --syntax-check
         ansible-lint fedora.yml
