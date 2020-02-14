@@ -1,0 +1,14 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: ansible-lint
+      uses: ansible/ansible-lint-action@v4.1.0.post0
+      with: 
+        targets: "fedora.yml"
