@@ -1,7 +1,8 @@
 ---
 default_git_email: contact@sylvainmetayer.fr
+default_git_user: Sylvain
 
 ## geerlingguy/ansible-role-docker vars
 do&cker_compose_version: "1.25.4"
-# docker_users: 
+# docker_users:
 #     - "{{ ansible_user }}"

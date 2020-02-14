@@ -45,7 +45,14 @@
     state: link
     force: yes
   with_items:
-    # - .vimrc
-    # - .gitignore
-    # - .gitconfig
+    - .vimrc
+    - .gitconfig
     - .tmux.conf
+
+- name: Template git config
+  template:
+    src: templates/git_user.j2
+    dest: ~/.git_user
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"

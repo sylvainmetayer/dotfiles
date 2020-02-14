@@ -1,0 +1,40 @@
+[include]
+    path = .git_user
+
+[alias]
+    # borrowed from mlcdf's dotfiles
+	s = status -s
+	aa = add --all
+	ci = commit
+	co = checkout
+	cr = cherry-pick
+
+	undo = reset --soft HEAD~
+	prune = fetch --prune
+
+	# Amend the currently staged files to the latest commit
+	amend = commit --amend --reuse-message=HEAD
+
+	logtree = log --graph --oneline --decorate --all
+
+	# Show verbose output about tags, branches or remotes
+	# borrowed from jessfraz's dotfiles
+	tags = tag -l
+	branches = branch -a
+	remotes = remote -v
+
+[apply]
+	# Detect whitespace errors when applying a patch
+	whitespace = fix
+
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+
+[push]
+	default = simple
+	followTags = true
+
+[status]
+	showUntrackedFiles = all

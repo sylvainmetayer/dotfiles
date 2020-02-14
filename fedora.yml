@@ -6,8 +6,13 @@
       private: no
       default: "{{ default_git_email }}"
 
+    - name: git_user
+      prompt: "What is your git user config ?"
+      private: no
+      default: "{{ default_git_user }}"
+
   roles:
-    - role: geerlingguy.docker
-      become: true
+    # - role: geerlingguy.docker
+    #   become: true
     # TODO Specify variables
     - commons
