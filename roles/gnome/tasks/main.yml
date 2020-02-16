@@ -1,3 +1,87 @@
 ---
 - debug:
     msg: "TODO Configure various things in GNOME env"
+
+- name: Install Gnome required package
+  become: yes
+  dnf:
+    name:
+      - python3-devel
+      - flatpak
+      - gnome-tweaks
+    state: latest
+  tags:
+    - network_access
+
+- name: Ensure dependencies are locally met to manage dconf
+  pip:
+    name: psutil>4.0
+    extra_args: --user
+  tags:
+    - network_access
+
+- name: Add the flathub flatpak repository remote to the user installation
+  become: true
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+  tags:
+    - network_access
+
+- name: Install the spotify flatpak
+  flatpak:
+    name: https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
+    state: present
+  tags:
+    - network_access
+
+- name: Display battery percentage
+  dconf:
+    key: "/org/gnome/desktop/interface/show-battery-percentage"
+    value: "true"
+    state: present
+
+- name: Configure buttons layout
+  dconf:
+    key: "/org/gnome/desktop/wm.preferences/button-layout"
+    value: "'appmenu:minimize,maximize,close'"
+    state: present
+
+- name: Limit switch applications to current workspace only
+  dconf:
+    key: "/org/gnome/shell/app-switcher/current-workspace-only"
+    value: "true"
+    state: present
+
+- name: Configure Alt tab settings
+  block:
+    - name: Disable switch applications
+      dconf:
+        key: "/org/gnome/desktop/wm/keybindings/switch-applications"
+        value: "@as []"
+        state: present
+    - name: Enable switch windows instead of applications
+      dconf:
+        key: "/org/gnome/desktop/wm/keybindings/switch-windows"
+        value: "['<Super>Tab', '<Alt>Tab']"
+        state: present
+    - name: Disable switch applications backward
+      dconf:
+        key: "/org/gnome/desktop/wm/keybindings/switch-applications-backward"
+        value: "@as []"
+        state: present
+    - name: Enable switch windows backward instead of applications
+      dconf:
+        key: "/org/gnome/desktop/wm/keybindings/switch-windows-backward"
+        value: "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
+        state: present
+
+- include_role:
+    name: jaredhocutt.gnome_extensions
+
+- name: Clipboard extension - disable shortcut
+  dconf:
+    key: "/org/gnome/shell/extensions/clipboard-indicator/enable-keybindings"
+    value: "false"
+    state: present

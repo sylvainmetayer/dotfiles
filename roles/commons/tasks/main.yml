@@ -43,24 +43,19 @@
     name:
       - ansible
       - git
+      - make
+      - unzip
       - htop
       - wget
       - curl
       - tmux
+      - xclip
       - vim
       - firefox
       - rsync
       - vlc
-      - flatpak
       # TODO vscode
     state: latest
-  tags:
-    - network_access
-
-- name: Install the spotify flatpak
-  flatpak:
-    name: https://s3.amazonaws.com/alexlarsson/spotify-repo/spotify.flatpakref
-    state: present
   tags:
     - network_access
 

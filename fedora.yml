@@ -12,8 +12,10 @@
       default: "{{ default_git_user }}"
 
   roles:
-    - role: geerlingguy.docker
-      become: true
-      tags:
-        - network_access
-    - commons
+    #- role: geerlingguy.docker
+    #  become: true
+    #  tags:
+    #    - network_access
+    #- commons
+    #- gnome
+    - jaredhocutt.gnome_extensions
