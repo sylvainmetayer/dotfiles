@@ -9,11 +9,33 @@
     regexp: "^SELINUX="
     line: SELINUX=permissive
 
+- name: Setup SSH Settings
+  block:
+    - name: Ensure SSH custom settings folder exists
+      file:
+        path: ~/.ssh_config
+        state: directory
+        mode: "0755"
+    - name: Create a SSH key
+      openssh_keypair:
+        path: ~/.ssh/id_user
+        state: present
+        type: ed25519
+        force: no
+        comment: "{{ ansible_env['USERNAME'] }}'s key @{{ ansible_hostname }}"
+      register: ssh_key_status
+    - name: "Log new public key for reference"
+      when: ssh_key_status.changed == True
+      debug:
+        msg: "{{ ssh_key_status.public_key }}"
+
 - name: "Import Repositories GPG keys"
   become: yes
   rpm_key:
     state: present
     key: https://packages.microsoft.com/keys/microsoft.asc
+  tags:
+    - network_access
 
 - name: "Install basic packages"
   become: yes
@@ -32,22 +54,28 @@
       - flatpak
       # TODO vscode
     state: latest
+  tags:
+    - network_access
 
 - name: Install the spotify flatpak
   flatpak:
     name: https://s3.amazonaws.com/alexlarsson/spotify-repo/spotify.flatpakref
     state: present
+  tags:
+    - network_access
 
 - name: Update dotfiles symlinks
   file:
     src: ~/dotfiles/home/{{ item }}
     dest: ~/{{ item }}
     state: link
-    force: yes
+    # If something already exits, keep it.
+    force: no
   with_items:
     - .vimrc
     - .gitconfig
     - .tmux.conf
+    - .ssh/config
 
 - name: Template git config
   template:

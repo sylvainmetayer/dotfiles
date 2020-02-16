@@ -12,7 +12,8 @@
       default: "{{ default_git_user }}"
 
   roles:
-    # - role: geerlingguy.docker
-    #   become: true
-    # TODO Specify variables
+    - role: geerlingguy.docker
+      become: true
+      tags:
+        - network_access
     - commons

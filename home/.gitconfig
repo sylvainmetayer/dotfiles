@@ -1,6 +1,9 @@
 [include]
     path = .git_user
 
+[gpg]
+	program = gpg2
+
 [alias]
     # borrowed from mlcdf's dotfiles
 	s = status -s
