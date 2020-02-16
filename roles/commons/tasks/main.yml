@@ -25,7 +25,7 @@
         comment: "{{ ansible_env['USERNAME'] }}'s key @{{ ansible_hostname }}"
       register: ssh_key_status
     - name: "Log new public key for reference"
-      when: ssh_key_status.changed == True
+      when: ssh_key_status.changed
       debug:
         msg: "{{ ssh_key_status.public_key }}"
 
