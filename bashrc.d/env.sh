@@ -6,3 +6,7 @@ export TERM=xterm-256color
 # @see https://askubuntu.com/a/466203
 LS_COLORS=$LS_COLORS:'di=0;35:'
 export LS_COLORS
+
+# https://superuser.com/questions/288714/bash-autocomplete-like-zsh/835047#835047
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
