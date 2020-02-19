@@ -54,6 +54,7 @@
     value: "true"
     state: present
 
+# See https://superuser.com/a/860001
 - name: Configure Alt tab settings
   block:
     - name: Disable switch applications
@@ -77,8 +78,8 @@
         value: "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
         state: present
 
-- include_role:
-    name: jaredhocutt.gnome_extensions
+# - include_role:
+#     name: jaredhocutt.gnome_extensions
 
 - name: Clipboard extension - disable shortcut
   dconf:

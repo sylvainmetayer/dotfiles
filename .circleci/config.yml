@@ -1,0 +1,26 @@
+version: 2
+jobs:
+    build:
+        docker:
+            - image: koalaman/shellcheck-alpine
+        steps:
+            - checkout
+            - run:
+                name: Tests
+                shell: /bin/sh
+                command: |
+                    find "$(pwd)/bashrc.d/" -executable -type f -maxdepth 1 -print 2>/dev/null | while read -r item
+                    do 
+                        shellcheck "$item"
+                        result=$?
+                        echo "$item : $result"
+                        if test "$result" -ne 0; then
+                            echo "$item failed with code $result"
+                            exit $result
+                        fi
+                    done
+workflows:
+    version: 2
+    tests:
+        jobs:
+            - build

@@ -71,6 +71,7 @@
     - .gitconfig
     - .tmux.conf
     - .ssh/config
+    - .config/liquidpromptrc
 
 - name: Template git config
   template:
@@ -79,3 +80,20 @@
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
     mode: "0644"
+
+- name: Clone liquid-prompt and make sure it is up to date
+  git:
+    repo: "https://github.com/nojhan/liquidprompt.git"
+    dest: ~/.liquid_prompt
+    clone: yes
+    update: yes
+
+- name: Ensure that .bashrc load custom scripts
+  blockinfile:
+    path: ~/.bashrc
+    block: |
+      [[ $- = *i* ]] && source ~/.liquid_prompt/liquidprompt
+      for file in $HOME/dotfiles/bashrc.d/*.sh
+      do
+          source $file
+      done

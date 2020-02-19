@@ -1,6 +1,10 @@
 # dotfiles
 🔧 🏠 WIP
 
+[![https://www.shellcheck.net/](https://img.shields.io/badge/%F0%9F%9B%A1-ShellCheck-brightgreen.svg)](https://www.shellcheck.net/)
+[![CircleCI](https://circleci.com/gh/sylvainmetayer/dotfiles.svg?style=svg)](https://circleci.com/gh/sylvainmetayer/dotfiles)
+[![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/CI/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
+
 ## Setup
 
 - `dnf install ansible git`
@@ -15,7 +19,6 @@ If network is unreachable, you can run the following commands to skip network re
 > Debug facts
 >
 > `ansible localhost -m setup > $HOME/dotfiles/debug.json`
-
 
 ## SSH Configuration
 
