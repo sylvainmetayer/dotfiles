@@ -54,6 +54,7 @@
       - firefox
       - rsync
       - vlc
+      - fortune-mod
       # TODO vscode
     state: latest
   tags:
