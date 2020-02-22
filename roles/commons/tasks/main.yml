@@ -62,7 +62,11 @@
       - rsync
       - vlc
       - fortune-mod
-      # TODO vscode
+      - code
+      - gnupg2
+      - qrencode
+      # Extensions 
+      # https://github.com/gantsign/ansible-role-visual-studio-code
     state: latest
   tags:
     - network_access
@@ -80,6 +84,7 @@
     - .tmux.conf
     - .ssh/config
     - .config/liquidpromptrc
+    - .gnupg/gpg.conf
 
 - name: Template git config
   template:
@@ -96,6 +101,18 @@
     clone: yes
     update: yes
 
+- name: Ensure ble.sh directory exists
+  file:
+    path: ~/.blesh
+    state: directory
+    mode: "0755"
+
+- name: Download ble.sh
+  unarchive:
+    src: "https://github.com/akinomyoga/ble.sh/releases/download/v{{ ble_version }}/ble-{{ ble_version }}.tar.xz"
+    dest: ~/.blesh/
+    remote_src: yes
+
 - name: Ensure that .bashrc load custom scripts
   blockinfile:
     path: ~/.bashrc
@@ -105,3 +122,6 @@
       do
           source $file
       done
+      [[ $- == *i* ]] && source ~/.blesh/ble-{{ ble_version }}/ble.sh --noattach
+      ((_ble_bash)) && ble-attach
+

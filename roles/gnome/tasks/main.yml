@@ -1,7 +1,4 @@
 ---
-- debug:
-    msg: "TODO Configure various things in GNOME env"
-
 - name: Install Gnome required package
   become: yes
   dnf:
@@ -85,4 +82,10 @@
   dconf:
     key: "/org/gnome/shell/extensions/clipboard-indicator/enable-keybindings"
     value: "false"
+    state: present
+
+- name: Setup GPG Keyservers
+  dconf:
+    key: "/desktop/gnome/crypto/pgp/keyservers"
+    value: "['hkp://pool.sks-keyservers.net', 'ldap://keyserver.pgp.com']"
     state: present

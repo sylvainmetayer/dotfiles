@@ -2,6 +2,9 @@
 git_email: contact@sylvainmetayer.fr
 git_user: Sylvain
 
+# https://github.com/akinomyoga/ble.sh
+ble_version: 0.3.2
+
 ## geerlingguy/ansible-role-docker vars
 docker_compose_version: "1.25.4"
 docker_users:
