@@ -25,16 +25,29 @@
         mode: "0755"
     - name: Create a SSH key
       openssh_keypair:
-        path: ~/.ssh/id_user
+        path: ~/.ssh/id_user_ed25519
         state: present
         type: ed25519
         force: no
-        comment: "{{ ansible_env['USERNAME'] }}'s key @{{ ansible_hostname }}"
+        comment: "{{ ansible_env['USERNAME'] }}@{{ ansible_hostname }}"
       register: ssh_key_status
     - name: "Log new public key for reference"
       when: ssh_key_status.changed
       debug:
         msg: "{{ ssh_key_status.public_key }}"
+
+    - name: Create a SSH key for git
+      openssh_keypair:
+        path: ~/.ssh/id_git_ed25519
+        state: present
+        type: ed25519
+        force: no
+        comment: "{{ ansible_env['USERNAME'] }}@{{ ansible_hostname }} - git"
+      register: ssh_key_status_git
+    - name: "Log new public key for reference"
+      when: ssh_key_status_git.changed
+      debug:
+        msg: "{{ ssh_key_status_git.public_key }}"
 
 - name: "Import Repositories GPG keys"
   become: yes
@@ -65,7 +78,7 @@
       - code
       - gnupg2
       - qrencode
-      # Extensions 
+      # Extensions
       # https://github.com/gantsign/ansible-role-visual-studio-code
     state: latest
   tags:
@@ -125,4 +138,3 @@
       done
       [[ $- == *i* ]] && source ~/.blesh/ble-{{ ble_version }}/ble.sh --noattach
       ((_ble_bash)) && ble-attach
-
