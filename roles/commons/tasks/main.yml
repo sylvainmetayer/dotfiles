@@ -80,6 +80,7 @@
     force: no
   with_items:
     - .vimrc
+    - .bash_profile
     - .gitconfig
     - .tmux.conf
     - .ssh/config

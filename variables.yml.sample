@@ -1,6 +1,9 @@
 ---
 git_email: contact@sylvainmetayer.fr
 git_user: Sylvain
+# delete setting below if you don't want to sign your commits
+git_key: YOUR FINGER PRINT ID 
+
 
 # https://github.com/akinomyoga/ble.sh
 ble_version: 0.3.2

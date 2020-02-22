@@ -17,8 +17,17 @@ If network is unreachable, you can run the following commands to skip network re
 
 - `ANSIBLE_CONFIG=$HOME/dotfiles/ansible.cfg ansible-playbook -i $HOME/dotfiles/inventory.yml $HOME/dotfiles/fedora.yml --extra-vars "@$HOME/dotfiles/variables.yml" -K --skip-tags network_access`
 
-> Debug facts
->
+## GPG Keys
+
+If you want to import a GPG key and set it as your Git signing key to sign your commits, import it **before** starting the playbook with the following command : 
+
+> `gpg --import key.asc`
+
+Then, get the fingerprint of the wanted key with  `gpg --list-secret-keys --keyid-format LONG` and set this value as `git_key` in the `variables.yml` file.
+
+
+## Debug facts
+
 > `ansible localhost -m setup > $HOME/dotfiles/debug.json`
 
 ## Update
