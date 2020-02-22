@@ -27,4 +27,4 @@ jobs:
         cp variables.yml.sample variables.yml
         ansible-galaxy install -r requirements.yml
         ansible-playbook fedora.yml --extra-vars "@variables.yml" --syntax-check
-        ansible-lint fedora.yml -x 403
+        ansible-lint fedora.yml -x 403,401
