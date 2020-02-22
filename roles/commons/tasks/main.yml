@@ -1,13 +1,20 @@
 ---
-- debug:
-    msg: "Update Git Email to {{ git_email }}"
-
 - name: Ensure SELinux is set to permissive mode
   become: yes
   lineinfile:
     path: /etc/selinux/config
     regexp: "^SELINUX="
     line: SELINUX=permissive
+
+- name: Upgrade all packages except kernel
+  become: yes
+  dnf:
+    name: "*"
+    state: latest
+    exclude:
+      - "kernel*"
+  tags:
+    - network_access
 
 - name: Setup SSH Settings
   block:

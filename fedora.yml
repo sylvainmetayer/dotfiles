@@ -1,21 +1,13 @@
 ---
 - hosts: localhost
-  vars_prompt:
-    - name: git_email
-      prompt: "What is your git email config ?"
-      private: no
-      default: "{{ default_git_email }}"
-
-    - name: git_user
-      prompt: "What is your git user config ?"
-      private: no
-      default: "{{ default_git_user }}"
-
   roles:
+    - role: moviedo.nvm
+      tags:
+        - network_access
     - role: geerlingguy.docker
       become: true
       tags:
         - network_access
     - commons
     - gnome
-    - jaredhocutt.gnome_extensions
+    # - jaredhocutt.gnome_extensions

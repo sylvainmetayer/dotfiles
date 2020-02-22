@@ -1,12 +1,12 @@
 ---
-default_git_email: contact@sylvainmetayer.fr
-default_git_user: Sylvain
+git_email: contact@sylvainmetayer.fr
+git_user: Sylvain
 
 ## geerlingguy/ansible-role-docker vars
 docker_compose_version: "1.25.4"
-# docker_users:
-#     - "{{ ansible_user }}"
-
+docker_users:
+  - "USER" # replace by users you want to have access to docker without root.
+  
 gnome_extension_ids: []
   #- 442 # https://extensions.gnome.org/extension/442/drop-down-terminal/
   #- 945 # https://extensions.gnome.org/extension/945/cpu-power-manager/
@@ -16,3 +16,8 @@ gnome_extension_ids: []
   #- 600 # https://extensions.gnome.org/extension/600/launch-new-instance/
   # - 7 # https://extensions.gnome.org/extension/7/removable-drive-menu/
   #- 19 # https://extensions.gnome.org/extension/19/user-themes/
+
+# ansible-role-nvm
+nvm_version: "v0.35.2"
+nvm_node_version: "13"
+nvm_user: USER # replace by your username

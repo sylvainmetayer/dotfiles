@@ -9,6 +9,7 @@
 
 - `dnf install ansible git`
 - `git clone git@github.com:sylvainmetayer/dotfiles.git $HOME/dotfiles`
+- `cp $HOME/dotfiles/variables.yml.sample $HOME/dotfiles/variables.yml && vim $HOME/dotfiles/variables.yml`
 - `ansible-galaxy install -r $HOME/dotfiles/requirements.yml`
 - `ANSIBLE_CONFIG=$HOME/dotfiles/ansible.cfg ansible-playbook -i $HOME/dotfiles/inventory.yml $HOME/dotfiles/fedora.yml --extra-vars "@$HOME/dotfiles/variables.yml" -K`
 
@@ -19,6 +20,10 @@ If network is unreachable, you can run the following commands to skip network re
 > Debug facts
 >
 > `ansible localhost -m setup > $HOME/dotfiles/debug.json`
+
+## Update
+
+A script `dotfiles_update` is provided for easier update.
 
 ## SSH Configuration
 
