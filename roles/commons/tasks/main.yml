@@ -23,6 +23,13 @@
         path: ~/.ssh_config
         state: directory
         mode: "0755"
+    - name: Copy base host
+      copy:
+        src: ./templates/base_hosts
+        dest: ~/.ssh_config/base_hosts
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_gid }}"
+        mode: "0644"
     - name: Create a SSH key
       openssh_keypair:
         path: ~/.ssh/id_user_ed25519
