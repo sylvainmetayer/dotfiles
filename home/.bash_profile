@@ -6,20 +6,12 @@ if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
 
-# User specific environment and startup programs
-alias gpg=gpg2
-export TERM=xterm-256color
-
-# Change default ls colors
-# @see https://askubuntu.com/a/466203
-LS_COLORS=$LS_COLORS:'di=0;35:'
-export LS_COLORS
-
-export GPG_TTY=$(tty)
-
 # https://superuser.com/questions/288714/bash-autocomplete-like-zsh/835047#835047
 # bind 'set show-all-if-ambiguous on'
 # bind 'TAB:menu-complete'
 
 # Mutiple terminal session can write to history
 # shopt -s histappend
+
+#export PS1="\[\033[38;5;11m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\h:\[$(tput sgr0)\]\[\033[38;5;6m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]{\$?}\[$(tput sgr0)\]\[\033[38;5;6m\]:\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
+# export PS1="\[\033[38;5;11m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\h:\[$(tput sgr0)\]\[\033[38;5;6m\][\[$(tput sgr0)\]\[\033[38;5;113m\]\w\[$(tput sgr0)\]\[\033[38;5;6m\]]:\[$(tput sgr0)\]\[\033[38;5;45m\]\$(parse_git_branch)\[$(tput sgr0)\]\[\033[38;5;15m\]\\$ \[$(tput sgr0)\]"

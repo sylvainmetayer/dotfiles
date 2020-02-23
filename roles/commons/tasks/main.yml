@@ -80,11 +80,15 @@
       - vim
       - firefox
       - rsync
+      - gimp
       - vlc
       - fortune-mod
+      - cowsay
       - code
       - gnupg2
       - qrencode
+      - nextcloud-client
+      - keepassxc
       # Extensions
       # https://github.com/gantsign/ansible-role-visual-studio-code
     state: latest
@@ -138,6 +142,7 @@
   blockinfile:
     path: ~/.bashrc
     block: |
+      test -z "$TMUX" && cowsay -f $(cowsay -l | tail -n +2 | xargs | tr " " "\n" | shuf -n 1) $(fortune)
       [[ $- = *i* ]] && source ~/.liquid_prompt/liquidprompt
       for file in $HOME/dotfiles/bashrc.d/*.sh
       do
