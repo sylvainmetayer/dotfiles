@@ -89,6 +89,7 @@
       - qrencode
       - nextcloud-client
       - keepassxc
+      - seahorse
       # Extensions
       # https://github.com/gantsign/ansible-role-visual-studio-code
     state: latest
