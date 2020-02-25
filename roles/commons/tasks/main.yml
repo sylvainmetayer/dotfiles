@@ -6,95 +6,13 @@
     regexp: "^SELINUX="
     line: SELINUX=permissive
 
-- name: Upgrade all packages except kernel
-  become: yes
-  dnf:
-    name: "*"
-    state: latest
-    exclude:
-      - "kernel*"
-  tags:
-    - network_access
+- include: packages.yml
 
-- name: Setup SSH Settings
-  block:
-    - name: Ensure SSH custom settings folder exists
-      file:
-        path: ~/.ssh_config
-        state: directory
-        mode: "0755"
-    - name: Copy base host
-      copy:
-        src: ./templates/base_hosts
-        dest: ~/.ssh_config/base_hosts
-        owner: "{{ ansible_user_id }}"
-        group: "{{ ansible_user_gid }}"
-        mode: "0644"
-    - name: Create a SSH key
-      openssh_keypair:
-        path: ~/.ssh/id_user_ed25519
-        state: present
-        type: ed25519
-        force: no
-        comment: "{{ ansible_env['USERNAME'] }}@{{ ansible_hostname }}"
-      register: ssh_key_status
-    - name: "Log new public key for reference"
-      when: ssh_key_status.changed
-      debug:
-        msg: "{{ ssh_key_status.public_key }}"
+- include: ssh.yml
 
-    - name: Create a SSH key for git
-      openssh_keypair:
-        path: ~/.ssh/id_git_ed25519
-        state: present
-        type: ed25519
-        force: no
-        comment: "{{ ansible_env['USERNAME'] }}@{{ ansible_hostname }} - git"
-      register: ssh_key_status_git
-    - name: "Log new public key for reference"
-      when: ssh_key_status_git.changed
-      debug:
-        msg: "{{ ssh_key_status_git.public_key }}"
+- include: postman.yml
 
-- name: "Import Repositories GPG keys"
-  become: yes
-  rpm_key:
-    state: present
-    key: https://packages.microsoft.com/keys/microsoft.asc
-  tags:
-    - network_access
-
-- name: "Install basic packages"
-  become: yes
-  dnf:
-    name:
-      - ansible
-      - git
-      - make
-      - unzip
-      - htop
-      - wget
-      - curl
-      - tmux
-      - xclip
-      - vim
-      - firefox
-      - rsync
-      - gimp
-      - vlc
-      - fortune-mod
-      - cowsay
-      - code
-      - gnupg2
-      - qrencode
-      - nextcloud-client
-      - keepassxc
-      - seahorse
-      # Extensions
-      # https://github.com/gantsign/ansible-role-visual-studio-code
-    state: latest
-  tags:
-    - network_access
+- include: jetbrains.yml
 
 - name: Update dotfiles symlinks
   file:

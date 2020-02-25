@@ -1,0 +1,52 @@
+---
+- name: Display battery percentage
+  dconf:
+    key: "/org/gnome/desktop/interface/show-battery-percentage"
+    value: "true"
+    state: present
+
+- name: Configure buttons layout
+  dconf:
+    key: "/org/gnome/desktop/wm.preferences/button-layout"
+    value: "'appmenu:minimize,maximize,close'"
+    state: present
+
+- name: Limit switch applications to current workspace only
+  dconf:
+    key: "/org/gnome/shell/app-switcher/current-workspace-only"
+    value: "true"
+    state: present
+
+# See https://superuser.com/a/860001
+- name: Disable switch applications
+  dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-applications"
+    value: "@as []"
+    state: present
+- name: Enable switch windows instead of applications
+  dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-windows"
+    value: "['<Super>Tab', '<Alt>Tab']"
+    state: present
+- name: Disable switch applications backward
+  dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-applications-backward"
+    value: "@as []"
+    state: present
+- name: Enable switch windows backward instead of applications
+  dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-windows-backward"
+    value: "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
+    state: present
+
+- name: Clipboard extension - disable shortcut
+  dconf:
+    key: "/org/gnome/shell/extensions/clipboard-indicator/enable-keybindings"
+    value: "false"
+    state: present
+
+- name: Setup GPG Keyservers
+  dconf:
+    key: "/desktop/gnome/crypto/pgp/keyservers"
+    value: "['hkp://pool.sks-keyservers.net', 'ldap://keyserver.pgp.com']"
+    state: present

@@ -7,6 +7,8 @@ git_user: Sylvain
 # https://github.com/akinomyoga/ble.sh
 ble_version: 0.3.2
 
+jetbrains_toolbox_version: 1.16.6319
+
 ## geerlingguy/ansible-role-docker vars
 docker_compose_version: "1.25.4"
 docker_users:

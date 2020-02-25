@@ -1,0 +1,16 @@
+---
+- name: Add the flathub flatpak repository remote to the user installation
+  become: true
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+  tags:
+    - network_access
+
+- name: Install the spotify flatpak
+  flatpak:
+    name: https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
+    state: present
+  tags:
+    - network_access
