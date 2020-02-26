@@ -44,6 +44,7 @@
       - keepassxc
       - seahorse
       - chromium
+      - "https://downloads.slack-edge.com/linux_releases/slack-4.3.2-0.1.fc21.x86_64.rpm"
     # Extensions
     # https://github.com/gantsign/ansible-role-visual-studio-code
     state: latest
