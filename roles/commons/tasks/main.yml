@@ -24,6 +24,7 @@
   with_items:
     - .vimrc
     - .bash_profile
+    - .bash_aliases
     - .gitconfig
     - .tmux.conf
     - .ssh/config
@@ -63,9 +64,12 @@
     block: |
       test -z "$TMUX" && cowsay -f $(cowsay -l | tail -n +2 | xargs | tr " " "\n" | shuf -n 1) $(fortune)
       [[ $- = *i* ]] && source ~/.liquid_prompt/liquidprompt
-      for file in $HOME/dotfiles/bashrc.d/*.sh
+      for file in ~/dotfiles/bashrc.d/*.sh
       do
           source $file
       done
       [[ $- == *i* ]] && source ~/.blesh/ble-{{ ble_version }}/ble.sh --noattach
       ((_ble_bash)) && ble-attach
+      if [ -f ~/.bash_aliases ]; then
+        . ~/.bash_aliases
+      fi

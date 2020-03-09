@@ -2,6 +2,6 @@
 
 # eg. NetworkManager, sssd
 log_service() {
-  journalctl -eu $1
+  journalctl -eu "$1"
 }
 

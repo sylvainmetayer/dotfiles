@@ -50,3 +50,14 @@
     state: latest
   tags:
     - network_access
+
+- name: "Remove unwanted packages"
+  become: yes
+  dnf:
+    name:
+      - gnome-maps
+      - gnome-documents
+      - rhythmbox
+    state: absent
+  tags:
+    - network_access

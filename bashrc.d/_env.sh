@@ -4,7 +4,6 @@
 setxkbmap fr
 
 # User specific environment and startup programs
-alias gpg=gpg2
 export TERM=xterm-256color
 
 # Change default ls colors
