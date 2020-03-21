@@ -62,7 +62,6 @@
   blockinfile:
     path: ~/.bashrc
     block: |
-      test -z "$TMUX" && cowsay -f $(cowsay -l | tail -n +2 | xargs | tr " " "\n" | shuf -n 1) $(fortune)
       [[ $- = *i* ]] && source ~/.liquid_prompt/liquidprompt
       for file in ~/dotfiles/bashrc.d/*.sh
       do
