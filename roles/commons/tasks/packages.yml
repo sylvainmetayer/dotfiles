@@ -23,6 +23,7 @@
     name:
       - ansible
       - git
+      - git-lfs
       - make
       - unzip
       - htop
