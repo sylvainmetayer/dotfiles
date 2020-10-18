@@ -1,4 +1,4 @@
---- 
+---
 - name: Ensure SSH folder exists
   file:
     path: ~/.ssh
@@ -25,7 +25,7 @@
   notify:
     - print ssh key
     - upload ssh key github
-  
+
 - name: Render base host template
   set_fact:
     hosts_content: "{{ lookup('template', 'common_hosts.j2') }}"

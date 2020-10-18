@@ -9,7 +9,7 @@
     #  tags: 
     #    - network_access
     - role: jaredhocutt.gnome_extensions
-      tags: 
+      tags:
         - network_access
     - role: sourcejedi.rpmfusion_free
       become: true

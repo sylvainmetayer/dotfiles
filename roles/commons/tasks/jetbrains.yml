@@ -7,6 +7,7 @@
 
 - name: "Download Jetbrains toolbox"
   unarchive:
+    mode: 0700
     src: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-{{ jetbrains_toolbox_version }}.tar.gz"
     dest: ~/.softs/
     remote_src: yes
