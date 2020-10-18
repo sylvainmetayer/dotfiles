@@ -6,6 +6,10 @@
     regexp: "^SELINUX="
     line: SELINUX=permissive
 
+- name: Update hostname
+  hostname:
+    name: "{{ host_hostname }}"
+
 - include: packages.yml
 
 - include: ssh.yml
@@ -27,7 +31,6 @@
     - .bash_aliases
     - .gitconfig
     - .tmux.conf
-    - .ssh/config
     - .config/liquidpromptrc
     - .gnupg/gpg.conf
 

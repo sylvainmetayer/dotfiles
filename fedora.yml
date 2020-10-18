@@ -1,8 +1,15 @@
 ---
 - hosts: localhost
   roles:
-    - role: moviedo.nvm
-      tags:
+    #- role: moviedo.nvm
+    #  tags:
+    #    - network_access
+    # TODO Wait for https://github.com/sestrella/ansible-role-asdf/issues/1 to be resolved
+    #- role: sestrella.ansible_role_asdf
+    #  tags: 
+    #    - network_access
+    - role: jaredhocutt.gnome_extensions
+      tags: 
         - network_access
     - role: geerlingguy.docker
       become: true

@@ -1,42 +1,44 @@
----
-- name: Ensure SSH custom settings folder exists
+--- 
+- name: Ensure SSH folder exists
   file:
-    path: ~/.ssh_config
+    path: ~/.ssh
     state: directory
-    mode: "0755"
+    mode: "0700"
 
-- name: Copy base host
-  copy:
-    src: ./templates/base_hosts
-    dest: ~/.ssh_config/base_hosts
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-    mode: "0644"
+- name: Ensure SSH config exists
+  file:
+    path: ~/.ssh/config
+    state: file
+    mode: "0600"
 
 - name: Create a SSH key
   openssh_keypair:
-    path: ~/.ssh/id_user_ed25519
+    path: ~/.ssh/id_ed25519
     state: present
     type: ed25519
     force: no
     comment: "{{ ansible_env['USERNAME'] }}@{{ ansible_hostname }}"
   register: ssh_key_status
+  notify:
+    - print ssh key
+    - upload ssh key github
+  
+- name: Render base host template
+  set_fact:
+    hosts_content: "{{ lookup('template', './templates/common_hosts') }}"
 
-- name: "Log new public key for reference"
-  when: ssh_key_status.changed
-  debug:
-    msg: "{{ ssh_key_status.public_key }}"
+- name: Render base host template
+  set_fact:
+    ssh_base_config: "{{ lookup('template', './templates/ssh_config') }}"
 
-- name: Create a SSH key for git
-  openssh_keypair:
-    path: ~/.ssh/id_git_ed25519
+- name: Template SSH base hosts
+  blockinfile:
+    dest: "~/.ssh/config"
+    content: '{{ hosts_content }}'
     state: present
-    type: ed25519
-    force: no
-    comment: "{{ ansible_env['USERNAME'] }}@{{ ansible_hostname }} - git"
-  register: ssh_key_status_git
 
-- name: "Log new public key for reference"
-  when: ssh_key_status_git.changed
-  debug:
-    msg: "{{ ssh_key_status_git.public_key }}"
+- name: Template SSH base config
+  blockinfile:
+    dest: "~/.ssh/config"
+    content: '{{ ssh_base_config }}'
+    state: present
