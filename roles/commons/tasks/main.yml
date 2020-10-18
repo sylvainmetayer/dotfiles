@@ -14,8 +14,6 @@
 
 - include: ssh.yml
 
-- include: postman.yml
-
 - include: kDrive.yml
 
 - include: jetbrains.yml
