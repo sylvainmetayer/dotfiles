@@ -57,6 +57,7 @@
 
 - name: Download ble.sh
   unarchive:
+    mode: 0755
     src: "https://github.com/akinomyoga/ble.sh/releases/download/v{{ ble_version }}/ble-{{ ble_version }}.tar.xz"
     dest: ~/.blesh/
     remote_src: yes
