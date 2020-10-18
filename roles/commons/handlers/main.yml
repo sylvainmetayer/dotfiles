@@ -1,7 +1,7 @@
 ---
 - name: Print Public SSH key
   debug:
-    msg: "{{ ssh_key_status.public_key }}"
+    msg: "{\"title\": \"{{ ansible_hostname }} Key\", \"key\": \"{{ ssh_key_status.public_key }}\"}"
   listen: "print ssh key"
 
   # TODO Gitlab 
@@ -14,6 +14,6 @@
     body_format: json
     headers:
       Accept: application/vnd.github.v3+json
-      Authorization: "Bearer {{ github_token }}"
+      Authorization: "token {{ github_token }}"
   listen: "upload ssh key github"
   when: github_token is defined

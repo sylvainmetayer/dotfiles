@@ -1,5 +1,6 @@
 - src: geerlingguy.docker
 - src: jaredhocutt.gnome_extensions
+- src: sourcejedi.rpmfusion_free
 # - src: moviedo.nvm
 # TODO Wait for https://github.com/sestrella/ansible-role-asdf/issues/1 to be resolved
 # - src:  sestrella.ansible_role_asdf 
