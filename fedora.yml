@@ -11,6 +11,8 @@
     - role: jaredhocutt.gnome_extensions
       tags: 
         - network_access
+    - role: sourcejedi.rpmfusion_free
+      become: true
     - role: geerlingguy.docker
       become: true
       tags:

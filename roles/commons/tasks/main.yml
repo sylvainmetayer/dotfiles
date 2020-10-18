@@ -16,6 +16,8 @@
 
 - include: postman.yml
 
+- include: kDrive.yml
+
 - include: jetbrains.yml
 
 - name: Update dotfiles symlinks
