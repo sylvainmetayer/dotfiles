@@ -40,9 +40,7 @@ A script `dotfiles_update` is provided for easier update.
 
 Put any local SSH settings in `$HOME/.ssh_config` folder.
 
-Some base hosts I use on a regular basis are defined in `~/.ssh_config/base_hosts`. They are encrypted with ansible-vault.
-
-Cheatsheet to use ansible-vault for this :
+Cheatsheet to use ansible-vault :
 
 - view file : `ansible-vault view $HOME/dotfiles/roles/commons/templates/common_hosts`
 - edit file : `ansible-vault edit $HOME/dotfiles/roles/commons/templates/common_hosts`

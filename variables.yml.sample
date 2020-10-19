@@ -10,6 +10,7 @@ github_token: XXX
 # https://github.com/akinomyoga/ble.sh
 ble_version: 0.3.2
 
+kdrive_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.0.10.20200908.AppImage"
 jetbrains_toolbox_version: 1.18.7455
 
 ## geerlingguy/ansible-role-docker vars
@@ -36,7 +37,7 @@ asdf_version: v0.8.0
 # Support .nvmrc files and .ruby-version
 asdf_legacy_version_file: "yes"
 
-asdf_plugins:
+asdf_plugins: 
   - name: nodejs
     versions: 
       - "14.14.0"

@@ -18,6 +18,15 @@
 
 - include: jetbrains.yml
 
+- name: Ensure directories exists
+  file:
+    path: "~/{{ item }}/"
+    state: directory
+    mode: "0755"
+  with_items:
+    - .config
+    - .gnupg
+
 - name: Update dotfiles symlinks
   file:
     src: ~/dotfiles/home/{{ item }}
