@@ -9,8 +9,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.6, 3.7]
-        ansible-version: [2.9.4]
+        python-version: [3.6, 3.7, 3.8]
+        ansible-version: [2.9.14]
 
     steps:
     - uses: actions/checkout@v1
@@ -27,4 +27,4 @@ jobs:
         cp variables.yml.sample variables.yml
         ansible-galaxy install -r requirements.yml
         ansible-playbook fedora.yml --extra-vars "@variables.yml" --syntax-check
-        ansible-lint fedora.yml -x 403,401
+        ansible-lint fedora.yml

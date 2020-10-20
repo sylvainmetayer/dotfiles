@@ -1,16 +1,20 @@
 ---
+host_hostname: my-awesome-hostname
+
 git_email: contact@sylvainmetayer.fr
 git_user: Sylvain
 # uncomment if you want to sign your commits
 # git_key: YOUR FINGER PRINT ID 
+github_token: XXX
 
 # https://github.com/akinomyoga/ble.sh
 ble_version: 0.3.2
 
-jetbrains_toolbox_version: 1.16.6319
+kdrive_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.0.10.20200908.AppImage"
+jetbrains_toolbox_version: 1.18.7455
 
 ## geerlingguy/ansible-role-docker vars
-docker_compose_version: "1.25.4"
+docker_compose_version: "1.27.4"
 docker_users:
   - "USER" # replace by users you want to have access to docker without root.
   
@@ -25,6 +29,17 @@ gnome_extension_ids: []
   #- 19 # https://extensions.gnome.org/extension/19/user-themes/
 
 # ansible-role-nvm
-nvm_version: "v0.35.2"
-nvm_node_version: "13"
-nvm_user: USER # replace by your username
+#nvm_version: "v0.35.2"
+#nvm_node_version: "13"
+#nvm_user: USER # replace by your username
+
+asdf_version: v0.8.0
+# Support .nvmrc files and .ruby-version
+asdf_legacy_version_file: "yes"
+
+asdf_plugins: 
+  - name: nodejs
+    versions: 
+      - "14.14.0"
+      - "12.19.0" # LTS
+    global: "14.14.0"

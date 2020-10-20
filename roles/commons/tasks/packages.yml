@@ -1,11 +1,9 @@
 ---
-- name: Upgrade all packages except kernel
-  become: yes
+- name: Upgrade all packages
   dnf:
     name: "*"
     state: latest
-    exclude:
-      - "kernel*"
+  become: yes
   tags:
     - network_access
 
@@ -16,6 +14,16 @@
     key: https://packages.microsoft.com/keys/microsoft.asc
   tags:
     - network_access
+
+- name: install VS Code repo (dnf)
+  become: yes
+  yum_repository:
+    name: code
+    description: Visual Studio Code repo
+    file: vscode
+    baseurl: 'https://packages.microsoft.com/yumrepos/vscode'
+    gpgkey: 'https://packages.microsoft.com/keys/microsoft.asc'
+    gpgcheck: yes
 
 - name: "Install basic packages"
   become: yes
@@ -41,14 +49,13 @@
       - code
       - gnupg2
       - qrencode
-      - nextcloud-client
       - keepassxc
       - seahorse
       - chromium
-      - "https://downloads.slack-edge.com/linux_releases/slack-4.3.2-0.1.fc21.x86_64.rpm"
-    # Extensions
+    # VSCode Extensions
     # https://github.com/gantsign/ansible-role-visual-studio-code
     state: latest
+    update_cache: yes
   tags:
     - network_access
 

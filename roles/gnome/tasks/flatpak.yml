@@ -14,3 +14,10 @@
     state: present
   tags:
     - network_access
+
+- name: Install the Postman flatpak
+  flatpak:
+    name: https://flathub.org/repo/appstream/com.getpostman.Postman.flatpakref
+    state: present
+  tags:
+    - network_access

@@ -6,13 +6,26 @@
     regexp: "^SELINUX="
     line: SELINUX=permissive
 
+- name: Update hostname
+  hostname:
+    name: "{{ host_hostname }}"
+
 - include: packages.yml
 
 - include: ssh.yml
 
-- include: postman.yml
+- include: kDrive.yml
 
 - include: jetbrains.yml
+
+- name: Ensure directories exists
+  file:
+    path: "~/{{ item }}/"
+    state: directory
+    mode: "0755"
+  with_items:
+    - .config
+    - .gnupg
 
 - name: Update dotfiles symlinks
   file:
@@ -27,7 +40,6 @@
     - .bash_aliases
     - .gitconfig
     - .tmux.conf
-    - .ssh/config
     - .config/liquidpromptrc
     - .gnupg/gpg.conf
 
@@ -54,6 +66,7 @@
 
 - name: Download ble.sh
   unarchive:
+    mode: 0755
     src: "https://github.com/akinomyoga/ble.sh/releases/download/v{{ ble_version }}/ble-{{ ble_version }}.tar.xz"
     dest: ~/.blesh/
     remote_src: yes

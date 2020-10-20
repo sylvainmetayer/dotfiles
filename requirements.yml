@@ -1,3 +1,6 @@
 - src: geerlingguy.docker
 - src: jaredhocutt.gnome_extensions
-- src: moviedo.nvm
+- src: sourcejedi.rpmfusion_free
+- src: https://github.com/sestrella/ansible-role-asdf 
+  version: cf15bccbbae4330ef8afe1e05024fd5415092235
+  name: sestrella.ansible_role_asdf
