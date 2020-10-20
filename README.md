@@ -42,7 +42,7 @@ Put any local SSH settings in `$HOME/.ssh_config` folder.
 
 Cheatsheet to use ansible-vault :
 
-- view file : `ansible-vault view $HOME/dotfiles/roles/commons/templates/common_hosts`
-- edit file : `ansible-vault edit $HOME/dotfiles/roles/commons/templates/common_hosts`
-- encrypt file : `ansible-vault encrypt $HOME/dotfiles/roles/commons/templates/common_hosts`
-    - This can be used to edit with a GUI editor : `ansible-vault view $HOME/dotfiles/roles/commons/templates/common_hosts | setclip && getclip > $HOME/dotfiles/roles/commons/templates/common_hosts`, edit it, and before commit, run again `ansible-vault encrypt $HOME/dotfiles/roles/commons/templates/common_hosts` 
+- view file : `ansible-vault view $HOME/dotfiles/roles/commons/templates/common_hosts.j2`
+- edit file : `ansible-vault edit $HOME/dotfiles/roles/commons/templates/common_hosts.j2`
+- encrypt file : `ansible-vault encrypt $HOME/dotfiles/roles/commons/templates/common_hosts.j2`
+    - This can be used to edit with a GUI editor : `ansible-vault view $HOME/dotfiles/roles/commons/templates/common_hosts.j2 | setclip && getclip > $HOME/dotfiles/roles/commons/templates/common_hosts.j2`, edit it, and before commit, run again `ansible-vault encrypt $HOME/dotfiles/roles/commons/templates/common_hosts.j2` 
