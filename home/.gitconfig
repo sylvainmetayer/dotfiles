@@ -5,7 +5,7 @@
 	program = gpg2
 
 [alias]
-    # borrowed from mlcdf's dotfiles
+  # borrowed from mlcdf's dotfiles
 	s = status -s
 	aa = add --all
 	ci = commit
@@ -25,6 +25,15 @@
 	tags = tag -l
 	branches = branch -a
 	remotes = remote -v
+
+  # Get the current branch name (not so useful in itself, but used in
+  # other aliases)
+  branch-name = "!git rev-parse --abbrev-ref HEAD"
+  # Push the current branch to the remote "origin", and set it to track
+  # the upstream branch
+  publish = "!git push -u origin $(git branch-name)"
+  # Delete the remote version of the current branch
+  unpublish = "!git push origin :$(git branch-name)"
 
 [apply]
 	# Detect whitespace errors when applying a patch
