@@ -57,3 +57,5 @@
 	required = true
 [core]
 	autocrlf = input
+[pull]
+	rebase = true
