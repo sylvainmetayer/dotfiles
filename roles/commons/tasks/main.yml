@@ -9,6 +9,7 @@
 - name: Update hostname
   hostname:
     name: "{{ host_hostname }}"
+  when: host_hostname is defined
 
 - include: packages.yml
 
