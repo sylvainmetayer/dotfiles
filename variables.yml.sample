@@ -18,15 +18,16 @@ docker_compose_version: "1.27.4"
 docker_users:
   - "USER" # replace by users you want to have access to docker without root.
   
-gnome_extension_ids: []
-  #- 442 # https://extensions.gnome.org/extension/442/drop-down-terminal/
-  #- 945 # https://extensions.gnome.org/extension/945/cpu-power-manager/
-  #- 779 # https://extensions.gnome.org/extension/779/clipboard-indicator/
+gnome_extension_ids: 
+  #- 779  # https://extensions.gnome.org/extension/779/clipboard-indicator/
   #- 1162 # https://extensions.gnome.org/extension/1162/emoji-selector/
-  #- 615 # https://extensions.gnome.org/extension/615/appindicator-support/
-  #- 600 # https://extensions.gnome.org/extension/600/launch-new-instance/
-  # - 7 # https://extensions.gnome.org/extension/7/removable-drive-menu/
-  #- 19 # https://extensions.gnome.org/extension/19/user-themes/
+  - 615   # https://extensions.gnome.org/extension/615/appindicator-support/
+  - 600   # https://extensions.gnome.org/extension/600/launch-new-instance/
+  - 1262  # https://extensions.gnome.org/extension/1262/bing-wallpaper-changer/
+  - 7     # https://extensions.gnome.org/extension/7/removable-drive-menu/
+  #- 19   # https://extensions.gnome.org/extension/19/user-themes/
+  - 1112  # https://extensions.gnome.org/extension/1112/screenshot-tool/
+  - 906   # https://extensions.gnome.org/extension/906/sound-output-device-chooser/
 
 # ansible-role-nvm
 #nvm_version: "v0.35.2"

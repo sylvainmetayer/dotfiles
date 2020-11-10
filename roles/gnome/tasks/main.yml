@@ -6,6 +6,7 @@
       - python3-devel
       - flatpak
       - gnome-tweaks
+      - guake
     state: latest
   tags:
     - network_access
