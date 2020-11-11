@@ -41,5 +41,5 @@
       {{ item.content }}
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   loop:
-    - { name: base, content: "{{ ssh_base_config }}" }
     - { name: hosts, content: "{{ hosts_content }}" }
+    - { name: base, content: "{{ ssh_base_config }}" }

@@ -30,6 +30,7 @@
   dnf:
     name:
       - ansible
+      - dconf-editor
       - git
       - git-lfs
       - make
