@@ -30,6 +30,7 @@
   dnf:
     name:
       - ansible
+      - libappindicator
       - dconf-editor
       - git
       - NetworkManager-tui
