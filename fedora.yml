@@ -1,5 +1,11 @@
 ---
 - hosts: localhost
+
+  pre_tasks:
+    - name: Include commons vars
+      include_vars: 
+        file: 'commons_variables.yml'
+
   roles:
     #- role: sestrella.ansible_role_asdf
     #  tags:
