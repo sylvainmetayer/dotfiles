@@ -12,11 +12,11 @@
 - Create a [Github Token](https://github.com/settings/tokens) with `user` and `admin:public_key` scopes
 - `cp $HOME/dotfiles/variables.yml.sample $HOME/dotfiles/variables.yml && vim $HOME/dotfiles/variables.yml`
 - `ansible-galaxy install -r $HOME/dotfiles/requirements.yml`
-- `ANSIBLE_CONFIG=$HOME/dotfiles/ansible.cfg ansible-playbook -i $HOME/dotfiles/inventory.yml $HOME/dotfiles/fedora.yml --extra-vars "@$HOME/dotfiles/variables.yml" -K --ask-vault-pass`
+- `ANSIBLE_CONFIG=$HOME/dotfiles/ansible.cfg ansible-playbook -i $HOME/dotfiles/inventory.yml $HOME/dotfiles/fedora.yml --extra-vars "@$HOME/dotfiles/commons_variables.yml" --extra-vars "@$HOME/dotfiles/variables.yml" -K --ask-vault-pass`
 
 If network is unreachable, you can run the following commands to skip network related tasks (such as downloading packages). Beware that this could lead to errors if programms are not installed.
 
-- `ANSIBLE_CONFIG=$HOME/dotfiles/ansible.cfg ansible-playbook -i $HOME/dotfiles/inventory.yml $HOME/dotfiles/fedora.yml --extra-vars "@$HOME/dotfiles/variables.yml" -K --skip-tags network_access --ask-vault-pass`
+- `ANSIBLE_CONFIG=$HOME/dotfiles/ansible.cfg ansible-playbook -i $HOME/dotfiles/inventory.yml $HOME/dotfiles/fedora.yml --extra-vars "@$HOME/dotfiles/commons_variables.yml" --extra-vars "@$HOME/dotfiles/variables.yml" -K --skip-tags network_access --ask-vault-pass`
 
 ## GPG Keys
 
@@ -36,11 +36,7 @@ Then, get the fingerprint of the wanted key with `gpg --list-secret-keys --keyid
 
 A script `dotfiles_update` is provided for easier update.
 
-## SSH Configuration
-
-Put any local SSH settings in `$HOME/.ssh_config` folder.
-
-Cheatsheet to use ansible-vault :
+## Cheatsheet to use ansible-vault
 
 - view file : `ansible-vault view $HOME/dotfiles/roles/commons/templates/common_hosts.j2`
 - edit file : `ansible-vault edit $HOME/dotfiles/roles/commons/templates/common_hosts.j2`

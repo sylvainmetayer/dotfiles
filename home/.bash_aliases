@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 alias gpg='gpg2'
-alias update_dotfiles='ANSIBLE_CONFIG=$HOME/dotfiles/ansible.cfg ansible-playbook -i $HOME/dotfiles/inventory.yml $HOME/dotfiles/fedora.yml --extra-vars "@$HOME/dotfiles/variables.yml" -K --ask-vault-pass'
+alias update_dotfiles='ANSIBLE_CONFIG=$HOME/dotfiles/ansible.cfg ansible-playbook -i $HOME/dotfiles/inventory.yml $HOME/dotfiles/fedora.yml --extra-vars "@$HOME/dotfiles/variables.yml" --extra-vars "@$HOME/dotfiles/commons_variables.yml" -K --ask-vault-pass'
 alias getBattery='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
 alias getclip='xclip -selection c -o'
 alias setclip='xclip -selection c'
