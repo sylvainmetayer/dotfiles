@@ -7,6 +7,9 @@
         file: 'commons_variables.yml'
 
   roles:
+    # Basic one, to enable asdf
+    - asdf
+    # Full one, with ability to pre-install tools. Debian only
     #- role: sestrella.ansible_role_asdf
     #  tags:
     #    - network_access

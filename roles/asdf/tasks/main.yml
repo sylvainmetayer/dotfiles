@@ -1,0 +1,13 @@
+---
+- name: Clone asdf repository
+  git:
+    repo: git@github.com:asdf-vm/asdf.git
+    dest: '~/.asdf'
+    version: v0.8.0
+
+- name: Enable asdf
+  blockinfile:
+    path: ~/.bashrc
+    block: |
+      . $HOME/.asdf/asdf.sh
+      . $HOME/.asdf/completions/asdf.bash
