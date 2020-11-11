@@ -9,10 +9,10 @@
         - network_access
     - role: sourcejedi.rpmfusion_free
       become: true
-    - role: geerlingguy.docker
-      become: true
-      tags:
-        - network_access
+    #- role: geerlingguy.docker
+    #  become: true
+    #  tags:
+    #    - network_access
     - commons
     - gnome
     # - jaredhocutt.gnome_extensions
