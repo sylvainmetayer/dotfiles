@@ -32,6 +32,7 @@
       - ansible
       - dconf-editor
       - git
+      - NetworkManager-tui
       - git-lfs
       - make
       - unzip
