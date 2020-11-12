@@ -8,7 +8,7 @@
 - name: Enable asdf
   blockinfile:
     path: ~/.bashrc
-    marker: "# ANSIBLE ASDF MANAGED BLOCK"
+    marker: "#{mark} ANSIBLE ASDF MANAGED BLOCK"
     block: |
       . $HOME/.asdf/asdf.sh
       . $HOME/.asdf/completions/asdf.bash

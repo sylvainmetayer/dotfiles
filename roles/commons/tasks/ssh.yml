@@ -39,7 +39,7 @@
     dest: "~/.ssh/config"
     block: |
       {{ item.content }}
-    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+    marker: "#{mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   loop:
     - { name: hosts, content: "{{ hosts_content }}" }
     - { name: base, content: "{{ ssh_base_config }}" }

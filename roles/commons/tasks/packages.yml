@@ -46,6 +46,8 @@
       - firefox
       - rsync
       - gimp
+      - gpaste-ui
+      - gpaste
       - vlc
       - fortune-mod
       - cowsay
