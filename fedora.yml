@@ -3,7 +3,7 @@
 
   pre_tasks:
     - name: Include commons vars
-      include_vars: 
+      include_vars:
         file: 'commons_variables.yml'
 
   roles:
