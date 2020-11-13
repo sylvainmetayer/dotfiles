@@ -8,7 +8,28 @@
 - name: Enable asdf
   blockinfile:
     path: ~/.bashrc
-    marker: "#{mark} ANSIBLE ASDF MANAGED BLOCK"
+    marker: '#{mark} ANSIBLE ASDF MANAGED BLOCK'
     block: |
       . $HOME/.asdf/asdf.sh
       . $HOME/.asdf/completions/asdf.bash
+
+- name: Get info on asdfrc file
+  stat:
+    path: '~/.asdfrc'
+  register: asdfrc
+
+- debug:
+    msg: asdfrc
+
+- name: Delete asdfrc if not a symlink
+  file:
+    path: '~/.asdfrc'
+    state: absent
+  when: asdfrc.stat is defined and not asdfrc.stat.islnk
+
+- name: Create symlink
+  file:
+    src: ~/dotfiles/home/.asdfrc
+    dest: '~/.asdfrc'
+    state: link
+    force: no
