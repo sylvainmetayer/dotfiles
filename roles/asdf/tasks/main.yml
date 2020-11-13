@@ -19,9 +19,6 @@
     path: '~/.asdfrc'
   register: asdfrc
 
-- debug:
-    msg: asdfrc
-
 - name: Delete asdfrc if not a symlink
   file:
     path: '~/.asdfrc'
