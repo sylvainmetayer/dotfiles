@@ -23,7 +23,7 @@
   file:
     path: '~/{{ item }}/'
     state: directory
-    mode: '0755'
+    mode: '0700'
   with_items:
     - .config
     - .gnupg
@@ -77,13 +77,6 @@
     path: '~/.local/bin'
     state: directory
     mode: '0755'
-
-- name: Download starship
-  unarchive:
-    mode: 0755
-    src: 'https://github.com/starship/starship/releases/download/v0.46.2/starship-x86_64-unknown-linux-gnu.tar.gz'
-    dest: ~/.local/bin/
-    remote_src: true
 
 - name: Ensure that .bashrc load custom scripts
   blockinfile:

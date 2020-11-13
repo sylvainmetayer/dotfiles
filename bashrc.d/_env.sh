@@ -4,14 +4,17 @@
 setxkbmap fr
 
 # User specific environment and startup programs
-export TERM=xterm-256color
+TERM=xterm-256color
+export TERM
 
 # Change default ls colors
 # @see https://askubuntu.com/a/466203
 LS_COLORS=$LS_COLORS:'di=0;35:'
 export LS_COLORS
 
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # For readability
-export ANSIBLE_NOCOWS=1
+ANSIBLE_NOCOWS=1
+export ANSIBLE_NOCOWS

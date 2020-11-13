@@ -3,9 +3,6 @@
 # Disable the firewall. Set default rules to ACCEPT.
 # - require `iptables`
 
-
-
-
 openbar() {
     sudo iptables -t filter -F
     sudo iptables -t filter -X
