@@ -23,7 +23,7 @@
   file:
     path: '~/.asdfrc'
     state: absent
-  when: asdfrc.stat is defined and not asdfrc.stat.islnk
+  when: asdfrc.stat is defined and asdfrc.stat.islnk is defined and not asdfrc.stat.islnk
 
 - name: Create symlink
   file:
