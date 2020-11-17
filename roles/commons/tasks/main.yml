@@ -99,3 +99,4 @@
         . ~/.bash_aliases
       fi
       [[ $- == *i* ]] && eval "$(starship init bash)"
+      [[ $- == *i* ]] && source <(npm completion)
