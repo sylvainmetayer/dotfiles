@@ -36,4 +36,8 @@ function init_asdf() {
     asdf install shellcheck latest
     # Maybe not working at first
     asdf global shellcheck "$(asdf current shellcheck | xargs | cut -d" " -f 2)"
+
+    asdf plugin-add helm https://github.com/Antiarchitect/asdf-helm.git
+    asdf install helm 3.4.1
+    asdf global helm 3.4.1
 }
