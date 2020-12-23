@@ -3,7 +3,7 @@
 ble_version: 0.3.2
 
 kdrive_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.0.10.20200908.AppImage"
-jetbrains_toolbox_version: 1.18.7455
+jetbrains_toolbox_version: 1.19.7784
 
 ## geerlingguy/ansible-role-docker vars
 docker_compose_version: "1.27.4"
