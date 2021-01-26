@@ -57,5 +57,6 @@
 	required = true
 [core]
 	autocrlf = input
+	editor = vim
 [pull]
 	rebase = true
