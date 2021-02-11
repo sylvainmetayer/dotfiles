@@ -21,3 +21,10 @@
     state: present
   tags:
     - network_access
+
+- name: Install the OnlyOffice flatpak
+  flatpak:
+    name: https://flathub.org/repo/appstream/org.onlyoffice.desktopeditors.flatpakref
+    state: present
+  tags:
+    - network_access

@@ -26,15 +26,29 @@
     mode: '0700'
   with_items:
     - .config
+    - .config/htop
     - .gnupg
 
-- name: Update dotfiles symlinks
-  file:
-    src: ~/dotfiles/home/{{ item }}
-    dest: ~/{{ item }}
-    state: link
-    # If something already exits, keep it.
-    force: no
+- name: Setup dotfiles symlinks
+  block:
+    - name: Collect file info
+      stat:
+        path: "~/{{ item }}"
+        register: dotfile
+
+    - name: Delete regular file
+      file:
+        path: "~/{{ item }}"
+        state: absent
+      when: dotfile.stat is defined and dotfile.stat.islnk is not defined
+
+    - name: Update dotfile symlink
+      file:
+        src: ~/dotfiles/home/{{ item }}
+        dest: ~/{{ item }}
+        state: link
+        # If something already exits, keep it.
+        force: no
   with_items:
     - .vimrc
     - .bash_profile
@@ -42,6 +56,8 @@
     - .gitconfig
     - .tmux.conf
     - .config/liquidpromptrc
+    - .config/htop/htoprc
+    - .config/starship.toml
     - .gnupg/gpg.conf
 
 - name: Template git config
