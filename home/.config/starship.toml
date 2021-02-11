@@ -1,0 +1,10 @@
+[time]
+disabled = false
+format = '🕙[\[ $time \]]($style) '
+time_format = "%T"
+utc_time_offset = "+1"
+time_range = "08:00:00-19:00:00"
+
+[docker_context]
+disabled = false
+format = "via [🐋 $context](blue bold)"

@@ -17,6 +17,19 @@
     value: 'true'
     state: present
 
+- name: Disallow location access
+  dconf:
+    key: '/org/gnome/system/location/enabled'
+    value: 'false'
+    state: present
+
+# See https://askubuntu.com/a/1071888
+- name: Allow separate multiple windows per workspace
+  dconf:
+    key: '/org/gnome/mutter/workspaces-only-on-primary'
+    value: 'false'
+    state: present
+
 # See https://superuser.com/a/860001
 - name: Disable switch applications
   dconf:
@@ -61,35 +74,35 @@
     - name: Set transparency
       dconf:
         key: '/apps/guake/style/background/transparency'
-        value: "86"
+        value: '86'
         state: present
     - name: Enable dark theme
       dconf:
         key: '/apps/guake/general/gtk-prefer-dark-theme'
-        value: "true"
+        value: 'true'
         state: present
     - name: Enable infinite history
       dconf:
         key: '/apps/guake/general/infinite-history'
-        value: "true"
+        value: 'true'
         state: present
     - name: Disable popup when start
       dconf:
         key: '/apps/guake/general/use-popup'
-        value: "false"
+        value: 'false'
         state: present
     - name: Set height
       dconf:
         key: '/apps/guake/general/window-height'
-        value: "71"
+        value: '71'
         state: present
     - name: Set start after login
       dconf:
         key: '/apps/guake/general/start-at-login'
-        value: "true"
+        value: 'true'
         state: present
     - name: Save when changed
       dconf:
         key: '/apps/guake/general/save-tabs-when-changed'
-        value: "true"
+        value: 'true'
         state: present
