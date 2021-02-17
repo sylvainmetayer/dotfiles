@@ -30,25 +30,7 @@
     - .gnupg
 
 - name: Setup dotfiles symlinks
-  block:
-    - name: Collect file info
-      stat:
-        path: "~/{{ item }}"
-        register: dotfile
-
-    - name: Delete regular file
-      file:
-        path: "~/{{ item }}"
-        state: absent
-      when: dotfile.stat is defined and dotfile.stat.islnk is not defined
-
-    - name: Update dotfile symlink
-      file:
-        src: ~/dotfiles/home/{{ item }}
-        dest: ~/{{ item }}
-        state: link
-        # If something already exits, keep it.
-        force: no
+  include: symlink.yml item={{item}}
   with_items:
     - .vimrc
     - .bash_profile
