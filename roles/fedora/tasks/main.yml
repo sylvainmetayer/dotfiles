@@ -1,0 +1,21 @@
+---
+- name: Ensure SELinux is set to permissive mode
+  become: yes
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=permissive
+  when: ansible_os_family == "Redhat"
+
+- include: packages.yml
+
+- include: kDrive.yml
+
+- include: jetbrains.yml
+
+- include: flatpak.yml
+
+- include: dconf.yml
+
+# - include_role:
+#     name: jaredhocutt.gnome_extensions
