@@ -1,11 +1,4 @@
 ---
-- name: Ensure SELinux is set to permissive mode
-  become: yes
-  lineinfile:
-    path: /etc/selinux/config
-    regexp: '^SELINUX='
-    line: SELINUX=permissive
-
 - name: Update hostname
   hostname:
     name: '{{ host_hostname }}'
@@ -14,10 +7,6 @@
 - include: packages.yml
 
 - include: ssh.yml
-
-- include: kDrive.yml
-
-- include: jetbrains.yml
 
 - name: Ensure directories exists
   file:

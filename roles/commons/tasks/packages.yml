@@ -1,39 +1,18 @@
 ---
 - name: Upgrade all packages
-  dnf:
+  ansible.builtin.package:
     name: "*"
     state: latest
   become: yes
   tags:
     - network_access
 
-- name: "Import Repositories GPG keys"
-  become: yes
-  rpm_key:
-    state: present
-    key: https://packages.microsoft.com/keys/microsoft.asc
-  tags:
-    - network_access
-
-- name: install VS Code repo (dnf)
-  become: yes
-  yum_repository:
-    name: code
-    description: Visual Studio Code repo
-    file: vscode
-    baseurl: 'https://packages.microsoft.com/yumrepos/vscode'
-    gpgkey: 'https://packages.microsoft.com/keys/microsoft.asc'
-    gpgcheck: yes
-
 - name: "Install basic packages"
   become: yes
-  dnf:
+  ansible.builtin.package:
     name:
       - ansible
-      - libappindicator
-      - dconf-editor
       - git
-      - NetworkManager-tui
       - git-lfs
       - make
       - unzip
@@ -43,35 +22,9 @@
       - tmux
       - xclip
       - vim
-      - firefox
       - rsync
-      - gimp
-      - gpaste-ui
-      - gpaste
-      - vlc
-      - fortune-mod
-      - cowsay
-      - code
       - jq
       - gnupg2
-      - qrencode
-      - keepassxc
-      - seahorse
-      - chromium
-    # VSCode Extensions
-    # https://github.com/gantsign/ansible-role-visual-studio-code
     state: latest
-    update_cache: yes
-  tags:
-    - network_access
-
-- name: "Remove unwanted packages"
-  become: yes
-  dnf:
-    name:
-      - gnome-maps
-      - gnome-documents
-      - rhythmbox
-    state: absent
   tags:
     - network_access
