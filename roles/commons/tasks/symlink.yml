@@ -1,17 +1,17 @@
 ---
 - name: Collect file info
-    stat:
-    path: "~/{{ item }}"
-    register: dotfile
+  stat:
+    path: '~/{{ item }}'
+  register: dotfile
 
 - name: Delete regular file
-    file:
-    path: "~/{{ item }}"
+  file:
+    path: '~/{{ item }}'
     state: absent
-    when: dotfile.stat is defined and dotfile.stat.islnk is not defined
+  when: dotfile.stat is defined and dotfile.stat.isreg
 
 - name: Update dotfile symlink
-    file:
+  file:
     src: ~/dotfiles/home/{{ item }}
     dest: ~/{{ item }}
     state: link

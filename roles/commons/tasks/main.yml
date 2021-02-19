@@ -19,8 +19,8 @@
     - .gnupg
 
 - name: Setup dotfiles symlinks
-  include: symlink.yml item={{item}}
-  with_items:
+  include_tasks: symlink.yml
+  loop:
     - .vimrc
     - .bash_profile
     - .bash_aliases
