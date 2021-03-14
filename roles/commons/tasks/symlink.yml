@@ -4,11 +4,16 @@
     path: '~/{{ item }}'
   register: dotfile
 
+- name: Ensure folder does exists
+  file:
+    path: '~/{{ item | dirname }}'
+    state: directory
+
 - name: Delete regular file
   file:
     path: '~/{{ item }}'
     state: absent
-  when: dotfile.stat is defined and dotfile.stat.isreg
+  when: dotfile.stat.islnk is defined and dotfile.stat is defined and dotfile.stat.isreg
 
 - name: Update dotfile symlink
   file:
