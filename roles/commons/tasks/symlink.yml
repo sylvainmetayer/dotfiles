@@ -6,6 +6,7 @@
 
 - name: Ensure folder does exists
   file:
+    mode: '0700'
     path: '~/{{ item | dirname }}'
     state: directory
 

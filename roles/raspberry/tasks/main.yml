@@ -1,0 +1,16 @@
+---
+- name: Clone dotfile repository
+  git:
+    repo: git@github.com:sylvainmetayer/dotfiles.git
+    dest: '~/dotfiles'
+    version: master
+
+- name: Install commons packages
+  apt:
+    name: '{{ item }}'
+    state: present
+    update_cache: yes
+  loop:
+    - git
+    - apt-transport-https
+    - nginx

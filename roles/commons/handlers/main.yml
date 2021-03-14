@@ -4,7 +4,6 @@
     msg: "{\"title\": \"{{ ansible_hostname }} Key\", \"key\": \"{{ ssh_key_status.public_key }}\"}"
   listen: "print ssh key"
 
-  # TODO Gitlab 
 - name: Add SSH Key to Github
   uri:
     url: https://api.github.com/user/keys

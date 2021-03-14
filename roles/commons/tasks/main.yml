@@ -1,22 +1,8 @@
 ---
-- name: Update hostname
-  hostname:
-    name: '{{ host_hostname }}'
-  when: host_hostname is defined
 
 - include: packages.yml
 
 - include: ssh.yml
-
-- name: Ensure directories exists
-  file:
-    path: '~/{{ item }}/'
-    state: directory
-    mode: '0700'
-  with_items:
-    - .config
-    - .config/htop
-    - .gnupg
 
 - name: Setup dotfiles symlinks
   include_tasks: symlink.yml
@@ -39,26 +25,6 @@
     group: '{{ ansible_user_gid }}'
     mode: '0644'
 
-- name: Clone liquid-prompt and make sure it is up to date
-  git:
-    repo: 'https://github.com/nojhan/liquidprompt.git'
-    dest: ~/.liquid_prompt
-    clone: yes
-    update: yes
-
-- name: Ensure ble.sh directory exists
-  file:
-    path: ~/.blesh
-    state: directory
-    mode: '0755'
-
-- name: Download ble.sh
-  unarchive:
-    mode: 0755
-    src: 'https://github.com/akinomyoga/ble.sh/releases/download/v{{ ble_version }}/ble-{{ ble_version }}.tar.xz'
-    dest: ~/.blesh/
-    remote_src: yes
-
 - name: Ensure local bin directory exists
   file:
     path: '~/.local/bin'
@@ -75,13 +41,10 @@
           PATH="$HOME/.local/bin:$HOME/bin:$PATH"
       fi
       export PATH
-      # [[ $- = *i* ]] && source ~/.liquid_prompt/liquidprompt
       for file in ~/dotfiles/bashrc.d/*.sh
       do
           source $file
       done
-      # [[ $- == *i* ]] && source ~/.blesh/ble-{{ ble_version }}/ble.sh --noattach
-      # ((_ble_bash)) && ble-attach
       if [ -f ~/.bash_aliases ]; then
         . ~/.bash_aliases
       fi
