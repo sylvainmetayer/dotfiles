@@ -20,7 +20,6 @@
       - wget
       - curl
       - tmux
-      - xclip
       - vim
       - rsync
       - jq

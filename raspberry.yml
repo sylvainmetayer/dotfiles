@@ -1,0 +1,14 @@
+---
+- hosts: raspberry
+
+  pre_tasks:
+    - name: Include commons vars
+      include_vars:
+        file: 'commons_variables.yml'
+    - name: Update hostname
+      hostname:
+        name: 'raspberry'
+  roles:
+    - asdf
+    - commons
+    - raspberry
