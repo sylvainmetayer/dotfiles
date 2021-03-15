@@ -1,14 +1,22 @@
 ---
 - hosts: raspberry
 
+  vars:
+    pip_package: python3-pip
+    docker_install_compose: true
+    docker_users:
+      - '{{ ansible_user_id }}'
   pre_tasks:
     - name: Include commons vars
       include_vars:
         file: 'commons_variables.yml'
-    - name: Update hostname
-      hostname:
-        name: 'raspberry'
+    #- name: Update hostname
+    #  hostname:
+    #    name: 'raspberry'
   roles:
-    - asdf
     - commons
+    - { role: geerlingguy.pip, become: yes }
+    - { role: geerlingguy.docker_arm, become: yes }
     - raspberry
+    - asdf
+    - symlinks

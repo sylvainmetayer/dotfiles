@@ -1,0 +1,13 @@
+---
+- name: Setup dotfiles symlinks
+  include_tasks: symlink.yml
+  loop:
+    - .vimrc
+    - .bash_profile
+    - .bash_aliases
+    - .gitconfig
+    - .tmux.conf
+    - .config/liquidpromptrc
+    - .config/htop/htoprc
+    - .config/starship.toml
+    - .gnupg/gpg.conf

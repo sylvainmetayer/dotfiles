@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 
+function init_asdf_light() {
+    starshipVersion='0.50.0'
+    asdf plugin-add starship
+    asdf install starship $starshipVersion
+    asdf global starship $starshipVersion
+}
+
 function init_asdf() {
+    init_asdf_light
+
     nodeVersion='14.15.0'
-    starshipVersion='0.46.2'
     terraformVersion='0.13.5'
 
     if ! command -v asdf &>/dev/null; then
@@ -14,10 +22,6 @@ function init_asdf() {
     bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
     asdf install nodejs $nodeVersion
     asdf global nodejs $nodeVersion
-
-    asdf plugin-add starship
-    asdf install starship $starshipVersion
-    asdf global starship $starshipVersion
 
     asdf plugin-add terraform https://github.com/Banno/asdf-hashicorp.git
     asdf install terraform $terraformVersion
@@ -47,4 +51,8 @@ function init_asdf() {
     asdf plugin-add eksctl
     asdf install eksctl 0.40.0
     asdf global eksctl 0.40.0
+
+    asdf plugin add kubectl
+    asdf install kubectl 1.20.4
+    asdf global kubectl 1.20.4
 }
