@@ -1,0 +1,59 @@
+---
+# For now, we only configure nginx, certificate and backup script here.
+# we will use docker-compose to deploy app
+
+- name: Ensure folder exists
+  file:
+    mode: '0700'
+    path: '~/crm'
+    state: directory
+
+- name: Ensure data folder exists
+  file:
+    mode: '0700'
+    path: '~/crm/data'
+    state: directory
+
+- name: Copy docker-compose configuration
+  copy:
+    src: '{{ role_path }}/files/docker-compose.yml'
+    dest: '~/crm/'
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_gid }}'
+    mode: '0644'
+
+- name: Template environment file
+  template:
+    src: templates/.env.j2
+    dest: ~/crm/.env
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_gid }}'
+    mode: '0644'
+
+- name: Template backup script
+  template:
+    src: templates/backup.sh.j2
+    dest: ~/crm/backup.sh
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_gid }}'
+    mode: '0755'
+
+- name: Template nginx host
+  become: true
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/sites-available/001-crm.conf
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: Enable nginx host
+  become: true
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/001-crm.conf
+    dest: /etc/nginx/sites-enabled/001-crm.conf
+    owner: root
+    group: root
+    state: link
+
+# TODO certificate
