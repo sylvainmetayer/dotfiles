@@ -1,0 +1,14 @@
+---
+- name: Ensure backup folder exists
+  file:
+    mode: '0700'
+    path: '~/backup'
+    state: directory
+
+- name: Copy backup script
+  copy:
+    src: '{{ role_path }}/files/backup.sh'
+    dest: '~/backup/'
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_gid }}'
+    mode: '0755'

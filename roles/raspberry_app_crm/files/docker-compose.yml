@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  app:
+    image: monica:2.19.1-apache
+    env_file: .env
+    ports:
+      - 8080:80
+    volumes:
+      - ./data:/var/www/html/storage
+    restart: always

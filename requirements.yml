@@ -6,4 +6,4 @@
   name: sestrella.ansible_role_asdf
 - src: geerlingguy.docker_arm
 - src: geerlingguy.pip
-
+- src: geerlingguy.mysql

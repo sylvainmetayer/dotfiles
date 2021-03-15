@@ -17,6 +17,9 @@
     - commons
     - { role: geerlingguy.pip, become: yes }
     - { role: geerlingguy.docker_arm, become: yes }
+    - { role: geerlingguy.mysql, become: true }
+    # Required before asdf and symlinks
     - raspberry
     - asdf
     - symlinks
+    - raspberry_app_crm

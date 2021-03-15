@@ -1,9 +1,20 @@
 ---
+- name: Set timezone to Europe/Paris
+  become: true
+  timezone:
+    name: Europe/Paris
+
+- name: Stop Avahi
+  ansible.builtin.systemd:
+    name: avahi-daemon
+    state: stopped
+    enabled: no
+
 - name: Clone dotfile repository
   git:
     repo: git@github.com:sylvainmetayer/dotfiles.git
     dest: '~/dotfiles'
-    # FIXME use master
+    # FIXME use master when merged
     version: feat_raspberry
 
 - name: Install commons packages
@@ -17,3 +28,32 @@
     - x11-xkb-utils
     - apt-transport-https
     - nginx
+    - unzip
+    - python3-requests
+    - python3-args
+    - python3-simplejson
+    - python-requests
+    - python-args
+    - python-simplejson
+    - curl
+
+- name: Configure Gandi live DNS to update IP
+  block:
+    - name: Clone repository
+      git:
+        repo: git@github.com:cavebeat/gandi-live-dns.git
+        dest: '~/gandi-live-dns'
+        version: master
+    - name: Generate configuration file from template
+      template:
+        src: templates/gandi-config.py.j2
+        dest: ~/gandi-live-dns/src/config.py
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_gid }}'
+        mode: '0644'
+    - name: Setup cronjob
+      ansible.builtin.cron:
+        name: "Update ip for domains"
+        minute: "0"
+        hour: "6"
+        job: "/usr/bin/python2.7 /home/ocyhc/gandi-live-dns/src/gandi-live-dns.py >/dev/null 2>&1 && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ health_check_gandi_uuid }}"

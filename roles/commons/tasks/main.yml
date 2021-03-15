@@ -35,5 +35,5 @@
       if [ -f ~/.bash_aliases ]; then
         . ~/.bash_aliases
       fi
-      [[ $- == *i* ]] && eval "$(starship init bash)"
+      [[ $- == *i* ]] && command -v starship && eval "$(starship init bash)"
       [[ $- == *i* ]] && command -v npm && source <(npm completion)

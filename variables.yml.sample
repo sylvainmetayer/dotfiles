@@ -4,8 +4,42 @@ host_hostname: my-awesome-hostname
 git_email: contact@sylvainmetayer.fr
 git_user: Sylvain
 # uncomment if you want to sign your commits
-# git_key: YOUR FINGER PRINT ID 
+# git_key: YOUR FINGER PRINT ID
 github_token: XXX
 
 docker_users:
   - "USER" # replace by users you want to have access to docker without root.
+
+
+# Raspberry pi settings
+
+# Use to update configured DNS with current IP
+gandi_api_key: XXX
+# https://healthchecks.io
+health_check_gandi_uuid: XXX
+
+mysql_root_password: XXX
+mysql_databases:
+  - name: XXX
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci
+mysql_users:
+  - name: XXX
+    host: "%"
+    password: XXX
+    priv: "XXX.*:ALL"
+
+crm_app:
+  # FIXME find a way to lookup mysql_users where name = XXX and then get data
+  user: XXX
+  db: XXX
+  password: XXX
+  domain: crm.app
+  app_key: XXX
+
+mail_config:
+  user: some@email.com
+  password: XXX
+  host: mail.gandi.net
+  port: 587
+  use_tls: true
