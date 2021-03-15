@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # French layout
-setxkbmap fr
+# setxkbmap fr
 
 # User specific environment and startup programs
 TERM=xterm-256color

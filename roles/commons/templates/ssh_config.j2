@@ -7,7 +7,26 @@ Host bitbucket.org
 Host gitlab.com
     IdentityFile ~/.ssh/id_ed25519
 
+Host nextcloud
+    HostName nextcloud.sylvainmetayer.fr
+    Port 22
+    User ocyhc
+    IdentityFile ~/.ssh/id_ed25519
+    ServerAliveInterval 120
+
+Host pi
+    User ocyhc
+    HostName pi.sylvain.dev
+    Port 22
+    IdentityFile ~/.ssh/id_ed25519
+    ServerAliveInterval 120
+
+Host kodi-vps
+    User ocyhc
+    HostName 95.217.130.219
+    Port 22
+    IdentityFile ~/.ssh/id_ed25519
+
 # https://serverfault.com/a/515214
 Host *
   IdentitiesOnly yes
-

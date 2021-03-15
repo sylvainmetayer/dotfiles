@@ -20,15 +20,11 @@
     state: present
     type: ed25519
     force: no
-    comment: "{{ ansible_env['USERNAME'] }}@{{ ansible_hostname }}"
+    comment: "{{ ansible_user_id }}@{{ ansible_hostname }}"
   register: ssh_key_status
   notify:
     - print ssh key
     - upload ssh key github
-
-- name: Render base host template
-  set_fact:
-    hosts_content: "{{ lookup('template', 'common_hosts.j2') }}"
 
 - name: Render base host template
   set_fact:
@@ -41,5 +37,7 @@
       {{ item.content }}
     marker: "#{mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   loop:
-    - { name: hosts, content: "{{ hosts_content }}" }
     - { name: base, content: "{{ ssh_base_config }}" }
+
+- name: Trigger handler
+  meta: flush_handlers

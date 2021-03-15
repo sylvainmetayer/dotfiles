@@ -11,12 +11,6 @@
       when: host_hostname is defined
 
   roles:
-    # Basic one, to enable asdf
-    - asdf
-    # Full one, with ability to pre-install tools. Debian only
-    #- role: sestrella.ansible_role_asdf
-    #  tags:
-    #    - network_access
     - role: jaredhocutt.gnome_extensions
       tags:
         - network_access
@@ -24,9 +18,13 @@
       become: true
       tags:
         - network_access
+    # With fedora > 31, install docker manually
     #- role: geerlingguy.docker
     #  become: true
     #  tags:
     #    - network_access
     - commons
+    # Basic one, to enable asdf
+    - asdf
+    - symlinks
     - fedora

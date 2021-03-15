@@ -4,19 +4,6 @@
 
 - include: ssh.yml
 
-- name: Setup dotfiles symlinks
-  include_tasks: symlink.yml
-  loop:
-    - .vimrc
-    - .bash_profile
-    - .bash_aliases
-    - .gitconfig
-    - .tmux.conf
-    - .config/liquidpromptrc
-    - .config/htop/htoprc
-    - .config/starship.toml
-    - .gnupg/gpg.conf
-
 - name: Template git config
   template:
     src: templates/git_user.j2
@@ -49,4 +36,4 @@
         . ~/.bash_aliases
       fi
       [[ $- == *i* ]] && eval "$(starship init bash)"
-      [[ $- == *i* ]] && source <(npm completion)
+      [[ $- == *i* ]] && command -v npm && source <(npm completion)

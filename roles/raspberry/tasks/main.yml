@@ -3,14 +3,17 @@
   git:
     repo: git@github.com:sylvainmetayer/dotfiles.git
     dest: '~/dotfiles'
-    version: master
+    # FIXME use master
+    version: feat_raspberry
 
 - name: Install commons packages
+  become: yes
   apt:
     name: '{{ item }}'
     state: present
     update_cache: yes
   loop:
     - git
+    - x11-xkb-utils
     - apt-transport-https
     - nginx
