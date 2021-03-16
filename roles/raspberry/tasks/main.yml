@@ -36,6 +36,10 @@
     - python-args
     - python-simplejson
     - curl
+    - gnupg2
+    - cron
+    - sendemail
+    - mailutils
 
 - name: Configure Gandi live DNS to update IP
   block:
@@ -53,10 +57,10 @@
         mode: '0644'
     - name: Setup cronjob
       ansible.builtin.cron:
-        name: "Update ip for sylvain.dev"
-        minute: "0"
-        hour: "6"
-        job: "/usr/bin/python2.7 /home/ocyhc/gandi-live-dns-dev/src/gandi-live-dns.py >/dev/null 2>&1 && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ health_check_gandi_uuid }}"
+        name: 'Update ip for sylvain.dev'
+        minute: '0'
+        hour: '6'
+        job: '/usr/bin/python2.7 /home/ocyhc/gandi-live-dns-dev/src/gandi-live-dns.py >/dev/null 2>&1 && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ health_check_gandi_uuid }}'
     - name: Clone repository for other domain
       git:
         repo: git@github.com:cavebeat/gandi-live-dns.git
@@ -71,10 +75,22 @@
         mode: '0644'
     - name: Setup cronjob
       ansible.builtin.cron:
-        name: "Update ip for sylvainmetayer.fr"
-        minute: "5"
-        hour: "6"
-        job: "/usr/bin/python2.7 /home/ocyhc/gandi-live-dns/src/gandi-live-dns.py >/dev/null 2>&1 && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ health_check_gandi_uuid }}"
+        name: 'Update ip for sylvainmetayer.fr'
+        minute: '5'
+        hour: '6'
+        job: '/usr/bin/python2.7 /home/ocyhc/gandi-live-dns/src/gandi-live-dns.py >/dev/null 2>&1 && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ health_check_gandi_uuid }}'
 
 - name: Prepare backup script
   include_tasks: backup.yml
+
+- name: Configure SSH settings
+  include_tasks: ssh.yml
+  args:
+    apply:
+      become: yes
+
+- name: Configure fail2ban
+  include_tasks: fail2ban.yml
+  args:
+    apply:
+      become: yes
