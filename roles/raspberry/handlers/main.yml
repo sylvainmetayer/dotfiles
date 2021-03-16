@@ -1,0 +1,13 @@
+---
+- name: restart ssh
+  systemd:
+    name: 'ssh'
+    state: 'restarted'
+  listen: 'restart ssh'
+
+- name: restart fail2ban
+  systemd:
+    state: restarted
+    enabled: true
+    name: fail2ban
+  listen: 'restart fail2ban'

@@ -8,6 +8,5 @@
     - .gitconfig
     - .tmux.conf
     - .config/liquidpromptrc
-    - .config/htop/htoprc
     - .config/starship.toml
     - .gnupg/gpg.conf

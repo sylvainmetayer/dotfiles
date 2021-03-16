@@ -28,6 +28,9 @@ mysql_users:
     password: XXX
     priv: "XXX.*:ALL"
 
+fail2ban:
+  receiver: XXX
+
 crm_app:
   # FIXME find a way to lookup mysql_users where name = XXX and then get data
   user: XXX
