@@ -10,7 +10,6 @@ github_token: XXX
 docker_users:
   - "USER" # replace by users you want to have access to docker without root.
 
-
 # Raspberry pi settings
 
 # Use to update configured DNS with current IP
@@ -43,3 +42,5 @@ mail_config:
   host: mail.gandi.net
   port: 587
   use_tls: true
+
+certbot_email: XXX

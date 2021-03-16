@@ -8,12 +8,6 @@
     path: '~/crm'
     state: directory
 
-- name: Ensure data folder exists
-  file:
-    mode: '0700'
-    path: '~/crm/data'
-    state: directory
-
 - name: Copy docker-compose configuration
   copy:
     src: '{{ role_path }}/files/docker-compose.yml'
@@ -33,7 +27,7 @@
 - name: Template backup script
   template:
     src: templates/backup.sh.j2
-    dest: ~/crm/backup.sh
+    dest: ~/backup/crm.sh
     owner: '{{ ansible_user_id }}'
     group: '{{ ansible_user_gid }}'
     mode: '0755'
@@ -56,4 +50,6 @@
     group: root
     state: link
 
-# TODO certificate
+- name: Add domain to certificate to be generated
+  set_fact:
+    certbot_certs: "{{ certbot_certs + [ { \"domains\": [crm_app.domain] } ] }}"
