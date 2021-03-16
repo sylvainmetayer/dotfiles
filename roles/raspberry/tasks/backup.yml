@@ -8,7 +8,7 @@
 - name: Copy backup script
   copy:
     src: '{{ role_path }}/files/backup.sh'
-    dest: '~/backup/'
+    dest: '~/'
     owner: '{{ ansible_user_id }}'
     group: '{{ ansible_user_gid }}'
     mode: '0755'

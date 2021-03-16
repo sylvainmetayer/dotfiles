@@ -1,11 +1,15 @@
 version: '3.4'
 
 services:
-  app:
+  crm:
+    container_name: crm
     image: monica:2.19.1-apache
     env_file: .env
     ports:
-      - 8080:80
+      - 9001:80
     volumes:
       - ./data:/var/www/html/storage
     restart: always
+    # https://github.com/docker/for-linux/issues/264#issuecomment-772844305
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'

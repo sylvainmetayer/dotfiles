@@ -21,7 +21,7 @@ server {
         deny all;
     }
 
-	access_log  /var/log/nginx/{{ crm_app.domain }}.access.log combined if=$log_ua;
+	access_log  /var/log/nginx/{{ crm_app.domain }}.access.log combined;
 	error_log   /var/log/nginx/{{ crm_app.domain }}.error.log;
 
 	location / {
