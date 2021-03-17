@@ -1,0 +1,81 @@
+---
+- name: Install requirements
+  become: "yes"
+  apt:
+    name:
+      - python3-dev
+      - python3-pip
+      - libssl-dev
+      - openssl
+      - libacl1-dev
+      - libacl1
+      - build-essential
+      - dbus-user-session
+    state: present
+
+- name: Install borgmatic requirements
+  become: true
+  pip:
+    name:
+      - setuptools
+      - wheel
+    executable: pip3
+    extra_args: "--user --upgrade"
+
+- name: Install Borgmatic
+  become: true
+  pip:
+    name:
+      - borgbackup
+      - borgmatic
+    executable: pip3
+    extra_args: "--user --upgrade"
+
+- name: Ensure sudoers can run borgmatic
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: "^Defaults\tsecure_path"
+    line: "Defaults\tsecure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin\""
+    validate: /usr/sbin/visudo -cf %s
+
+- name: Ensure root folders allow traversing
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0711"
+  with_items:
+    - /root
+    - /root/.local
+
+- name: Template borgmatic configuration
+  become: true
+  template:
+    src: templates/borgmatic.conf.yaml.j2
+    dest: /etc/borgmatic/config.yaml
+    owner: root
+    group: root
+    mode: "0600"
+    validate: /root/.local/bin/validate-borgmatic-config -c %s
+
+- name: Ensure root has SSH key.
+  become: true
+  user:
+    name: root
+    generate_ssh_key: "yes"
+    ssh_key_file: .ssh/id_ed25519
+    ssh_key_type: ed25519
+  register: root_user
+
+- name: Ouput root public SSH key
+  debug:
+    var: "root_user['ssh_public_key']"
+
+- name: Setup cronjob
+  become: true
+  ansible.builtin.cron:
+    name: "Run borgmatic"
+    minute: "0"
+    hour: "5"
+    job: "/root/.local/bin/borgmatic"

@@ -26,13 +26,14 @@
     #  hostname:
     #    name: 'raspberry'
   roles:
-    - commons
-    - { role: geerlingguy.pip, become: yes }
-    - { role: geerlingguy.docker_arm, become: yes }
-    - { role: geerlingguy.mysql, become: true }
+    #! - commons
+    #! - { role: geerlingguy.pip, become: yes }
+    #! - { role: geerlingguy.docker_arm, become: yes }
+    #! - { role: geerlingguy.mysql, become: true }
     # Required before asdf and symlinks
-    - raspberry
-    - asdf
-    - symlinks
-    - raspberry_app_crm
-    - { role: geerlingguy.certbot, become: true }
+    # - raspberry
+    #! - asdf
+    #! - symlinks
+    # - raspberry_app_crm
+    - raspberry_backup
+    #! - { role: geerlingguy.certbot, become: true }

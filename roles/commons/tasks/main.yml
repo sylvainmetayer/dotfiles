@@ -1,5 +1,4 @@
 ---
-
 - include: packages.yml
 
 - include: ssh.yml
@@ -8,15 +7,15 @@
   template:
     src: templates/git_user.j2
     dest: ~/.git_user
-    owner: '{{ ansible_user_id }}'
-    group: '{{ ansible_user_gid }}'
-    mode: '0644'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
 
 - name: Ensure local bin directory exists
   file:
-    path: '~/.local/bin'
+    path: "~/.local/bin"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Ensure that .bashrc load custom scripts
   blockinfile:
@@ -35,5 +34,5 @@
       if [ -f ~/.bash_aliases ]; then
         . ~/.bash_aliases
       fi
-      [[ $- == *i* ]] && command -v starship && eval "$(starship init bash)"
-      [[ $- == *i* ]] && command -v npm && source <(npm completion)
+      [[ $- == *i* ]] && command -v starship >/dev/null && eval "$(starship init bash)"
+      [[ $- == *i* ]] && command -v npm >/dev/null && source <(npm completion)

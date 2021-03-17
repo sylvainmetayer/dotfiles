@@ -2,50 +2,50 @@
 - name: Clone asdf repository
   git:
     repo: git@github.com:asdf-vm/asdf.git
-    dest: '~/.asdf'
+    dest: "~/.asdf"
     version: v0.8.0
 
 - name: Enable asdf
   blockinfile:
     path: ~/.bashrc
     insertbefore: BOF
-    marker: '#{mark} ANSIBLE ASDF MANAGED BLOCK'
+    marker: "#{mark} ANSIBLE ASDF MANAGED BLOCK"
     block: |
       . $HOME/.asdf/asdf.sh
       . $HOME/.asdf/completions/asdf.bash
 
 - name: Get info on asdfrc file
   stat:
-    path: '~/.asdfrc'
+    path: "~/.asdfrc"
   register: asdfrc
 
 - name: Delete asdfrc if not a symlink
   file:
-    path: '~/.asdfrc'
+    path: "~/.asdfrc"
     state: absent
   when: asdfrc.stat is defined and asdfrc.stat.islnk is defined and not asdfrc.stat.islnk
 
 - name: Create symlink
   file:
     src: ~/dotfiles/home/.asdfrc
-    dest: '~/.asdfrc'
+    dest: "~/.asdfrc"
     state: link
     force: no
 
 - name: Get info on .default-npm-packages file
   stat:
-    path: '~/.default-npm-packages'
+    path: "~/.default-npm-packages"
   register: defaultNpmPackage
 
 - name: Delete .default-npm-packages if not a symlink
   file:
-    path: '~/.default-npm-packages'
+    path: "~/.default-npm-packages"
     state: absent
   when: defaultNpmPackage.stat is defined and defaultNpmPackage.stat.islnk is defined and not defaultNpmPackage.stat.islnk
 
 - name: Create symlink
   file:
     src: ~/dotfiles/home/.default-npm-packages
-    dest: '~/.default-npm-packages'
+    dest: "~/.default-npm-packages"
     state: link
     force: no

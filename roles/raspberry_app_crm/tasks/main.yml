@@ -4,42 +4,34 @@
 
 - name: Ensure folder exists
   file:
-    mode: '0700'
-    path: '~/crm'
+    mode: "0700"
+    path: "~/crm"
     state: directory
 
 - name: Copy docker-compose configuration
   copy:
-    src: '{{ role_path }}/files/docker-compose.yml'
-    dest: '~/crm/'
-    owner: '{{ ansible_user_id }}'
-    group: '{{ ansible_user_gid }}'
-    mode: '0644'
+    src: "{{ role_path }}/files/docker-compose.yml"
+    dest: "~/crm/"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
 
 - name: Template environment file
   template:
     src: templates/.env.j2
     dest: ~/crm/.env
-    owner: '{{ ansible_user_id }}'
-    group: '{{ ansible_user_gid }}'
-    mode: '0644'
-
-- name: Template backup script
-  template:
-    src: templates/backup.sh.j2
-    dest: ~/backup/crm.sh
-    owner: '{{ ansible_user_id }}'
-    group: '{{ ansible_user_gid }}'
-    mode: '0755'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
 
 - name: Template nginx host
   become: true
   template:
     src: templates/nginx.conf.j2
     dest: /etc/nginx/sites-available/001-crm.conf
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
+    owner: "root"
+    group: "root"
+    mode: "0644"
 
 - name: Enable nginx host
   become: true
@@ -52,11 +44,11 @@
 
 - name: Add domain to certificate to be generated
   set_fact:
-    certbot_certs: "{{ certbot_certs + [ { \"domains\": [crm_app.domain] } ] }}"
+    certbot_certs: '{{ certbot_certs + [ { "domains": [crm_app.domain] } ] }}'
 
 - name: Setup cronjob
   ansible.builtin.cron:
-    name: 'CRM tasks'
-    minute: '0'
-    hour: '*'
-    job: 'cd ~/crm/ && /usr/local/bin/docker-compose run --rm crm php artisan schedule:run && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}'
+    name: "CRM tasks"
+    minute: "0"
+    hour: "*"
+    job: "cd ~/crm/ && /usr/local/bin/docker-compose run --rm crm php artisan schedule:run && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}"

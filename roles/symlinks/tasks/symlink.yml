@@ -1,18 +1,18 @@
 ---
 - name: Collect file info
   stat:
-    path: '~/{{ item }}'
+    path: "~/{{ item }}"
   register: dotfile
 
 - name: Ensure folder does exists
   file:
-    mode: '0700'
-    path: '~/{{ item | dirname }}'
+    mode: "0700"
+    path: "~/{{ item | dirname }}"
     state: directory
 
 - name: Delete regular file
   file:
-    path: '~/{{ item }}'
+    path: "~/{{ item }}"
     state: absent
   when: dotfile.stat.islnk is defined and dotfile.stat is defined and dotfile.stat.isreg
 

@@ -3,7 +3,7 @@
   become: yes
   lineinfile:
     path: /etc/selinux/config
-    regexp: '^SELINUX='
+    regexp: "^SELINUX="
     line: SELINUX=permissive
   when: ansible_os_family == "Redhat"
 
@@ -16,6 +16,3 @@
 - include: flatpak.yml
 
 - include: dconf.yml
-
-# - include_role:
-#     name: jaredhocutt.gnome_extensions
