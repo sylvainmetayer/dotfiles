@@ -9,7 +9,7 @@
   get_url:
     url: "{{ kdrive_url }}"
     dest: ~/.softs/kDrive
-    mode: '0700'
+    mode: "0700"
   tags:
     - network_access
 

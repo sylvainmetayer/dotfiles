@@ -48,3 +48,10 @@ mail_config:
   use_tls: true
 
 certbot_email: XXX
+borg_backup:
+  health_check_uuid: XXX
+  backup_user: XXX
+  backup_port: 22
+  backup_host: XXX
+  backup_path: XXX
+  passphrase: XXX
