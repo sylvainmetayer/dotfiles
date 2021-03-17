@@ -38,6 +38,7 @@ crm_app:
   password: XXX
   domain: crm.app
   app_key: XXX
+  health_check_uuid: xxx
 
 mail_config:
   user: some@email.com

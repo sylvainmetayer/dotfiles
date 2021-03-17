@@ -53,3 +53,10 @@
 - name: Add domain to certificate to be generated
   set_fact:
     certbot_certs: "{{ certbot_certs + [ { \"domains\": [crm_app.domain] } ] }}"
+
+- name: Setup cronjob
+  ansible.builtin.cron:
+    name: 'CRM tasks'
+    minute: '0'
+    hour: '*'
+    job: 'cd ~/crm/ && /usr/local/bin/docker-compose run --rm crm php artisan schedule:run && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}'
