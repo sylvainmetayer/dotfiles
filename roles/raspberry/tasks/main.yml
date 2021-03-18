@@ -1,4 +1,23 @@
 ---
+
+- name: Ensure data folder exists
+  become: true
+  file:
+    path: "/data"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+
+- name: Mount external hard drive
+  become: true
+  mount:
+    path: /data
+    src: "UUID={{ hard_drive_uuid }}"
+    fstype: ext4
+    opts: auto,nofail,noatime,rw,user
+    state: mounted
+
 - name: Set timezone to Europe/Paris
   become: true
   timezone:
