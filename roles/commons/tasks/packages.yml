@@ -3,12 +3,12 @@
   ansible.builtin.package:
     name: "*"
     state: latest
-  become: yes
+  become: true
   tags:
     - network_access
 
 - name: "Install basic packages"
-  become: yes
+  become: true
   ansible.builtin.package:
     name:
       - ansible

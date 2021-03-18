@@ -17,23 +17,28 @@
     pip_package: python3-pip
     docker_install_compose: true
     docker_users:
-      - '{{ ansible_user_id }}'
+      - "{{ ansible_user_id }}"
   pre_tasks:
     - name: Include commons vars
       include_vars:
-        file: 'commons_variables.yml'
-    #- name: Update hostname
-    #  hostname:
-    #    name: 'raspberry'
+        file: "commons_variables.yml"
+    - name: Update hostname
+      become: true
+      hostname:
+        name: "raspberry"
   roles:
-    #! - commons
-    #! - { role: geerlingguy.pip, become: yes }
-    #! - { role: geerlingguy.docker_arm, become: yes }
-    #! - { role: geerlingguy.mysql, become: true }
+    - commons
+    - role: geerlingguy.pip
+      become: yes
+    - role: geerlingguy.docker_arm
+      become: yes
+    - role: geerlingguy.mysql
+      become: true
     # Required before asdf and symlinks
-    # - raspberry
-    #! - asdf
-    #! - symlinks
-    # - raspberry_app_crm
+    - raspberry
+    - asdf
+    - symlinks
+    - raspberry_app_crm
     - raspberry_backup
-    #! - { role: geerlingguy.certbot, become: true }
+    - role: geerlingguy.certbot
+      become: true

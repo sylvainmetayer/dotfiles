@@ -1,6 +1,6 @@
 ---
 - name: Ensure SELinux is set to permissive mode
-  become: yes
+  become: true
   lineinfile:
     path: /etc/selinux/config
     regexp: "^SELINUX="
