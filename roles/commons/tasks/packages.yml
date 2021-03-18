@@ -1,12 +1,4 @@
 ---
-- name: Upgrade all packages
-  ansible.builtin.package:
-    name: "*"
-    state: latest
-  become: true
-  tags:
-    - network_access
-
 - name: "Install basic packages"
   become: true
   ansible.builtin.package:

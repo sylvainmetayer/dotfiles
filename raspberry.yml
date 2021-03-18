@@ -2,6 +2,7 @@
 - hosts: raspberry
 
   vars:
+    docker_version: 5:20.10.5~3-0~raspbian-buster
     hostname: raspberry
     certbot_auto_renew: true
     certbot_auto_renew_user: "root"

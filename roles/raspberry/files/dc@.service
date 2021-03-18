@@ -1,0 +1,27 @@
+# Thanks https://github.com/MiGoller/dc-systemd-template#creating-docker-compose-powered-services-using-systemd-templates
+[Unit]
+Description=%i service powered by docker compose
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+# Create a directory for each docker-composed service at /opt/dockerfiles.
+# Name the directory as the service.
+WorkingDirectory=/opt/dockerfiles/%i
+
+# Remove old containers, images and volumes and update it
+ExecStartPre=/usr/local/bin/docker-compose down
+ExecStartPre=/usr/local/bin/docker-compose rm -f
+ExecStartPre=/usr/local/bin/docker-compose pull
+
+#   Run Compose up on service start.
+ExecStart=/usr/local/bin/docker-compose up
+
+#   Run Compose down, remove containers and volumes on service stop.
+ExecStop=/usr/local/bin/docker-compose down
+
+[Install]
+WantedBy=multi-user.target
