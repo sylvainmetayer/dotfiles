@@ -10,3 +10,5 @@
     - .config/liquidpromptrc
     - .config/starship.toml
     - .gnupg/gpg.conf
+    - .default-npm-packages
+    - .asdfrc

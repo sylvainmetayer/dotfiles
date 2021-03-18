@@ -8,7 +8,7 @@
   ansible.builtin.systemd:
     name: avahi-daemon
     state: stopped
-    enabled: no
+    enabled: false
 
 - name: Clone dotfile repository
   git:
@@ -18,11 +18,11 @@
     version: feat_raspberry
 
 - name: Install commons packages
-  become: yes
+  become: true
   apt:
     name: "{{ item }}"
     state: present
-    update_cache: yes
+    update_cache: true
   loop:
     - git
     - x11-xkb-utils
@@ -40,6 +40,12 @@
     - cron
     - sendemail
     - mailutils
+
+- name: Ensure nginx is enabled
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+    enabled: true
 
 - name: Configure Gandi live DNS to update IP
   block:
@@ -84,10 +90,10 @@
   include_tasks: ssh.yml
   args:
     apply:
-      become: yes
+      become: true
 
 - name: Configure fail2ban
   include_tasks: fail2ban.yml
   args:
     apply:
-      become: yes
+      become: true

@@ -9,7 +9,7 @@
   copy:
     content: ""
     dest: "~/.ssh/config"
-    force: no
+    force: false
     group: "{{ ansible_user_gid }}"
     owner: "{{ ansible_user_uid }}"
     mode: 0600
@@ -19,7 +19,7 @@
     path: ~/.ssh/id_ed25519
     state: present
     type: ed25519
-    force: no
+    force: false
     comment: "{{ ansible_user_id }}@{{ ansible_hostname }}"
   register: ssh_key_status
   notify:
@@ -37,7 +37,8 @@
       {{ item.content }}
     marker: "#{mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   loop:
-    - { name: base, content: "{{ ssh_base_config }}" }
+    - name: base
+      content: "{{ ssh_base_config }}"
 
 - name: Trigger handler
   meta: flush_handlers

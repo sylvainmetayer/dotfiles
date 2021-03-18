@@ -21,5 +21,4 @@
     src: ~/dotfiles/home/{{ item }}
     dest: ~/{{ item }}
     state: link
-    # If something already exits, keep it.
-    force: no
+    force: false

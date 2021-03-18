@@ -10,7 +10,7 @@
     mode: 0700
     src: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-{{ jetbrains_toolbox_version }}.tar.gz"
     dest: ~/.softs/
-    remote_src: yes
+    remote_src: true
     extra_opts:
       - "--strip-components=1"
   tags:

@@ -18,11 +18,6 @@
       become: true
       tags:
         - network_access
-    # With fedora > 31, install docker manually
-    #- role: geerlingguy.docker
-    #  become: true
-    #  tags:
-    #    - network_access
     - commons
     # Basic one, to enable asdf
     - asdf

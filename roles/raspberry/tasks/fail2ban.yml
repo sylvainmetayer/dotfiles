@@ -3,7 +3,7 @@
   apt:
     name: fail2ban
     state: present
-    force_apt_get: True
+    force_apt_get: true
 
 - name: Copy Fail2Ban main configuration
   template:

@@ -1,3 +1,4 @@
+---
 name: CI
 
 on: [push]
@@ -21,13 +22,12 @@ jobs:
     - name: Install Ansible ${{ matrix.ansible-version }}
       run: |
         python -m pip install --upgrade pip
-        pip install ansible-lint ansible==${{ matrix.ansible-version }}
+        pip install yamllint ansible==${{ matrix.ansible-version }}
     - name: Lint playbook
       run: |
         cp variables.yml.sample variables.yml
         ansible-galaxy install -r requirements.yml
         ansible-playbook fedora.yml --extra-vars "@variables.yml" --syntax-check
-        ansible-lint fedora.yml
         ansible-playbook raspberry.yml --extra-vars "@variables.yml" --syntax-check
-        ansible-lint raspberry.yml
+        yamllint .
 

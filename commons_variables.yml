@@ -5,28 +5,12 @@ ble_version: 0.3.2
 kdrive_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.1.0.20210303.AppImage"
 jetbrains_toolbox_version: 1.20.7940
 
-## geerlingguy/ansible-role-docker vars
-docker_compose_version: "1.27.4"
-
 gnome_extension_ids:
-  #- 779  # https://extensions.gnome.org/extension/779/clipboard-indicator/
   - 1162  # https://extensions.gnome.org/extension/1162/emoji-selector/
   - 615   # https://extensions.gnome.org/extension/615/appindicator-support/
   - 600   # https://extensions.gnome.org/extension/600/launch-new-instance/
   - 1262  # https://extensions.gnome.org/extension/1262/bing-wallpaper-changer/
   - 7     # https://extensions.gnome.org/extension/7/removable-drive-menu/
-  #- 19   # https://extensions.gnome.org/extension/19/user-themes/
   - 1112  # https://extensions.gnome.org/extension/1112/screenshot-tool/
   - 906   # https://extensions.gnome.org/extension/906/sound-output-device-chooser/
   - 1503  # https://extensions.gnome.org/extension/1503/tray-icons/
-
-asdf_version: v0.8.0
-# Support .nvmrc files and .ruby-version
-asdf_legacy_version_file: "yes"
-
-asdf_plugins:
-  - name: nodejs
-    versions:
-      - "14.14.0"
-      - "12.19.0" # LTS
-    global: "14.14.0"

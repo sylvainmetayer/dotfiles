@@ -1,6 +1,6 @@
 ---
 - name: "Import Repositories GPG keys"
-  become: yes
+  become: true
   rpm_key:
     state: present
     key: https://packages.microsoft.com/keys/microsoft.asc
@@ -8,17 +8,17 @@
     - network_access
 
 - name: install VS Code repo (dnf)
-  become: yes
+  become: true
   yum_repository:
     name: code
     description: Visual Studio Code repo
     file: vscode
     baseurl: "https://packages.microsoft.com/yumrepos/vscode"
     gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
-    gpgcheck: yes
+    gpgcheck: true
 
 - name: "Install basic packages"
-  become: yes
+  become: true
   ansible.builtin.package:
     name:
       # VSCode Extensions
@@ -50,7 +50,7 @@
     - network_access
 
 - name: "Remove unwanted packages"
-  become: yes
+  become: true
   ansible.builtin.package:
     name:
       - gnome-maps
