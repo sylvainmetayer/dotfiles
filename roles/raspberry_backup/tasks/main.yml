@@ -40,6 +40,14 @@
     line: "Defaults\tsecure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin\""
     validate: /usr/sbin/visudo -cf %s
 
+- name: Update root path
+  blockinfile:
+    path: ~/.bashrc
+    insertbefore: EOF
+    marker: "#{mark} ANSIBLE Borgbackup"
+    block: |
+      PATH="$PATH:/root/.local/bin"
+
 - name: Ensure root folders allow traversing
   file:
     path: "{{ item }}"

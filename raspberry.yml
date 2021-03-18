@@ -2,6 +2,7 @@
 - hosts: raspberry
 
   vars:
+    hostname: raspberry
     certbot_auto_renew: true
     certbot_auto_renew_user: "root"
     certbot_auto_renew_hour: "3"
@@ -25,13 +26,20 @@
     - name: Update hostname
       become: true
       hostname:
-        name: "raspberry"
+        name: "{{ hostname }}"
+    - name: Update hosts file
+      become: true
+      lineinfile:
+        dest: /etc/hosts
+        line: "127.0.0.1 {{ hostname }}"
+        insertafter: "^127.0.0.1 localhost.*$"
+
   roles:
     - commons
     - role: geerlingguy.pip
-      become: yes
+      become: true
     - role: geerlingguy.docker_arm
-      become: yes
+      become: true
     - role: geerlingguy.mysql
       become: true
     # Required before asdf and symlinks
