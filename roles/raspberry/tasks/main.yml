@@ -23,11 +23,15 @@
   timezone:
     name: Europe/Paris
 
-- name: Stop Avahi
+- name: Ensure unused service are disabled
+  become: true
   ansible.builtin.systemd:
-    name: avahi-daemon
+    name: "{{ item }}"
     state: stopped
     enabled: false
+  with_items:
+    - hciuart
+    - avahi-daemon
 
 - name: Clone dotfile repository
   git:
@@ -62,6 +66,7 @@
     - mailutils
 
 - name: Ensure nginx is enabled
+  become: true
   ansible.builtin.systemd:
     name: nginx
     state: started
