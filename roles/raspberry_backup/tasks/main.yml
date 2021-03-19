@@ -40,14 +40,6 @@
     line: "Defaults\tsecure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin\""
     validate: /usr/sbin/visudo -cf %s
 
-- name: Update root path
-  blockinfile:
-    path: ~/.bashrc
-    insertbefore: EOF
-    marker: "#{mark} ANSIBLE Borgbackup"
-    block: |
-      PATH="$PATH:/root/.local/bin"
-
 - name: Ensure root folders allow traversing
   file:
     path: "{{ item }}"
@@ -80,10 +72,19 @@
   debug:
     var: "root_user['ssh_public_key']"
 
+- name: Copy backup script
+  become: true
+  copy:
+    src: "{{ role_path }}/files/backup.sh"
+    dest: "/root/backup.sh"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+
 - name: Setup cronjob
   become: true
   ansible.builtin.cron:
     name: "Run borgmatic"
     minute: "0"
     hour: "5"
-    job: "/root/.local/bin/borgmatic"
+    job: "/root/backup.sh"
