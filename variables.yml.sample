@@ -32,6 +32,7 @@ fail2ban:
   receiver: XXX
 
 crm_app:
+  base_path: /home/crm/app
   # FIXME find a way to lookup mysql_users where name = XXX and then get data
   user: XXX
   db: XXX
