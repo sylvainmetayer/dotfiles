@@ -8,6 +8,7 @@
       - libssl-dev
       - openssl
       - libacl1-dev
+      - libfuse-dev
       - libacl1
       - build-essential
       - dbus-user-session
@@ -28,6 +29,7 @@
     name:
       - borgbackup
       - borgmatic
+      - borgbackup[fuse]
     executable: pip3
     extra_args: "--user --upgrade"
 

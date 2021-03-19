@@ -1,6 +1,6 @@
 location:
     source_directories:
-        - /home/ocyhc/crm/data
+        - {{ crm_app.base_path }}/data
 
     repositories:
         - {{ borg_backup.backup_user }}@{{ borg_backup.backup_host }}:{{ borg_backup.backup_path }}

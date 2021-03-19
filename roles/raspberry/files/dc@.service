@@ -8,9 +8,9 @@ After=docker.service
 Restart=always
 TimeoutStartSec=300
 
-# Create a directory for each docker-composed service at /opt/dockerfiles.
+# Create a directory for each docker-composed service at /data/apps.
 # Name the directory as the service.
-WorkingDirectory=/opt/dockerfiles/%i
+WorkingDirectory=/data/apps/%i
 
 # Remove old containers, images and volumes and update it
 ExecStartPre=/usr/local/bin/docker-compose down
