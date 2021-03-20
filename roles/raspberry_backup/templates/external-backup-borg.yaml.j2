@@ -1,0 +1,55 @@
+location:
+    source_directories:
+        - {{ crm_app.base_path }}/data
+
+    repositories:
+        - /backup/full.borg
+
+    # Stay in same file system (do not cross mount points).
+    # Defaults to false. But when a database hook is used, the
+    # setting here is ignored and one_file_system is considered
+    # true.
+    # one_file_system: true
+
+    exclude_caches: true
+    exclude_if_present: .nobackup
+
+storage:
+    encryption_passphrase: {{ borg_backup.passphrase }}
+
+    # Type of compression to use when creating archives. See
+    # http://borgbackup.readthedocs.io/en/stable/usage/create.html
+    # for details. Defaults to "lz4".
+    # compression: lz4
+
+    # archive_name_format: '{hostname}-{now}'
+    relocated_repo_access_is_ok: true
+
+    # Bypass Borg error about a previously unknown unencrypted
+    # repository. Defaults to false.
+    # unknown_unencrypted_repo_access_is_ok: true
+
+retention:
+    keep_daily: 3
+    keep_monthly: 4
+    keep_yearly: 1
+
+consistency:
+    checks:
+        - repository
+        - data
+        - extract
+    check_last: 2
+
+hooks:
+    before_backup:
+        # https://torsion.org/borgmatic/docs/how-to/backup-to-a-removable-drive-or-an-intermittent-server/#soft-failure-command-hooks
+      - findmnt /backup > /dev/null || exit 75
+    mysql_databases:
+        - name: {{ crm_app.db }}
+          hostname: localhost
+          username: {{ crm_app.user }}
+          password: {{ crm_app.password }}
+          # FIXME https://projects.torsion.org/witten/borgmatic/issues/399
+          options: "--skip-comments --order-by-primary -p{{ crm_app.password }}"
+    healthchecks: https://hc-ping.com/{{ borg_backup.health_check_uuid }}

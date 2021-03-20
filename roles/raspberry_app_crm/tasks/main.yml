@@ -1,7 +1,4 @@
 ---
-# For now, we only configure nginx, certificate and backup script here.
-# we will use docker-compose to deploy app
-
 - name: Ensure CRM app folder exists
   file:
     mode: "0700"
@@ -52,3 +49,13 @@
     minute: "0"
     hour: "*"
     job: "cd {{ crm_app.base_path }} && /usr/local/bin/docker-compose run --rm crm php artisan schedule:run && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}"
+
+- name: Template CRM backup configuration
+  become: true
+  template:
+    src: templates/crm.yaml.j2
+    dest: /etc/borgmatic.d/crm.yaml
+    owner: root
+    group: root
+    mode: "0600"
+    validate: /root/.local/bin/validate-borgmatic-config -c %s

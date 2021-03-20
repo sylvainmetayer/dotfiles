@@ -47,7 +47,7 @@
     - raspberry
     - asdf
     - symlinks
-    - raspberry_app_crm
     - raspberry_backup
+    - raspberry_app_crm
     - role: geerlingguy.certbot
       become: true
