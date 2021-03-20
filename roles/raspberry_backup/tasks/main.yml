@@ -1,6 +1,6 @@
 ---
 - name: Install requirements
-  become: "yes"
+  become: true
   apt:
     name:
       - python3-dev
@@ -43,6 +43,7 @@
     validate: /usr/sbin/visudo -cf %s
 
 - name: Ensure root folders allow traversing
+  become: true
   file:
     path: "{{ item }}"
     state: directory
@@ -51,11 +52,18 @@
     - /root
     - /root/.local
 
-- name: Template borgmatic configuration
+- name: Ensure borgmatic.d folder exists
+  become: true
+  file:
+    path: /etc/borgmatic.d
+    state: directory
+    mode: "0700"
+
+- name: Template external hard drive backup
   become: true
   template:
-    src: templates/borgmatic.conf.yaml.j2
-    dest: /etc/borgmatic/config.yaml
+    src: templates/external-backup-borg.yaml.j2
+    dest: /etc/borgmatic.d/external-backup-borg.yaml
     owner: root
     group: root
     mode: "0600"
@@ -65,7 +73,7 @@
   become: true
   user:
     name: root
-    generate_ssh_key: "yes"
+    generate_ssh_key: true
     ssh_key_file: .ssh/id_ed25519
     ssh_key_type: ed25519
   register: root_user
@@ -90,3 +98,21 @@
     minute: "0"
     hour: "5"
     job: "/root/backup.sh"
+
+- name: Ensure backup folder exists
+  become: true
+  file:
+    path: "/backup"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+
+- name: Mount external backup hard drive
+  become: true
+  mount:
+    path: /backup
+    src: "UUID={{ backup_hard_drive_uuid }}"
+    fstype: ntfs
+    opts: auto,nofail,noatime,rw,user
+    state: present

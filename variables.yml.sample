@@ -40,6 +40,7 @@ crm_app:
   domain: crm.app
   app_key: XXX
   health_check_uuid: xxx
+  borg_repository: crm
 
 mail_config:
   user: some@email.com
@@ -50,11 +51,12 @@ mail_config:
 
 certbot_email: XXX
 borg_backup:
+  main:
+    user: xxx
+    port: 22
+    host: xxx
   health_check_uuid: XXX
-  backup_user: XXX
-  backup_port: 22
-  backup_host: XXX
-  backup_path: XXX
   passphrase: XXX
 
 hard_drive_uuid: XXX
+backup_hard_drive_uuid: XXX
