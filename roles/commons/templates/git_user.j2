@@ -1,6 +1,10 @@
 [user]
+{% if git_user is defined %}
 	name = {{ git_user }}
+{% endif %}
+{% if git_email is defined %}
 	email = {{ git_email }}
+{% endif %}
 {% if git_key is defined %}
 	signingKey = {{ git_key }}
 [commit]

@@ -65,13 +65,6 @@
     - sendemail
     - mailutils
 
-- name: Ensure nginx is enabled
-  become: true
-  ansible.builtin.systemd:
-    name: nginx
-    state: started
-    enabled: true
-
 - name: Configure Gandi live DNS to update IP
   block:
     - name: Clone repository
@@ -131,3 +124,12 @@
     owner: "root"
     group: "root"
     mode: "0600"
+
+- name: Copy nginx configuration
+  become: true
+  copy:
+    src: "{{ role_path }}/files/nginx.conf"
+    dest: "/etc/nginx/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"

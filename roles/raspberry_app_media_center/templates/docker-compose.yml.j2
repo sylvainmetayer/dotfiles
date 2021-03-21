@@ -1,0 +1,87 @@
+---
+# https://forums.docker.com/t/accessing-host-machine-from-within-docker-container/14248/
+version: "2.1"
+services:
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID={{ ansible_user_uid }}
+      - PGID={{ ansible_user_gid }}
+      - TZ=Europe/London
+      - UMASK_SET=022 #optional
+    volumes:
+      - ./config/sonarr:/config
+      - {{ media_apps.tv_location }}:/tv
+      - {{ media_apps.tmp_location }}:/downloads
+    ports:
+      - "127.0.0.1:8989:8989"
+    restart: unless-stopped
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    environment:
+      - PUID={{ ansible_user_uid }}
+      - PGID={{ ansible_user_gid }}
+      - TZ=Europe/London
+      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+    volumes:
+      - ./config/transmission:/config
+      - {{ media_apps.tmp_location }}:/downloads
+      - {{ media_apps.movies_location }}:/movies
+      - {{ media_apps.tv_location }}:/tv
+    ports:
+      - "127.0.0.1:9091:9091"
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID={{ ansible_user_uid }}
+      - PGID={{ ansible_user_gid }}
+      - TZ=Europe/London
+    volumes:
+      - ./config/jackett:/config
+      - {{ media_apps.tmp_location }}:/downloads
+    ports:
+      - "127.0.0.1:9117:9117"
+    restart: unless-stopped
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID={{ ansible_user_uid }}
+      - PGID={{ ansible_user_gid }}
+      - TZ=Europe/London
+    volumes:
+      - ./config/radarr:/config
+      - {{ media_apps.movies_location }}:/movies
+      - {{ media_apps.tmp_location }}:/downloads
+    ports:
+      - "127.0.0.1:7878:7878"
+    restart: unless-stopped
+  jellyfin:
+    image: ghcr.io/linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID={{ ansible_user_uid }}
+      - PGID={{ ansible_user_gid }}
+      - TZ=Europe/London
+      - JELLYFIN_PublishedServerUrl={{ ansible_default_ipv4.address }}
+    volumes:
+      - ./config/jellyfin:/config
+      # TODO
+      - {{ media_apps.tv_location }}:/data/tvshows
+      - {{ media_apps.movies_location }}:/data/movies
+      - /dev/shm:/config/data/transcoding-temp/transcodes
+      - /opt/vc/lib:/opt/vc/lib   ## OpenMax Libraries
+    ports:
+      - "127.0.0.1:8096:8096"
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    devices:
+      - /dev/vchiq:/dev/vchiq #optional
+    restart: unless-stopped
