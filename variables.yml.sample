@@ -7,9 +7,6 @@ git_user: Sylvain
 # git_key: YOUR FINGER PRINT ID
 github_token: XXX
 
-docker_users:
-  - "USER" # replace by users you want to have access to docker without root.
-
 # Raspberry pi settings
 
 # Use to update configured DNS with current IP
@@ -60,3 +57,22 @@ borg_backup:
 
 hard_drive_uuid: XXX
 backup_hard_drive_uuid: XXX
+
+media_apps:
+  base_path: /media
+  movies_location: /media/movies
+  tv_location: /media/tv
+  tmp_location: /media/tmp
+  apps:
+    - domain: media.com
+      nginx_template: 002-jellyfin.conf.j2
+      nginx_file: 002-jellyfin.conf
+    - domain: movies.media.com
+      nginx_template: 003-radarr.conf.j2
+      nginx_file: 003-radarr.conf
+    - domain: tv.media.com
+      nginx_template: 004-sonarr.conf.j2
+      nginx_file: 004-sonarr.conf
+    - domain: search.media.com
+      nginx_template: 005-jackett.conf.j2
+      nginx_file: 005-jackett.conf

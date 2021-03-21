@@ -49,5 +49,6 @@
     - symlinks
     - raspberry_backup
     - raspberry_app_crm
+    - raspberry_app_media_center
     - role: geerlingguy.certbot
       become: true

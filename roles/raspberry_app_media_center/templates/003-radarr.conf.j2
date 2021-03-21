@@ -1,0 +1,53 @@
+upstream radarr {
+    server 127.0.0.1:7878;
+}
+
+server {
+    listen 80;
+    server_name {{ item.domain }};
+    return 301 https://$host$request_uri;
+}
+
+# Uncomment this section after you have acquired a SSL Certificate
+server {
+    listen 443 ssl http2;
+    server_name {{ item.domain }};
+
+    # https://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox/
+    # Send cert validity information ourselves, so the user does not have to ask the CA (who
+    # then knows the user visited the website).
+    # Test with openssl s_client -connect www.example.com:443 -servername www.example.com -status < /dev/null | grep OCSP
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 1.1.1.1;
+
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.14.2&config=modern&openssl=1.1.1d&hsts=false&guideline=5.6
+    # All media domains share the same certificate, which is the first one.
+    ssl_certificate         /etc/letsencrypt/live/{{ media_apps.apps.0.domain }}/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/{{ media_apps.apps.0.domain }}/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/{{ media_apps.apps.0.domain }}/chain.pem;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+    ssl_session_tickets off;
+
+    # modern configuration
+    ssl_protocols TLSv1.3;
+    ssl_prefer_server_ciphers off;
+
+    # Security / XSS Mitigation Headers
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+    # add_header Content-Security-Policy "default-src 'none'; font-src 'self'; frame-src https://couchpota.to; img-src 'self' data: https://couchpota.to https://image.tmdb.org; script-src 'self' 'unsafe-inline'; style-src 'self';  connect-src * 'unsafe-inline';";
+
+    location / {
+        proxy_pass        http://radarr;
+        proxy_set_header  X-Real-IP  $remote_addr;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header        X-Forwarded-Proto $scheme;
+        proxy_redirect off;
+        proxy_buffering off;
+
+    }
+}
