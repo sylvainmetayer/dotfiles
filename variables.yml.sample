@@ -63,6 +63,9 @@ media_apps:
   movies_location: /media/movies
   tv_location: /media/tv
   tmp_location: /media/tmp
+  transmission:
+    user: xxx
+    password: xxx
   apps:
     - domain: media.com
       nginx_template: 002-jellyfin.conf.j2

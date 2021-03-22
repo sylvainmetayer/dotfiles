@@ -3,13 +3,12 @@
 version: "2.1"
 services:
   sonarr:
-    image: linuxserver/sonarr
+    image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
       - TZ=Europe/London
-      - UMASK_SET=022 #optional
     volumes:
       - ./config/sonarr:/config
       - {{ media_apps.tv_location }}:/tv
@@ -18,13 +17,16 @@ services:
       - "127.0.0.1:8989:8989"
     restart: unless-stopped
   transmission:
-    image: linuxserver/transmission
+    image: ghcr.io/linuxserver/transmission
     container_name: transmission
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
       - TZ=Europe/London
-      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+      - TRANSMISSION_WEB_HOME=/combustion-release/
+      - USER={{ media_apps.transmission.user }}
+      - PASS={{ media_apps.transmission.password }}
+      # TODO https://hub.docker.com/r/linuxserver/transmission
     volumes:
       - ./config/transmission:/config
       - {{ media_apps.tmp_location }}:/downloads
@@ -36,12 +38,13 @@ services:
       - 51413:51413/udp
     restart: unless-stopped
   jackett:
-    image: linuxserver/jackett
+    image: ghcr.io/linuxserver/jackett
     container_name: jackett
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
       - TZ=Europe/London
+      - AUTO_UPDATE=true
     volumes:
       - ./config/jackett:/config
       - {{ media_apps.tmp_location }}:/downloads
@@ -49,7 +52,7 @@ services:
       - "127.0.0.1:9117:9117"
     restart: unless-stopped
   radarr:
-    image: linuxserver/radarr
+    image: ghcr.io/linuxserver/radarr
     container_name: radarr
     environment:
       - PUID={{ ansible_user_uid }}
@@ -63,7 +66,7 @@ services:
       - "127.0.0.1:7878:7878"
     restart: unless-stopped
   jellyfin:
-    image: ghcr.io/linuxserver/jellyfin
+    image: ghcr.io/linuxserver/jellyfin:bionic
     container_name: jellyfin
     environment:
       - PUID={{ ansible_user_uid }}
