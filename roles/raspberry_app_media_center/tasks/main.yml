@@ -21,7 +21,7 @@
   become: true
   ansible.builtin.lineinfile:
     path: /boot/config.txt
-    regexp: '^gpu_mem.*'
+    regexp: "^gpu_mem.*"
     line: gpu_mem=320
     owner: root
     group: root
@@ -38,7 +38,7 @@
     name: "{{ ansible_user_id }}"
     shell: /bin/bash
     groups: video
-    append: yes
+    append: true
 
 - name: Add domains to certificate to be generated
   set_fact:
