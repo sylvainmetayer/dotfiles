@@ -44,3 +44,13 @@
   set_fact:
     # Thanks https://stackoverflow.com/a/49748012/6187576
     certbot_certs: '{{ certbot_certs + [ { "domains": media_apps.apps | map(attribute="domain") | list } ] }}'
+
+- name: Template media backup configuration
+  become: true
+  template:
+    src: templates/media.yaml.j2
+    dest: /etc/borgmatic.d/media.yaml
+    owner: root
+    group: root
+    mode: "0600"
+    validate: /root/.local/bin/validate-borgmatic-config -c %s

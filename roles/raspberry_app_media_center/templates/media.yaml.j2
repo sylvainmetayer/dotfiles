@@ -1,9 +1,9 @@
 location:
     source_directories:
-        - {{ crm_app.base_path }}/config
+        - {{ media_apps.base_path }}/config
 
     repositories:
-        - {{ borg_backup.main.user }}@{{ borg_backup.main.host }}:{{ crm_app.borg_repository }}
+        - {{ borg_backup.main.user }}@{{ borg_backup.main.host }}:{{ media_apps.borg_repository }}
 
     # Stay in same file system (do not cross mount points).
     # Defaults to false. But when a database hook is used, the
@@ -44,11 +44,4 @@ consistency:
     check_last: 2
 
 hooks:
-    mysql_databases:
-        - name: {{ crm_app.db }}
-          hostname: localhost
-          username: {{ crm_app.user }}
-          password: {{ crm_app.password }}
-          # FIXME https://projects.torsion.org/witten/borgmatic/issues/399
-          options: "--skip-comments --order-by-primary -p{{ crm_app.password }}"
     healthchecks: https://hc-ping.com/{{ borg_backup.health_check_uuid }}
