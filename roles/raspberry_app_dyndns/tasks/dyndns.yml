@@ -1,0 +1,19 @@
+---
+- name: "Clone repository to configure domain {{ item.domain }}"
+  git:
+    repo: git@github.com:cavebeat/gandi-live-dns.git
+    dest: "{{ dyndns_app.base_path }}/{{ item.domain }}"
+    version: master
+- name: "Generate configuration file for {{ item.domain }} from template"
+  template:
+    src: "templates/{{ item.config }}.j2"
+    dest: "{{ dyndns_app.base_path }}/{{ item.domain }}/src/config.py"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
+- name: "Setup cronjob for {{ item.domain }}"
+  ansible.builtin.cron:
+    name: "Update ip for {{ item.domain }}"
+    minute: "0"
+    hour: "6"
+    job: "/usr/bin/python2.7 {{ dyndns_app.base_path }}/{{ item.domain }}/src/gandi-live-dns.py >/dev/null 2>&1 && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ dyndns_app.health_check_uuid }}"

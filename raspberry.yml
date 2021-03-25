@@ -36,20 +36,21 @@
         insertafter: "^127.0.0.1 localhost.*$"
 
   roles:
-    - commons
-    - role: geerlingguy.pip
-      become: true
-    - role: geerlingguy.docker_arm
-      become: true
-    - role: geerlingguy.mysql
-      become: true
-    # Required before asdf and symlinks
-    - raspberry
-    - asdf
-    - symlinks
-    - raspberry_backup
-    - raspberry_app_crm
-    - raspberry_app_media_center
-    - raspberry_app_nas
-    - role: geerlingguy.certbot
-      become: true
+    - raspberry_app_dyndns
+    #! - commons
+    #! - role: geerlingguy.pip
+    #!   become: true
+    #! - role: geerlingguy.docker_arm
+    #!   become: true
+    #! - role: geerlingguy.mysql
+    #!   become: true
+    #! # Required before asdf and symlinks
+    #! - raspberry
+    #! - asdf
+    #! - symlinks
+    #! - raspberry_backup
+    #! - raspberry_app_crm
+    #! - raspberry_app_media_center
+    #! - raspberry_app_nas
+    #! - role: geerlingguy.certbot
+    #!   become: true
