@@ -11,7 +11,7 @@ Get your API key
 Start by retrieving your API Key from the "Security" section in new Account admin panel to be able to make authenticated requests to the API.
 https://account.gandi.net/
 '''
-api_secret = '{{ gandi_api_key }}'
+api_secret = '{{ dyndns_app.api_key }}'
 
 '''
 Gandiv5 LiveDNS API Location
@@ -21,10 +21,10 @@ https://dns.api.gandi.net/api/v5/
 api_endpoint = 'https://dns.api.gandi.net/api/v5'
 
 #your domain with the subdomains in the zone file/UUID
-domain = 'sylvain.dev'
+domain = '{{ item.domain }}'
 
 #enter all subdomains to be updated, subdomains must already exist to be updated
-subdomains = ["pi", "dl.media", "search.media", "tv.media", "movies.media", "media", "crm"]
+subdomains = {{ item.subdomains }}
 
 #300 seconds = 5 minutes
 ttl = '300'

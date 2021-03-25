@@ -9,11 +9,6 @@ github_token: XXX
 
 # Raspberry pi settings
 
-# Use to update configured DNS with current IP
-gandi_api_key: XXX
-# https://healthchecks.io
-health_check_gandi_uuid: XXX
-
 mysql_root_password: XXX
 mysql_databases:
   - name: XXX
@@ -88,3 +83,24 @@ media_apps:
     - domain: transmission.media.com
       nginx_template: 006-transmission.conf.j2
       nginx_file: 006-transmission.conf
+
+dyndns_app:
+  api_key: xxx
+  health_check_uuid: xxx
+  base_path: /apps/dyndns
+  domains:
+    - domain: domain.com
+      config: dev.py
+      subdomains:
+        [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+        ]
+    - domain: example.com
+      config: main.py
+      subdomains: ["some", "domain"]

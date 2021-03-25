@@ -1,0 +1,20 @@
+---
+- name: Install required packages
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 86400
+  loop:
+    - git
+    - python3-requests
+    - python3-args
+    - python3-simplejson
+    - python-requests
+    - python-args
+    - python-simplejson
+
+- name: Configure Gandi DynDns
+  include_tasks: dyndns.yml
+  loop: "{{ dyndns_app.domains }}"
