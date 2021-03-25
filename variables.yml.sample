@@ -58,7 +58,13 @@ borg_backup:
 hard_drive_uuid: XXX
 backup_hard_drive_uuid: XXX
 
+nas_app:
+  local_ip: 192.168.xxx.xxx
+  port: xxx
+  domain: nas.me.com
+
 media_apps:
+  borg_repository: media
   base_path: /media
   movies_location: /media/movies
   tv_location: /media/tv
@@ -79,3 +85,6 @@ media_apps:
     - domain: search.media.com
       nginx_template: 005-jackett.conf.j2
       nginx_file: 005-jackett.conf
+    - domain: transmission.media.com
+      nginx_template: 006-transmission.conf.j2
+      nginx_file: 006-transmission.conf
