@@ -1,0 +1,25 @@
+[Unit]
+Description=CRM Cron
+Requires=network-online.target data.mount docker.service dc@crm.service
+After=network-online.target data.mount docker.service dc@crm.service
+ConditionACPower=true
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}/start
+ExecStart=/usr/local/bin/docker-compose run --rm crm php artisan schedule:run
+OnFailure=/usr/bin/curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}/fail
+WorkingDirectory={{ crm_app.base_path }}
+Persistent=true
+
+StandardOutput=syslog
+StandardError=syslog
+
+# Lower CPU and I/O priority.
+Nice=19
+CPUSchedulingPolicy=batch
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+IOWeight=100
+
+Restart=no

@@ -59,3 +59,35 @@
     group: root
     mode: "0600"
     validate: /root/.local/bin/validate-borgmatic-config -c %s
+
+- name: Copy CRM cron service
+  become: true
+  template:
+    src: "templates/crm-cron.service"
+    dest: "/etc/systemd/system/crm-cron.service"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: Copy CRM cron timer
+  become: true
+  template:
+    src: "templates/crm-cron.timer"
+    dest: "/etc/systemd/system/crm-cron.timer"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: Enable CRM docker service
+  become: true
+  systemd:
+    state: started
+    enabled: true
+    name: dc@crm.service
+
+- name: Enable CRM timer
+  become: true
+  systemd:
+    state: started
+    enabled: true
+    name: crm-cron.timer
