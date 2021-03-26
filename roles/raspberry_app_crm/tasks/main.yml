@@ -63,7 +63,7 @@
 - name: Copy CRM cron service
   become: true
   template:
-    src: "templates/crm-cron.service"
+    src: "templates/crm-cron.service.j2"
     dest: "/etc/systemd/system/crm-cron.service"
     owner: "root"
     group: "root"
@@ -72,7 +72,7 @@
 - name: Copy CRM cron timer
   become: true
   template:
-    src: "templates/crm-cron.timer"
+    src: "templates/crm-cron.timer.j2"
     dest: "/etc/systemd/system/crm-cron.timer"
     owner: "root"
     group: "root"

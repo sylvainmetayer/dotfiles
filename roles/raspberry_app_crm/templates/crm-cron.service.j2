@@ -8,6 +8,7 @@ ConditionACPower=true
 Type=oneshot
 ExecStartPre=/usr/bin/curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}/start
 ExecStart=/usr/local/bin/docker-compose run --rm crm php artisan schedule:run
+ExecStartPost=/usr/bin/curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}
 OnFailure=/usr/bin/curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}/fail
 WorkingDirectory={{ crm_app.base_path }}
 Persistent=true
