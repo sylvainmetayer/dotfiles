@@ -1,0 +1,10 @@
+[Unit]
+Description=Borgmatic backup
+
+[Timer]
+OnCalendar=daily
+OnBootSec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

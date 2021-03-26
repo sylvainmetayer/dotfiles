@@ -91,13 +91,36 @@
     group: "root"
     mode: "0700"
 
-- name: Setup cronjob
+- name: "Template borgmatic service"
   become: true
-  ansible.builtin.cron:
-    name: "Run borgmatic"
-    minute: "0"
-    hour: "5"
-    job: "/root/backup.sh"
+  template:
+    src: "templates/borgmatic.service.j2"
+    dest: "/etc/systemd/system/borgmatic.service"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: "Template borgmatic timer"
+  become: true
+  template:
+    src: "templates/borgmatic.timer.j2"
+    dest: "/etc/systemd/system/borgmatic.timer"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: "Enable borgmatic service"
+  become: true
+  systemd:
+    enabled: true
+    name: "borgmatic.service"
+
+- name: "Enable borgmatic timer"
+  become: true
+  systemd:
+    state: started
+    enabled: true
+    name: "borgmatic.timer"
 
 - name: Ensure backup folder exists
   become: true

@@ -1,0 +1,22 @@
+[Unit]
+Description=Borgmatic backup
+Requires=network-online.target data.mount
+After=network-online.target data.mount
+ConditionACPower=true
+
+[Service]
+Type=oneshot
+ExecStart=/root/backup.sh
+WorkingDirectory=/root
+
+StandardOutput=syslog
+StandardError=syslog
+
+# Lower CPU and I/O priority.
+Nice=19
+CPUSchedulingPolicy=batch
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+IOWeight=100
+
+Restart=no

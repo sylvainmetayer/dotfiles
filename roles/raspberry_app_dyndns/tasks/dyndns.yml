@@ -11,6 +11,7 @@
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
     mode: "0644"
+
 - name: "Template {{ item.domain }} service"
   become: true
   template:
@@ -38,5 +39,6 @@
 - name: "Enable dyndns.{{ item.domain }} timer"
   become: true
   systemd:
+    state: started
     enabled: true
     name: "dyndns.{{ item.domain }}.timer"
