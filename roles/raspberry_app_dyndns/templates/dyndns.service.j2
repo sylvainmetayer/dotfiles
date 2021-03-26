@@ -1,0 +1,26 @@
+[Unit]
+Description={{ item.domain }} DynDs update
+Requires=network-online.target data.mount
+After=network-online.target data.mount
+ConditionACPower=true
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ dyndns_app.health_check_uuid }}/start
+ExecStart=/usr/bin/python2.7 {{ dyndns_app.base_path }}/{{ item.domain }}/src/gandi-live-dns.py
+ExecStartPost=/usr/bin/curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ dyndns_app.health_check_uuid }}
+OnFailure=/usr/bin/curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ dyndns_app.health_check_uuid }}/fail
+WorkingDirectory={{ dyndns_app.base_path }}/{{ item.domain }}
+Persistent=true
+
+StandardOutput=syslog
+StandardError=syslog
+
+# Lower CPU and I/O priority.
+Nice=19
+CPUSchedulingPolicy=batch
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+IOWeight=100
+
+Restart=no
