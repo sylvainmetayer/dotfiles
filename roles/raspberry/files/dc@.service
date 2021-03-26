@@ -1,8 +1,8 @@
 # Thanks https://github.com/MiGoller/dc-systemd-template#creating-docker-compose-powered-services-using-systemd-templates
 [Unit]
 Description=%i service powered by docker compose
-Requires=docker.service
-After=docker.service
+Requires=docker.service network-online.target data.mount
+After=docker.service network-online.target data.mount
 
 [Service]
 Restart=always

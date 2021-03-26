@@ -1,0 +1,10 @@
+[Unit]
+Description=CRM Cron
+
+[Timer]
+OnCalendar=hourly
+OnBootSec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
