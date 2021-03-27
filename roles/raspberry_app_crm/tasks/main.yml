@@ -43,13 +43,6 @@
   set_fact:
     certbot_certs: '{{ certbot_certs + [ { "domains": [crm_app.domain] } ] }}'
 
-- name: Setup cronjob
-  ansible.builtin.cron:
-    name: "CRM tasks"
-    minute: "0"
-    hour: "*"
-    job: "cd {{ crm_app.base_path }} && /usr/local/bin/docker-compose run --rm crm php artisan schedule:run && curl -fsS --retry 5 -o /dev/null https://hc-ping.com/{{ crm_app.health_check_uuid }}"
-
 - name: Template CRM backup configuration
   become: true
   template:
