@@ -8,7 +8,7 @@ services:
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
-      - TZ=Europe/London
+      - TZ=Europe/Paris
     volumes:
       - ./config/sonarr:/config
       - {{ media_apps.tv_location }}:/tv
@@ -22,7 +22,7 @@ services:
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
-      - TZ=Europe/London
+      - TZ=Europe/Paris
       - TRANSMISSION_WEB_HOME=/combustion-release/
       - USER={{ media_apps.transmission.user }}
       - PASS={{ media_apps.transmission.password }}
@@ -43,7 +43,7 @@ services:
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
-      - TZ=Europe/London
+      - TZ=Europe/Paris
       - AUTO_UPDATE=true
     volumes:
       - ./config/jackett:/config
@@ -57,7 +57,7 @@ services:
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
-      - TZ=Europe/London
+      - TZ=Europe/Paris
     volumes:
       - ./config/radarr:/config
       - {{ media_apps.movies_location }}:/movies
@@ -71,7 +71,7 @@ services:
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
-      - TZ=Europe/London
+      - TZ=Europe/Paris
       - JELLYFIN_PublishedServerUrl={{ ansible_default_ipv4.address }}
     volumes:
       - ./config/jellyfin:/config
