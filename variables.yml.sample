@@ -17,7 +17,14 @@ mysql_databases:
   - name: XXX
     encoding: utf8mb4
     collation: utf8mb4_general_ci
+  - name: XXX
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci
 mysql_users:
+  - name: XXX
+    host: "%"
+    password: XXX
+    priv: "XXX.*:ALL"
   - name: XXX
     host: "%"
     password: XXX
@@ -119,3 +126,11 @@ rss_app:
   password: xxx
   domain: rss.example.com
   borg_repository: rss
+
+nextcloud_app:
+  base_path: /home/nextcloud/app
+  user: nextcloud
+  db: nextcloud
+  password: xxx
+  domain: nextcloud.example.com
+  borg_repository: nextcloud

@@ -53,5 +53,6 @@
     - raspberry_app_nas
     - raspberry_app_dyndns
     - raspberry_app_rss
+    - raspberry_app_nextcloud
     - role: geerlingguy.certbot
       become: true
