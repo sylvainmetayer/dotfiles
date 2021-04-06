@@ -71,12 +71,12 @@
     group: "root"
     mode: "0600"
 
-- name: Enable CRM docker service
-  become: true
-  systemd:
-    state: started
-    enabled: false
-    name: dc@crm.service
+#! - name: Enable CRM docker service
+#!   become: true
+#!   systemd:
+#!     state: started
+#!     enabled: false
+#!     name: dc@crm.service
 
 - name: Enable CRM timer
   become: true

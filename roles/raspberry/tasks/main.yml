@@ -16,7 +16,7 @@
     src: "UUID={{ hard_drive_uuid }}"
     fstype: ext4
     opts: auto,nofail,noatime,rw,user
-    state: mounted
+    state: present
 
 - name: Set timezone to Europe/Paris
   become: true

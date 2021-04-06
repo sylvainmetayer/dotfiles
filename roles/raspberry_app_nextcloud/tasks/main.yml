@@ -45,9 +45,9 @@
     mode: "0600"
     validate: /root/.local/bin/validate-borgmatic-config -c %s
 
-- name: Enable nextcloud docker service
-  become: true
-  systemd:
-    state: started
-    enabled: false
-    name: dc@nextcloud.service
+#! - name: Enable nextcloud docker service
+#!   become: true
+#!   systemd:
+#!     state: started
+#!     enabled: false
+#!     name: dc@nextcloud.service
