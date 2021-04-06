@@ -114,6 +114,8 @@ dyndns_app:
           "e",
           "f",
           "g",
+          "h",
+          "i"
         ]
     - domain: example.com
       config: main.py
