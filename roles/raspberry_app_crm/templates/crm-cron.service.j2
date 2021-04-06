@@ -1,7 +1,7 @@
 [Unit]
 Description=CRM Cron
-Requires=network-online.target data.mount docker.service dc@crm.service mariadb.service
-After=network-online.target data.mount docker.service dc@crm.service mariadb.service
+Requires=network-online.target docker.service mariadb.service
+After=network-online.target docker.service mariadb.service
 ConditionACPower=true
 
 [Service]

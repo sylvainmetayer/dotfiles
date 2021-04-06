@@ -45,9 +45,9 @@
     mode: "0600"
     validate: /root/.local/bin/validate-borgmatic-config -c %s
 
-- name: Enable RSS docker service
-  become: true
-  systemd:
-    state: started
-    enabled: false
-    name: dc@rss.service
+#! - name: Enable RSS docker service
+#!   become: true
+#!   systemd:
+#!     state: started
+#!     enabled: false
+#!     name: dc@rss.service

@@ -1,7 +1,7 @@
 [Unit]
 Description=Borgmatic backup
-Requires=network-online.target data.mount
-After=network-online.target data.mount
+Requires=network-online.target
+After=network-online.target
 ConditionACPower=true
 
 [Service]
