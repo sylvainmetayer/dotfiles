@@ -46,9 +46,9 @@ consistency:
 
 hooks:
     before_backup:
-        - cd {{ nextcloud_app.base_path }} && docker-compose exec nextcloud sudo -u abc php /config/www/nextcloud/occ maintenance:mode --on
+        - cd {{ nextcloud_app.base_path }} && docker-compose exec -T nextcloud sudo -u abc php /config/www/nextcloud/occ maintenance:mode --on
     after_backup:
-        - cd {{ nextcloud_app.base_path }} && docker-compose exec nextcloud sudo -u abc php /config/www/nextcloud/occ maintenance:mode --off
+        - cd {{ nextcloud_app.base_path }} && docker-compose exec -T nextcloud sudo -u abc php /config/www/nextcloud/occ maintenance:mode --off
     mysql_databases:
         - name: {{ nextcloud_app.db }}
           hostname: localhost
