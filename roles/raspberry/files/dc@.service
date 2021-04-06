@@ -1,12 +1,12 @@
 # Thanks https://github.com/MiGoller/dc-systemd-template#creating-docker-compose-powered-services-using-systemd-templates
 [Unit]
 Description=%i service powered by docker compose
-Requires=docker.service network-online.target data.mount
-After=docker.service network-online.target data.mount
+Requires=docker.service network-online.target data.mount nginx.service mariadb.service
+After=docker.service network-online.target data.mount nginx.service mariadb.service
 
 [Service]
-Restart=always
-TimeoutStartSec=300
+Restart=on-success
+TimeoutStartSec=60
 
 # Create a directory for each docker-composed service at /data/apps.
 # Name the directory as the service.

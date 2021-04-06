@@ -49,5 +49,5 @@
   become: true
   systemd:
     state: started
-    enabled: true
+    enabled: false
     name: dc@rss.service
