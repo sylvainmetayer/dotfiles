@@ -59,16 +59,6 @@
     state: directory
     mode: "0700"
 
-- name: Template external hard drive backup
-  become: true
-  template:
-    src: templates/external-backup-borg.yaml.j2
-    dest: /etc/borgmatic.d/external-backup-borg.yaml
-    owner: root
-    group: root
-    mode: "0600"
-    validate: /root/.local/bin/validate-borgmatic-config -c %s
-
 - name: Ensure root has SSH key.
   become: true
   user:
