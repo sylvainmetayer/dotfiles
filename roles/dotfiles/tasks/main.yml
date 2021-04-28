@@ -4,8 +4,7 @@
     accept_hostkey: true
     repo: git@github.com:sylvainmetayer/dotfiles.git
     dest: "~/dotfiles"
-    # FIXME use master when merged
-    version: feat_raspberry
+    version: master
 
 - name: Copy docker-compose service
   become: true
