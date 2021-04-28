@@ -2,9 +2,6 @@
 - hosts: gibbs
 
   pre_tasks:
-    - name: Include commons vars
-      include_vars:
-        file: "../../commons_variables.yml"
     - name: Include secrets vars
       include_vars:
         file: "../../variables.yml"
