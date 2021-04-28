@@ -6,11 +6,11 @@ hostname:
 
 # Commons role
 custom_packages:
-    - apt-transport-https
-    - nginx
-    - cron
-    - sendemail
-    - mailutils
+  - apt-transport-https
+  - nginx
+  - cron
+  - sendemail
+  - mailutils
 
 # Docker settings
 docker_compose_version: "1.29.1"

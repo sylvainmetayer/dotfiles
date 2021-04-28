@@ -2,8 +2,8 @@
 🔧 🏠 WIP
 
 [![https://www.shellcheck.net/](https://img.shields.io/badge/%F0%9F%9B%A1-ShellCheck-brightgreen.svg)](https://www.shellcheck.net/)
-[![CircleCI](https://circleci.com/gh/sylvainmetayer/dotfiles.svg?style=svg)](https://circleci.com/gh/sylvainmetayer/dotfiles)
 [![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/CI/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
+[![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/Lint/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
 [![Services status](https://healthchecks.io/badge/8de7b053-c7b4-47f0-85dd-8e95c838febb/-LJndSD--2.svg)](https://github.com/sylvainmetayer/dotfiles)
 [![Backup status](https://healthchecks.io/badge/7373bc4e-5131-49ce-ae55-8b7c78e28a1e/KhnZCMHl-2/backup.svg)](https://github.com/sylvainmetayer/dotfiles)
 

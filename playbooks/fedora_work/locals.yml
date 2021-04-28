@@ -3,4 +3,4 @@ git_email: s.metayer@groupeonepoint.com
 git_user: Sylvain METAYER
 
 # Tmp condition until asdf pip is removed
-user_pip: True
+user_pip: true

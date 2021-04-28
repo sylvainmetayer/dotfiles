@@ -2,7 +2,7 @@
 - name: Force systemd to reread configs
   become: true
   ansible.builtin.systemd:
-    daemon_reload: yes
+    daemon_reload: true
   listen: "systemd reload"
 
 - name: restart ssh

@@ -8,4 +8,8 @@ rules:
 
 ignore: |
   .github/workflows/main.yml
+  .github/workflows/lint.yml
   .circleci/config.yml
+  roles/geerlingguy.*
+  roles/jaredhocutt.gnome_extensions
+  roles/sourcejedi.*
