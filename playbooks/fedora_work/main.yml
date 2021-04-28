@@ -13,8 +13,6 @@
         file: "locals.yml"
 
   roles:
-    - role: hostname
-      become: true
     - role: jaredhocutt.gnome_extensions
       tags:
         - network_access
