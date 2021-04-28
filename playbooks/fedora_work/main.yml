@@ -21,6 +21,7 @@
       tags:
         - network_access
     - commons
+    - ssh_config
     # Basic one, to enable asdf
     - asdf
     - symlinks
