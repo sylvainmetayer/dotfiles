@@ -32,8 +32,7 @@
   git:
     repo: git@github.com:sylvainmetayer/dotfiles.git
     dest: "~/dotfiles"
-    # FIXME use master when merged
-    version: feat_raspberry
+    version: master
 
 - name: Install commons packages
   become: true
