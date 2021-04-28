@@ -4,7 +4,7 @@ version: '3.4'
 services:
   crm:
     container_name: crm
-    image: monica:2.19.1-apache
+    image: monica:2.21.0-apache
     env_file: .env
     ports:
       - 127.0.0.1:9001:80
