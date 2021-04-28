@@ -9,3 +9,4 @@
 - src: geerlingguy.pip
 - src: geerlingguy.mysql
 - src: geerlingguy.certbot
+- src: geerlingguy.docker

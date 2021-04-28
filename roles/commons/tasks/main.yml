@@ -1,8 +1,7 @@
 ---
 - include: packages.yml
 
-- include: ssh.yml
-
+# See home/.gitconfig where this file is included
 - name: Template git config
   template:
     src: templates/git_user.j2
@@ -17,6 +16,11 @@
     state: directory
     mode: "0755"
 
+- name: Set timezone to Europe/Paris
+  become: true
+  timezone:
+    name: Europe/Paris
+
 - name: Ensure that .bashrc load custom scripts
   blockinfile:
     path: ~/.bashrc
@@ -25,14 +29,16 @@
       if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
       then
           PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+          export PATH
       fi
-      export PATH
-      for file in ~/dotfiles/bashrc.d/*.sh
-      do
-          source $file
-      done
+      if [ -d ~/dotfiles/bashrc.d ]; then
+        for file in ~/dotfiles/bashrc.d/*.sh
+        do
+            source $file
+        done
+      fi
       if [ -f ~/.bash_aliases ]; then
-        . ~/.bash_aliases
+        source ~/.bash_aliases
       fi
       [[ $- == *i* ]] && command -v starship >/dev/null && eval "$(starship init bash)"
       [[ $- == *i* ]] && command -v npm >/dev/null && source <(npm completion)

@@ -1,0 +1,26 @@
+---
+- name: Clone dotfile repository
+  git:
+    accept_hostkey: yes
+    repo: git@github.com:sylvainmetayer/dotfiles.git
+    dest: "~/dotfiles"
+    # FIXME use master when merged
+    version: feat_raspberry
+
+- name: Copy docker-compose service
+  become: true
+  copy:
+    src: "{{ role_path }}/files/dc@.service"
+    dest: "/etc/systemd/system/dc@.service"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: Copy nginx configuration
+  become: true
+  copy:
+    src: "{{ role_path }}/files/nginx.conf"
+    dest: "/etc/nginx/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"

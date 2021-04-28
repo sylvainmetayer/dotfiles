@@ -1,0 +1,18 @@
+---
+crm_app:
+  base_path: /apps/crm
+  user: crm
+  db: crm
+  password: redacted
+  domain: redacted
+  app_key: redacted
+  health_check_uuid: redacted
+  backup_health_check_uuid: redacted
+  borg_repository: crm
+
+mail_config:
+  user: redacted
+  password: redacted
+  host: mail.gandi.net
+  port: 587
+  use_tls: true

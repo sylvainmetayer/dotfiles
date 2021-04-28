@@ -3,7 +3,6 @@
   become: true
   ansible.builtin.package:
     name:
-      - ansible
       - git
       - git-lfs
       - make
@@ -17,5 +16,14 @@
       - jq
       - gnupg2
     state: latest
+  tags:
+    - network_access
+
+- name: "Install custom packages"
+  become: true
+  ansible.builtin.package:
+    name: "{{ custom_packages }}"
+    state: latest
+  when: custom_packages is defined
   tags:
     - network_access
