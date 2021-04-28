@@ -1,3 +1,13 @@
+# debug file
 debug.json
+
+# Secrets
 variables.yml
-.cache
+
+facts/
+run.log
+
+# Ansible galaxy roles
+roles/geerlingguy.*
+roles/jaredhocutt.gnome_extensions
+roles/sourcejedi.*

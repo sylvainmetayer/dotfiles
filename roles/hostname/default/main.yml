@@ -1,0 +1,4 @@
+---
+hostname:
+  name: my-hostname
+  fqdn: myhostname.domain.com

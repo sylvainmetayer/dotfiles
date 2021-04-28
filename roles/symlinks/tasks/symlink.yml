@@ -1,22 +1,22 @@
 ---
-- name: Collect file info
+- name: "{{ item }} : Collect file info"
   stat:
     path: "~/{{ item }}"
   register: dotfile
 
-- name: Ensure folder does exists
+- name: "{{ item }} : Ensure folder does exists"
   file:
     mode: "0700"
     path: "~/{{ item | dirname }}"
     state: directory
 
-- name: Delete regular file
+- name: "{{ item }} : Delete regular file"
   file:
     path: "~/{{ item }}"
     state: absent
   when: dotfile.stat.islnk is defined and dotfile.stat is defined and dotfile.stat.isreg
 
-- name: Update dotfile symlink
+- name: "{{ item }} : Update dotfile symlink"
   file:
     src: ~/dotfiles/home/{{ item }}
     dest: ~/{{ item }}

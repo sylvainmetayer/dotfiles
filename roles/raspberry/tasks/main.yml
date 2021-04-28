@@ -13,15 +13,10 @@
   become: true
   mount:
     path: /data
-    src: "UUID={{ hard_drive_uuid }}"
+    src: "UUID={{ abby.hard_drive_uuid }}"
     fstype: ext4
     opts: auto,nofail,noatime,rw,user
     state: present
-
-- name: Set timezone to Europe/Paris
-  become: true
-  timezone:
-    name: Europe/Paris
 
 - name: Ensure unused service are disabled
   become: true
@@ -59,32 +54,8 @@
     - sendemail
     - mailutils
 
-- name: Configure SSH settings
-  include_tasks: ssh.yml
-  args:
-    apply:
-      become: true
-
 - name: Configure fail2ban
   include_tasks: fail2ban.yml
   args:
     apply:
       become: true
-
-- name: Copy docker-compose service
-  become: true
-  copy:
-    src: "{{ role_path }}/files/dc@.service"
-    dest: "/etc/systemd/system/dc@.service"
-    owner: "root"
-    group: "root"
-    mode: "0600"
-
-- name: Copy nginx configuration
-  become: true
-  copy:
-    src: "{{ role_path }}/files/nginx.conf"
-    dest: "/etc/nginx/nginx.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"

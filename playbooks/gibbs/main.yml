@@ -1,0 +1,43 @@
+---
+- hosts: gibbs
+
+  pre_tasks:
+    - name: Include commons vars
+      include_vars:
+        file: "../../commons_variables.yml"
+    - name: Include secrets vars
+      include_vars:
+        file: "../../variables.yml"
+    - name: "Include locals vars for {{ ansible_play_name }} playbook"
+      include_vars:
+        file: "locals.yml"
+
+  roles:
+    # Basic configuration
+    - role: hostname
+      become: true
+    - ssh_config
+    - ssh_hardening
+    - commons
+
+    # Custom dotfiles, asdf setup, symlinks
+    - dotfiles
+    - asdf
+    - symlinks
+
+    # Backup solution, each apps has to implement a configuration file to use it.
+    - borgmatic
+
+    - role: geerlingguy.docker
+      become: true
+    - role: geerlingguy.mysql
+      become: true
+
+    # Apps
+    - crm
+    - rss
+    - nextcloud
+
+    # Generate certificate
+    - role: geerlingguy.certbot
+      become: true

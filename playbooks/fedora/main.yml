@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+
+  pre_tasks:
+    - name: Include commons vars
+      include_vars:
+        file: "../../commons_variables.yml"
+    - name: Include secrets vars
+      include_vars:
+        file: "../../variables.yml"
+    - name: "Include locals vars for {{ ansible_play_name }} playbook"
+      include_vars:
+        file: "locals.yml"
+    - name: Update hostname
+      hostname:
+        name: '{{ host_hostname }}'
+      when: host_hostname is defined
+
+  roles:
+    - role: jaredhocutt.gnome_extensions
+      tags:
+        - network_access
+    - role: sourcejedi.rpmfusion_free
+      become: true
+      tags:
+        - network_access
+    - commons
+    # Basic one, to enable asdf
+    - asdf
+    - symlinks
+    - fedora
