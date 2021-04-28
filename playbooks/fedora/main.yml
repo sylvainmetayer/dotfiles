@@ -2,9 +2,9 @@
 - hosts: localhost
 
   pre_tasks:
-    - name: Include commons vars
+    - name: Include desktop vars
       include_vars:
-        file: "../../commons_variables.yml"
+        file: "../desktop_vars.yml"
     - name: Include secrets vars
       include_vars:
         file: "../../variables.yml"
