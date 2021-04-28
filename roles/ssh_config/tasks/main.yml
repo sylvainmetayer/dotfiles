@@ -38,7 +38,7 @@
     marker: "#{mark} ANSIBLE MANAGED BLOCK SSH"
   loop:
     - content: "{{ ssh_base_config }}"
-  no_log: True
+  no_log: true
 
 - name: Trigger handler
   meta: flush_handlers

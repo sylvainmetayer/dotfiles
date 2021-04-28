@@ -47,12 +47,9 @@
     - raspberry
     - asdf
     - symlinks
-    - raspberry_backup
-    - raspberry_app_crm
+    - borgmatic
     - raspberry_app_media_center
     - raspberry_app_nas
     - raspberry_app_dyndns
-    - raspberry_app_rss
-    - raspberry_app_nextcloud
     - role: geerlingguy.certbot
       become: true

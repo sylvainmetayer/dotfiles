@@ -1,7 +1,7 @@
 ---
 - name: Clone dotfile repository
   git:
-    accept_hostkey: yes
+    accept_hostkey: true
     repo: git@github.com:sylvainmetayer/dotfiles.git
     dest: "~/dotfiles"
     # FIXME use master when merged

@@ -27,7 +27,9 @@ jobs:
       run: |
         cp variables.yml.sample variables.yml
         ansible-galaxy install -r requirements.yml
-        ansible-playbook fedora.yml --extra-vars "@variables.yml" --syntax-check
+        ansible-playbook playbooks/fedora/main.yml --syntax-check
+        ansible-playbook playbooks/gibbs/main.yml --syntax-check
+        ansible-playbook playbooks/fedora_work/main.yml --syntax-check
         ansible-playbook raspberry.yml --extra-vars "@variables.yml" --syntax-check
         yamllint .
 
