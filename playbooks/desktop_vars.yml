@@ -3,7 +3,7 @@
 ble_version: 0.3.2
 
 kdrive_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.1.0.20210303.AppImage"
-jetbrains_toolbox_version: 1.20.7940
+jetbrains_toolbox_version: 1.20.8352
 
 gnome_extension_ids:
   - 1162  # https://extensions.gnome.org/extension/1162/emoji-selector/
