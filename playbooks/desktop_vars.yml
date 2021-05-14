@@ -13,4 +13,4 @@ gnome_extension_ids:
   - 7     # https://extensions.gnome.org/extension/7/removable-drive-menu/
   - 1112  # https://extensions.gnome.org/extension/1112/screenshot-tool/
   - 906   # https://extensions.gnome.org/extension/906/sound-output-device-chooser/
-  - 1503  # https://extensions.gnome.org/extension/1503/tray-icons/
+  # - 1503  # https://extensions.gnome.org/extension/1503/tray-icons/
