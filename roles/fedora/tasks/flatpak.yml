@@ -28,3 +28,11 @@
     state: present
   tags:
     - network_access
+
+- name: Install the Gnome extensions (fedora >= 34 only)
+  flatpak:
+    name: https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
+    state: present
+  tags:
+    - network_access
+  when: ansible_distribution  == "Fedora" and ansible_distribution_major_version | int >= 34
