@@ -49,7 +49,6 @@
     - symlinks
     - borgmatic
     - raspberry_app_media_center
-    - raspberry_app_nas
     - raspberry_app_dyndns
     - role: geerlingguy.certbot
       become: true

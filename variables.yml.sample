@@ -42,11 +42,6 @@ borg_backup:
   health_check_uuid: redacted
   passphrase: redacted
 
-nas_app:
-  local_ip: 192.168.1.17
-  port: 5000
-  domain: redacted
-
 media_apps:
   borg_repository: media
   base_path: /data/apps/media
@@ -91,7 +86,7 @@ dyndns_app:
         ]
     - domain: redacted
       config: main.py
-      subdomains: ["a", "b"]
+      subdomains: ["b"]
 
 rss_app:
   base_path: /apps/rss
