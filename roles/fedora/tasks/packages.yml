@@ -66,12 +66,3 @@
     extra_args: --user
   tags:
     - network_access
-  when: user_pip is not defined
-
-# FIXME temporary condition until asdf pip is removed
-- name: Ensure dependencies are locally met to manage dconf
-  pip:
-    name: psutil>4.0
-  tags:
-    - network_access
-  when: user_pip is defined

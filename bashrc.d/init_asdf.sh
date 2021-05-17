@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function init_asdf_light() {
-    starshipVersion='0.50.0'
+    starshipVersion='0.54.0'
     asdf plugin-add starship
     asdf install starship $starshipVersion
     asdf global starship $starshipVersion
@@ -10,12 +10,20 @@ function init_asdf_light() {
 function init_asdf() {
     init_asdf_light
 
-    nodeVersion='14.15.0'
+    nodeVersion='14.17.0'
+    # TODO Bump version 0.15.3 ?
     terraformVersion='0.13.5'
+    terragruntVersion='0.29.3'
+    shellcheckVersion='0.7.2'
+    helmVersion='3.5.4'
+    yttVersion='0.33.0'
+    eksCtlVersion='0.49.0'
+    awscliVersion='2.2.5'
+    kubectlVersion='1.21.1'
 
     if ! command -v asdf &>/dev/null; then
-        echo "COMMAND could not be found"
-        exit
+        echo "asdf could not be found"
+        exit 1
     fi
 
     asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
@@ -28,31 +36,30 @@ function init_asdf() {
     asdf global terraform $terraformVersion
 
     asdf plugin-add terragrunt https://github.com/lotia/asdf-terragrunt
-    asdf install terragrunt 0.28.12
-    asdf global terragrunt 0.28.12
-
-    # once https://github.com/everpeace/asdf-docker-slim/pull/3 is merged, uncomment
-    #asdf plugin-add docker-slim https://github.com/everpeace/asdf-docker-slim.git
-    #asdf install docker-slim 1.32.0
-    #asdf global docker-slim 1.32.0
+    asdf install terragrunt $terragruntVersion
+    asdf global terragrunt $terragruntVersion
 
     asdf plugin-add shellcheck
-    asdf install shellcheck 0.7.1
-    asdf global shellcheck 0.7.1
+    asdf install shellcheck $shellcheckVersion
+    asdf global shellcheck $shellcheckVersion
 
     asdf plugin-add helm https://github.com/Antiarchitect/asdf-helm.git
-    asdf install helm 3.4.1
-    asdf global helm 3.4.1
+    asdf install helm $helmVersion
+    asdf global helm $helmVersion
 
     asdf plugin add ytt https://github.com/sylvainmetayer/asdf-ytt
-    asdf install ytt 0.31.0
-    asdf global ytt 0.31.0
+    asdf install ytt $yttVersion
+    asdf global ytt $yttVersion
 
     asdf plugin-add eksctl
-    asdf install eksctl 0.40.0
-    asdf global eksctl 0.40.0
+    asdf install eksctl $eksCtlVersion
+    asdf global eksctl $eksCtlVersion
 
     asdf plugin add kubectl
-    asdf install kubectl 1.20.4
-    asdf global kubectl 1.20.4
+    asdf install kubectl $kubectlVersion
+    asdf global kubectl $kubectlVersion
+
+    asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
+    asdf install awscli $awscliVersion
+    asdf global awscli $awscliVersion
 }
