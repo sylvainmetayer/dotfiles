@@ -1,0 +1,10 @@
+---
+betisier_app:
+  base_path: /apps/betisier
+  user: betisier
+  db: betisier
+  password: redacted
+  domain: redacted
+  salt: redacted
+  backup_health_check_uuid: redacted
+  borg_repository: betisier

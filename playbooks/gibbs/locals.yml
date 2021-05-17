@@ -30,6 +30,9 @@ mysql_databases:
   - name: "{{ nextcloud_app.db }}"
     encoding: utf8mb4
     collation: utf8mb4_general_ci
+  - name: "{{ betisier_app.db }}"
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci
 mysql_users:
   - name: "{{ crm_app.user }}"
     host: "%"
@@ -43,6 +46,10 @@ mysql_users:
     host: "%"
     password: "{{ nextcloud_app.password }}"
     priv: "{{ nextcloud_app.user }}.*:ALL"
+  - name: "{{ betisier_app.user }}"
+    host: "%"
+    password: "{{ betisier_app.password }}"
+    priv: "{{ betisier_app.user }}.*:ALL"
 
 # Certbot settings
 certbot_auto_renew: true

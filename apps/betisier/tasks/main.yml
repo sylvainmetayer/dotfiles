@@ -1,0 +1,61 @@
+---
+- name: Ensure betisier app folder exists
+  file:
+    mode: "0700"
+    path: "{{ betisier_app.base_path }}/config"
+    state: directory
+
+- name: Copy docker-compose configuration
+  template:
+    src: "templates/docker-compose.yml.j2"
+    dest: "{{ betisier_app.base_path }}/docker-compose.yml"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
+
+- name: Template environment file
+  template:
+    src: templates/config.inc.php.j2
+    dest: "{{ betisier_app.base_path }}/config/config.inc.php"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
+
+- name: Template nginx host
+  become: true
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/sites-available/betisier.conf
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: Enable nginx host
+  become: true
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/betisier.conf
+    dest: /etc/nginx/sites-enabled/betisier.conf
+    owner: root
+    group: root
+    state: link
+
+- name: Add domain to certificate to be generated
+  set_fact:
+    certbot_certs: '{{ certbot_certs + [ { "domains": [betisier_app.domain] } ] }}'
+
+- name: Template Betisier backup configuration
+  become: true
+  template:
+    src: templates/betisier.yaml.j2
+    dest: /etc/borgmatic.d/betisier.yaml
+    owner: root
+    group: root
+    mode: "0600"
+    validate: /root/.local/bin/validate-borgmatic-config -c %s
+
+# - name: Enable Betisier docker service
+#   become: true
+#   systemd:
+#     state: started
+#     enabled: false
+#     name: dc@betisier.service

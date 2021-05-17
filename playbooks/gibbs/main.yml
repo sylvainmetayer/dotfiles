@@ -34,6 +34,7 @@
     - crm
     - rss
     - nextcloud
+    - betisier
 
     # Generate certificate
     - role: geerlingguy.certbot
