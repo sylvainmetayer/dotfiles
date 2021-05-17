@@ -45,6 +45,8 @@
       - guake
       - thunderbird
       - filezilla
+      # Codec
+      - gstreamer1-libav
     state: latest
   tags:
     - network_access
