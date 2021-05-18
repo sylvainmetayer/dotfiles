@@ -4,7 +4,7 @@ version: '3.4'
 services:
   betisier:
     container_name: betisier
-    image: ghcr.io/sylvainmetayer/betisier-tp-docker:latest
+    image: ghcr.io/sylvainmetayer/betisier-tp:latest
     environment:
       - PUID={{ ansible_user_uid }}
       - PGID={{ ansible_user_gid }}
