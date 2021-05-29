@@ -1,7 +1,7 @@
 ---
 - include: packages.yml
 
-# See home/.gitconfig where this file is included
+# See ansible/home/.gitconfig where this file is included
 - name: Template git config
   template:
     src: templates/git_user.j2
@@ -31,8 +31,8 @@
           PATH="$HOME/.local/bin:$HOME/bin:$PATH"
           export PATH
       fi
-      if [ -d ~/dotfiles/bashrc.d ]; then
-        for file in ~/dotfiles/bashrc.d/*.sh
+      if [ -d ~/dotfiles/ansible/bashrc.d ]; then
+        for file in ~/dotfiles/ansible/bashrc.d/*.sh
         do
             source $file
         done

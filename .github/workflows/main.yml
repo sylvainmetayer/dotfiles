@@ -25,11 +25,11 @@ jobs:
         pip install yamllint ansible==${{ matrix.ansible-version }}
     - name: Lint playbook
       run: |
-        cp variables.yml.sample variables.yml
-        ansible-galaxy install -r requirements.yml
-        ansible-playbook playbooks/fedora/main.yml --syntax-check
-        ansible-playbook playbooks/gibbs/main.yml --syntax-check
-        ansible-playbook playbooks/fedora_work/main.yml --syntax-check
-        ansible-playbook raspberry.yml --extra-vars "@variables.yml" --syntax-check
-        yamllint .
+        cp params/variables.yml.sample params/variables.yml
+        ansible-galaxy install -r ansible/requirements.yml
+        ansible-playbook ansible/playbooks/fedora/main.yml --syntax-check
+        ansible-playbook ansible/playbooks/gibbs/main.yml --syntax-check
+        ansible-playbook ansible/playbooks/fedora_work/main.yml --syntax-check
+        ansible-playbook ansible/raspberry.yml --extra-vars "@params/variables.yml" --syntax-check
+        yamllint ansible
 

@@ -7,9 +7,7 @@ rules:
     level: warning
 
 ignore: |
-  .github/workflows/main.yml
-  .github/workflows/lint.yml
-  .circleci/config.yml
-  roles/geerlingguy.*
-  roles/jaredhocutt.gnome_extensions
-  roles/sourcejedi.*
+  .github/workflows/*
+  ansible/roles/geerlingguy.*
+  ansible/roles/jaredhocutt.gnome_extensions
+  ansible/roles/sourcejedi.*

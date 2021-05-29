@@ -4,7 +4,7 @@
   pre_tasks:
     - name: Include secrets vars
       include_vars:
-        file: "../../variables.yml"
+        file: "../../../params/variables.yml"
     - name: "Include locals vars for {{ ansible_play_name }} playbook"
       include_vars:
         file: "locals.yml"

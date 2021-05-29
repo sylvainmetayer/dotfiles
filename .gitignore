@@ -2,12 +2,14 @@
 debug.json
 
 # Secrets
+
+# Ansible related
 variables.yml
 
 facts/
 run.log
 
 # Ansible galaxy roles
-roles/geerlingguy.*
-roles/jaredhocutt.gnome_extensions
-roles/sourcejedi.*
+ansible/roles/geerlingguy.*
+ansible/roles/jaredhocutt.gnome_extensions
+ansible/roles/sourcejedi.*
