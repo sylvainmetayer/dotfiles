@@ -1,0 +1,33 @@
+---
+name: Terraform
+
+on: [push]
+jobs:
+  terraform:
+    defaults:
+      run:
+        working-directory: terraform
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        terraform-version: [0.15.4]
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+      - name: Setup Terraform
+        id: setup
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ matrix.terraform-version }}
+          terraform_wrapper: false
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check -recursive
+      - name: Terraform init without backend
+        id: init-without-backend
+        run: terraform init -backend=false
+      - name: Terraform validate
+        id: validate
+        run: terraform validate

@@ -1,5 +1,5 @@
 ---
-name: CI
+name: Ansible
 
 on: [push]
 # From https://dev.to/koh_sh/automatic-ansible-lint-with-github-actions-52oe

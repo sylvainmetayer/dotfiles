@@ -13,3 +13,8 @@ run.log
 ansible/roles/geerlingguy.*
 ansible/roles/jaredhocutt.gnome_extensions
 ansible/roles/sourcejedi.*
+
+# Terraform backend state
+params/setup-backend.tfstate
+params/.env
+.terraform
