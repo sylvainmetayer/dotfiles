@@ -6,5 +6,7 @@ betisier_app:
   password: redacted
   domain: redacted
   salt: redacted
-  backup_health_check_uuid: redacted
   borg_repository: betisier
+
+healthchecks_urls:
+  betisier: redacted

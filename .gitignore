@@ -18,3 +18,6 @@ ansible/roles/sourcejedi.*
 params/setup-backend.tfstate
 params/.env
 .terraform
+
+# Terraform generated files
+params/healthchecks_urls.yml

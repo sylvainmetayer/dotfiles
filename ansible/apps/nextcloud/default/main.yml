@@ -6,4 +6,6 @@ nextcloud_app:
   password: redacted
   domain: redacted
   borg_repository: nextcloud
-  backup_health_check_uuid: redacted
+
+healthchecks_urls:
+  nextcloud: redacted

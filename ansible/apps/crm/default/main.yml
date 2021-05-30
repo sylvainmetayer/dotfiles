@@ -6,8 +6,6 @@ crm_app:
   password: redacted
   domain: redacted
   app_key: redacted
-  health_check_uuid: redacted
-  backup_health_check_uuid: redacted
   borg_repository: crm
 
 mail_config:
@@ -16,3 +14,8 @@ mail_config:
   host: mail.gandi.net
   port: 587
   use_tls: true
+
+healthchecks_urls:
+  crm: redacted
+
+crm_cron_healthcheck_url: redacted

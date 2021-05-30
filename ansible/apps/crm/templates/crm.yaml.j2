@@ -55,4 +55,4 @@ hooks:
           password: {{ crm_app.password }}
           # FIXME https://projects.torsion.org/witten/borgmatic/issues/399
           options: "--skip-comments --order-by-primary -p{{ crm_app.password }}"
-    healthchecks: https://hc-ping.com/{{ crm_app.backup_health_check_uuid }}
+    healthchecks: {{ healthchecks_urls.crm }}

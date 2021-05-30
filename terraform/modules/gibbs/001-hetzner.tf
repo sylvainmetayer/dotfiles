@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    hcloud = {
-      source  = "hetznercloud/hcloud"
-      version = "1.26.2"
-    }
-  }
-}
-
 resource "hcloud_ssh_key" "gop" {
   name       = "s.metayer@LGOP3007"
   public_key = file("../params/keys/gop.pub")
@@ -72,3 +63,4 @@ resource "hcloud_server" "server" {
     hcloud_ssh_key.dell
   ]
 }
+

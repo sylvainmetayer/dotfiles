@@ -6,4 +6,6 @@ rss_app:
   password: redacted
   domain: redacted
   borg_repository: rss
-  backup_health_check_uuid: redacted
+
+healthchecks_urls:
+  rss: redacted

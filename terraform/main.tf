@@ -18,6 +18,10 @@ terraform {
       source  = "hetznercloud/hcloud"
       version = "1.26.2"
     }
+    healthchecksio = {
+      source  = "kristofferahl/healthchecksio"
+      version = "1.9.0"
+    }
   }
   required_version = ">= 0.15"
 }
@@ -25,6 +29,8 @@ terraform {
 provider "uptimerobot" {}
 
 provider "hcloud" {}
+
+provider "healthchecksio" {}
 
 # Monitoring with UpTimeRobot
 module "monitoring" {

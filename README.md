@@ -31,6 +31,8 @@ Similar as the `fedora playbook` with some modifications required for work.
 
 - Playbook to setup apps on a hosted VPS.
 
+- You need to run the `module.gibbs` terraform module before using this playbook as it configure health check URLs for backup
+
 ### Debug facts
 
 > `ansible localhost -m setup > $HOME/dotfiles/debug.json`
@@ -59,8 +61,8 @@ You need to do this only one time
 
 ```bash
 cd terraform/backend
-terraform init --var-file=config.tfvars
-terraform apply --var-file=config.tfvars
+terraform init
+terraform apply
 ```
 
 Once you do this, you may want to keep a backup of the `params/setup-backend.tfstate` file to avoid recreating another backend bucket and symlink it if you need to reuse it later.
@@ -69,10 +71,10 @@ Once you do this, you may want to keep a backup of the `params/setup-backend.tfs
 
 ### Setup infra
 
-- `terraform init --var-file=config.tfvars`
-- `terraform plan --var-file=config.tfvars`
-- `terraform apply --var-file=config.tfvars`
-- `terraform [plan|target] --var-file=config.tfvars --target=module.XXX` where `module.xxx` is the module you want to deploy
+- `terraform init`
+- `terraform plan`
+- `terraform apply`
+- `terraform [plan|target] --target=module.XXX` where `module.xxx` is the module you want to deploy
 
 <details>
 <summary>Additionnal details</summary>
