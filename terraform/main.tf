@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket                      = "tf-backend-state"
-    key                         = "state.tfstate"
+    key                         = "terraform.tfstate"
     region                      = "fr-par"
     endpoint                    = "https://s3.fr-par.scw.cloud"
     skip_credentials_validation = true
@@ -14,13 +14,26 @@ terraform {
     scaleway = {
       source = "scaleway/scaleway"
     }
+    hcloud = {
+      source  = "hetznercloud/hcloud"
+      version = "1.26.2"
+    }
   }
   required_version = ">= 0.15"
 }
 
 provider "uptimerobot" {}
 
+provider "hcloud" {}
+
+# Monitoring with UpTimeRobot
 module "monitoring" {
-  source          = "./modules/monitoring"
-  backup_sftp_url = var.backup_sftp_url
+  source               = "./modules/monitoring"
+  status_page_password = var.status_page_password
+  backup_sftp_url      = var.backup_sftp_url
+}
+
+# VPS on Hetzner
+module "gibbs" {
+  source = "./modules/gibbs"
 }
