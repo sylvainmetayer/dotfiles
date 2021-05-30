@@ -7,7 +7,9 @@
 [![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/Terraform/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
 [![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/Lint/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
 
-## Setup
+## Ansible playbooks
+
+### Setup
 
 - `dnf install ansible git`
 - `git clone git@github.com:sylvainmetayer/dotfiles.git $HOME/dotfiles`
@@ -16,8 +18,6 @@
 - If you already have a variables files, you can symlink it instead. `ln -s ~/kDrive/config/variables.yml params/variables.yml`
 - `ansible-galaxy install -r $HOME/dotfiles/ansible/requirements.yml`
 - `ansible-playbook ansible/playbooks/PLAYBOOK_NAME/main.yml -K`
-
-## Ansible playbooks
 
 ### Fedora
 
@@ -37,6 +37,20 @@ Similar as the `fedora playbook` with some modifications required for work.
 
 > `ansible localhost -m setup > $HOME/dotfiles/debug.json`
 
+<details>
+<summary>Additionnal details</summary>
+
+## GPG Keys
+
+If you want to import a GPG key and set it as your Git signing key to sign your commits, import it **before** starting the playbook with the following commands :
+
+- `gpg --import key.asc`
+- `gpg --update-trustdb`
+
+Then, get the fingerprint of the wanted key with `gpg --list-secret-keys --keyid-format LONG` and set this value as `git_key` in the `variables.yml` file.
+
+</details>
+
 ## Terraform
 
 ### Prerequisite
@@ -52,6 +66,8 @@ ln -s ~/kDrive/config/.env.dotfiles params/.env
 ```
 
 Then before running any terraform command, use the `load_env` function to load environnement variables.
+
+A `.env` file symlink is available in `terraform` and `terraform/backend` folders and reference a `.env` in `params`
 
 ### Initialize s3 backend
 
@@ -75,17 +91,3 @@ Once you do this, you may want to keep a backup of the `params/setup-backend.tfs
 - `terraform plan`
 - `terraform apply`
 - `terraform [plan|target] --target=module.XXX` where `module.xxx` is the module you want to deploy
-
-<details>
-<summary>Additionnal details</summary>
-
-## GPG Keys
-
-If you want to import a GPG key and set it as your Git signing key to sign your commits, import it **before** starting the playbook with the following commands :
-
-- `gpg --import key.asc`
-- `gpg --update-trustdb`
-
-Then, get the fingerprint of the wanted key with `gpg --list-secret-keys --keyid-format LONG` and set this value as `git_key` in the `variables.yml` file.
-
-</details>
