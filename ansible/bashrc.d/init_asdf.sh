@@ -18,7 +18,7 @@ function init_asdf() {
     helmVersion='3.5.4'
     yttVersion='0.33.0'
     eksCtlVersion='0.49.0'
-    awscliVersion='2.2.13'
+    awscliVersion='2.2.16'
     kubectlVersion='1.21.1'
 
     if ! command -v asdf &>/dev/null; then
