@@ -30,6 +30,7 @@ server {
 
 	location / {
         include proxy_params;
+        proxy_set_header X-Real-IP $remote_addr;
         proxy_pass http://betisier;
 	}
 
