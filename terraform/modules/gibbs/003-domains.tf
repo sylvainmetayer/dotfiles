@@ -1,5 +1,5 @@
 data "gandi_domain" "main" {
-    name = "sylvain.dev"
+  name = "sylvain.dev"
 }
 
 resource "gandi_livedns_record" "nextcloud" {

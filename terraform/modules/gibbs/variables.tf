@@ -1,4 +1,4 @@
 variable "default_ttl" {
-  type = number
+  type    = number
   default = 1800
 }

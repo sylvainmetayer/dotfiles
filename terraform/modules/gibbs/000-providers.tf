@@ -9,7 +9,7 @@ terraform {
       version = "1.9.0"
     }
     gandi = {
-      source = "psychopenguin/gandi"
+      source  = "psychopenguin/gandi"
       version = "2.0.0-rc3"
     }
   }
