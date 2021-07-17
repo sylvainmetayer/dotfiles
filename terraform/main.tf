@@ -22,6 +22,10 @@ terraform {
       source  = "kristofferahl/healthchecksio"
       version = "1.9.0"
     }
+    gandi = {
+      source  = "psychopenguin/gandi"
+      version = "2.0.0-rc3"
+    }
   }
   required_version = ">= 0.15"
 }
@@ -31,6 +35,8 @@ provider "uptimerobot" {}
 provider "hcloud" {}
 
 provider "healthchecksio" {}
+
+provider "gandi" {}
 
 # Monitoring with UpTimeRobot
 module "monitoring" {
@@ -42,4 +48,13 @@ module "monitoring" {
 # VPS on Hetzner
 module "gibbs" {
   source = "./modules/gibbs"
+}
+
+# Gandi DNS zones
+module "domains" {
+  source = "./modules/domains"
+}
+
+module "sl_main" {
+  source = "./modules/simplelogin"
 }
