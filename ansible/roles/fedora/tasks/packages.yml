@@ -45,6 +45,7 @@
       - guake
       - thunderbird
       - filezilla
+      - libgnome-keyring
       # Codec
       - gstreamer1-libav
     state: latest
