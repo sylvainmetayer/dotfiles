@@ -38,6 +38,7 @@
     - rss
     - nextcloud
     - betisier
+    - grocy
 
     # Generate certificate
     - role: geerlingguy.certbot

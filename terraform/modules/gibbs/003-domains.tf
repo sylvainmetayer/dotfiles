@@ -41,3 +41,11 @@ resource "gandi_livedns_record" "rss" {
   values = [hcloud_server.server.ipv4_address]
   ttl    = var.default_ttl
 }
+
+resource "gandi_livedns_record" "grocy" {
+  zone   = data.gandi_domain.main.name
+  name   = "grocy"
+  type   = "A"
+  values = [hcloud_server.server.ipv4_address]
+  ttl    = var.default_ttl
+}

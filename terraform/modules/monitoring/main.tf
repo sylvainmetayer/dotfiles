@@ -98,6 +98,17 @@ resource "uptimerobot_monitor" "monica" {
   }
 }
 
+resource "uptimerobot_monitor" "grocy" {
+  friendly_name = "Grocy"
+  url           = "https://grocy.sylvain.dev"
+  interval      = 300
+  type          = "http"
+
+  alert_contact {
+    id = data.uptimerobot_alert_contact.default.id
+  }
+}
+
 resource "uptimerobot_status_page" "main" {
   friendly_name = "Status"
   password      = var.status_page_password
