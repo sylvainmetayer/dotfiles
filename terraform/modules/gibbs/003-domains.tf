@@ -49,3 +49,11 @@ resource "gandi_livedns_record" "grocy" {
   values = [hcloud_server.server.ipv4_address]
   ttl    = var.default_ttl
 }
+
+resource "gandi_livedns_record" "nocodb" {
+  zone   = data.gandi_domain.main.name
+  name   = "nocodb"
+  type   = "A"
+  values = [hcloud_server.server.ipv4_address]
+  ttl    = var.default_ttl
+}

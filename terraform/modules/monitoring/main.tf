@@ -109,6 +109,17 @@ resource "uptimerobot_monitor" "grocy" {
   }
 }
 
+resource "uptimerobot_monitor" "nocodb" {
+  friendly_name = "Grocy"
+  url           = "https://nocodb.sylvain.dev"
+  interval      = 300
+  type          = "http"
+
+  alert_contact {
+    id = data.uptimerobot_alert_contact.default.id
+  }
+}
+
 resource "uptimerobot_status_page" "main" {
   friendly_name = "Status"
   password      = var.status_page_password
