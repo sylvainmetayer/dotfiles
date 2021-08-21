@@ -46,28 +46,6 @@ resource "healthchecksio_check" "backup_rss" {
   ]
 }
 
-resource "healthchecksio_check" "backup_grocy" {
-  name    = "Grocy"
-  desc    = "Ensure backup of Grocy did run at least once per day."
-  timeout = 86400 # 1 day
-  grace   = 3600
-  tags    = ["backup"]
-  channels = [
-    data.healthchecksio_channel.signal.id
-  ]
-}
-
-resource "healthchecksio_check" "backup_nocodb" {
-  name    = "NocoDB"
-  desc    = "Ensure backup of nocoDB did run at least once per day."
-  timeout = 86400 # 1 day
-  grace   = 3600
-  tags    = ["backup"]
-  channels = [
-    data.healthchecksio_channel.signal.id
-  ]
-}
-
 resource "healthchecksio_check" "cron_crm" {
   name    = "CRM Schedule"
   desc    = "Ensure CRM cron ran"
@@ -86,9 +64,7 @@ data "template_file" "healthcheck_urls" {
     crm_url       = "${healthchecksio_check.backup_crm.ping_url}"
     nextcloud_url = "${healthchecksio_check.backup_nextcloud.ping_url}"
     rss_url       = "${healthchecksio_check.backup_rss.ping_url}"
-    grocy_url     = "${healthchecksio_check.backup_grocy.ping_url}"
     cron_crm      = "${healthchecksio_check.cron_crm.ping_url}"
-    nocodb_url    = "${healthchecksio_check.backup_nocodb.ping_url}"
   }
 }
 

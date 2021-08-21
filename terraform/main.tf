@@ -38,13 +38,6 @@ provider "healthchecksio" {}
 
 provider "gandi" {}
 
-# Monitoring with UpTimeRobot
-module "monitoring" {
-  source               = "./modules/monitoring"
-  status_page_password = var.status_page_password
-  backup_sftp_url      = var.backup_sftp_url
-}
-
 # VPS on Hetzner
 module "gibbs" {
   source = "./modules/gibbs"
