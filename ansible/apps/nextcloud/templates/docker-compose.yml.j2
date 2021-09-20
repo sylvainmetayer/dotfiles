@@ -16,4 +16,4 @@ services:
       - 'host.docker.internal:host-gateway'
     ports:
       - '127.0.0.1:9003:80'
-    restart: 'no'
+    restart: 'on-failure'

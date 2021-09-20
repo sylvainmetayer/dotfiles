@@ -15,7 +15,7 @@ services:
       - {{ media_apps.tmp_location }}:/downloads
     ports:
       - "127.0.0.1:8989:8989"
-    restart: 'no'
+    restart: 'on-failure'
   transmission:
     image: ghcr.io/linuxserver/transmission
     container_name: transmission
@@ -36,7 +36,7 @@ services:
       - "127.0.0.1:9091:9091"
       - 51413:51413
       - 51413:51413/udp
-    restart: 'no'
+    restart: 'on-failure'
   jackett:
     image: ghcr.io/linuxserver/jackett
     container_name: jackett
@@ -50,7 +50,7 @@ services:
       - {{ media_apps.tmp_location }}:/downloads
     ports:
       - "127.0.0.1:9117:9117"
-    restart: 'no'
+    restart: 'on-failure'
   radarr:
     image: ghcr.io/linuxserver/radarr
     container_name: radarr
@@ -64,7 +64,7 @@ services:
       - {{ media_apps.tmp_location }}:/downloads
     ports:
       - "127.0.0.1:7878:7878"
-    restart: 'no'
+    restart: 'on-failure'
   jellyfin:
     image: ghcr.io/linuxserver/jellyfin:bionic
     container_name: jellyfin
@@ -87,4 +87,4 @@ services:
       - 1900:1900/udp
     devices:
       - /dev/vchiq:/dev/vchiq
-    restart: 'no'
+    restart: 'on-failure'
