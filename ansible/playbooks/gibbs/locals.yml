@@ -12,6 +12,9 @@ custom_packages:
   - sendemail
   - mailutils
 
+mysql_packages:
+ - default-mysql-server
+
 # Docker settings
 docker_compose_version: "1.29.1"
 docker_install_compose: true
