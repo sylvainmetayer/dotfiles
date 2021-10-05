@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function init_asdf_light() {
-    starshipVersion='0.54.0'
+    starshipVersion='0.58.0'
     asdf plugin-add starship
     asdf install starship $starshipVersion
     asdf global starship $starshipVersion
@@ -11,15 +11,14 @@ function init_asdf() {
     init_asdf_light
 
     nodeVersion='14.17.0'
-    # TODO Bump version 0.15.3 ?
-    terraformVersion='0.13.5'
-    terragruntVersion='0.29.3'
+    terraformVersion='1.0.8'
+    terragruntVersion='0.34.0'
     shellcheckVersion='0.7.2'
-    helmVersion='3.5.4'
-    yttVersion='0.33.0'
-    eksCtlVersion='0.49.0'
-    awscliVersion='2.2.16'
-    kubectlVersion='1.21.1'
+    helmVersion='3.7.0'
+    yttVersion='0.36.0'
+    eksCtlVersion='0.68.0'
+    awscliVersion='2.2.43'
+    kubectlVersion='1.22.2'
 
     if ! command -v asdf &>/dev/null; then
         echo "asdf could not be found"
