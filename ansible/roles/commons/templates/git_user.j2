@@ -10,3 +10,14 @@
 [commit]
 	gpgsign = true
 {% endif %}
+
+# https://stackoverflow.com/a/36500841/6187576
+[url "ssh://git@github.com/"]
+  insteadOf = https://github.com/
+[url "ssh://git@gitlab.com/"]
+  insteadOf = https://gitlab.com/
+[url "ssh://git@bitbucket.org/"]
+  insteadOf = https://bitbucket.org/
+
+[url "ssh://git@gitlab.groupeonepoint.com/"]
+  insteadOf = https://gitlab.groupeonepoint.com/

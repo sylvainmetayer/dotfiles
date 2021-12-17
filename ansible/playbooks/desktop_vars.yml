@@ -1,9 +1,6 @@
 ---
-# https://github.com/akinomyoga/ble.sh
-ble_version: 0.3.2
-
-kdrive_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.2.4.20211104.AppImage"
-jetbrains_toolbox_version: 1.20.8352
+kdrive_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.2.6.20211208.AppImage"
+jetbrains_toolbox_version: 1.22.10970
 
 gnome_extension_ids:
   - 1162  # https://extensions.gnome.org/extension/1162/emoji-selector/
