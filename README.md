@@ -19,6 +19,7 @@
 - `cp $HOME/dotfiles/params/variables.yml.sample $HOME/dotfiles/params/variables.yml && vim $HOME/dotfiles/params/variables.yml`
 - If you already have a variables files, you can symlink it instead. `ln -s ~/kDrive/config/variables.yml params/variables.yml`
 - `ansible-galaxy install -r $HOME/dotfiles/ansible/requirements.yml`
+- `ansible-galaxy collection install -r $HOME/dotfiles/ansible/collections.yml`
 - `ansible-playbook ansible/playbooks/PLAYBOOK_NAME/main.yml -K`
 
 ### Fedora
