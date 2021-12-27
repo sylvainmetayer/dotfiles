@@ -19,6 +19,7 @@ function init_asdf() {
     eksCtlVersion='0.68.0'
     awscliVersion='2.2.43'
     kubectlVersion='1.22.2'
+    dockerComposeVersion='1.29.2'
 
     if ! command -v asdf &>/dev/null; then
         echo "asdf could not be found"
@@ -26,9 +27,12 @@ function init_asdf() {
     fi
 
     asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-    bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
     asdf install nodejs $nodeVersion
     asdf global nodejs $nodeVersion
+
+    asdf plugin-add docker-compose https://github.com/virtualstaticvoid/asdf-docker-compose.git
+    asdf install docker-compose $dockerComposeVersion
+    asdf global docker-compose $dockerComposeVersion
 
     asdf plugin-add terraform https://github.com/Banno/asdf-hashicorp.git
     asdf install terraform $terraformVersion

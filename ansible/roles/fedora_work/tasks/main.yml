@@ -13,3 +13,13 @@
     block: |
       . $HOME/.gop.sh
 
+- name: "Install work related packages"
+  become: true
+  ansible.builtin.package:
+    name:
+      - openfortivpn
+      - NetworkManager-fortisslvpn-gnome
+      - NetworkManager-fortisslvpn
+    state: latest
+  tags:
+    - network_access

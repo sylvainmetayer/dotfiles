@@ -69,3 +69,19 @@
     extra_args: --user
   tags:
     - network_access
+
+- name: "Install docker for Fedora >=35"
+  become: true
+  ansible.builtin.package:
+    name:
+      - moby-engine
+    state: present
+  tags:
+    - network_access
+  when: ansible_distribution  == "Fedora" and ansible_distribution_major_version | int >= 35
+
+- name: Enable service docker
+  ansible.builtin.systemd:
+    name: docker
+    enabled: yes
+  when: ansible_distribution  == "Fedora" and ansible_distribution_major_version | int >= 35
