@@ -26,7 +26,7 @@
   yum_repository:
     name: teams
     description: Visual Studio Code repo
-    file: vscode
+    file: teams
     baseurl: "https://packages.microsoft.com/yumrepos/ms-teams"
     gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
     gpgcheck: true
