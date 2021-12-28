@@ -29,6 +29,13 @@
   tags:
     - network_access
 
+- name: Install the Discord flatpak
+  flatpak:
+    name: https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
+    state: present
+  tags:
+    - network_access
+
 - name: Install the Gnome extensions (fedora >= 34 only)
   flatpak:
     name: https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref

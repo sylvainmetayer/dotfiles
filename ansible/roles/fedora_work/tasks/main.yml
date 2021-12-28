@@ -13,6 +13,16 @@
     block: |
       . $HOME/.gop.sh
 
+- name: install Teams repo (dnf)
+  become: true
+  yum_repository:
+    name: teams
+    description: Visual Studio Code repo
+    file: vscode
+    baseurl: "https://packages.microsoft.com/yumrepos/ms-teams"
+    gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
+    gpgcheck: true
+
 - name: "Install work related packages"
   become: true
   ansible.builtin.package:
@@ -20,6 +30,8 @@
       - openfortivpn
       - NetworkManager-fortisslvpn-gnome
       - NetworkManager-fortisslvpn
+      - teams
+      - telnet
     state: latest
   tags:
     - network_access
