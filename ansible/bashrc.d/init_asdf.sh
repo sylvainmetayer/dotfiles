@@ -10,16 +10,18 @@ function init_asdf_light() {
 function init_asdf() {
     init_asdf_light
 
-    nodeVersion='14.17.0'
-    terraformVersion='1.0.8'
-    terragruntVersion='0.34.0'
-    shellcheckVersion='0.7.2'
-    helmVersion='3.7.0'
-    yttVersion='0.36.0'
-    eksCtlVersion='0.68.0'
-    awscliVersion='2.2.43'
-    kubectlVersion='1.22.2'
+    nodeVersion='16.13.1'
+    terraformVersion='1.1.2'
+    terragruntVersion='0.35.16'
+    shellcheckVersion='0.8.0'
+    helmVersion='3.7.2'
+    yttVersion='0.38.0'
+    eksCtlVersion='0.77.0'
+    awscliVersion='2.4.7'
+    kubectlVersion='1.23.1'
     dockerComposeVersion='1.29.2'
+    direnvVersion='2.30.1'
+    redisVersion='5.0.13'
 
     if ! command -v asdf &>/dev/null; then
         echo "asdf could not be found"
@@ -29,6 +31,14 @@ function init_asdf() {
     asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
     asdf install nodejs $nodeVersion
     asdf global nodejs $nodeVersion
+
+    asdf plugin-add redis https://github.com/smashedtoatoms/asdf-redis.git
+    asdf install redis $redisVersion
+    asdf global redis $redisVersion
+
+    asdf plugin-add direnv
+    asdf install direnv $direnvVersion
+    asdf global direnv $direnvVersion
 
     asdf plugin-add docker-compose https://github.com/virtualstaticvoid/asdf-docker-compose.git
     asdf install docker-compose $dockerComposeVersion
