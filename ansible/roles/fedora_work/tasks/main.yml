@@ -47,6 +47,7 @@
 - name: Render SSH work host template
   set_fact:
     ssh_work_config: "{{ lookup('template', 'ssh_hosts.j2') }}"
+    aws_work_config: "{{ lookup('template', 'aws_config.j2') }}"
 
 - name: Template SSH Config with work hosts
   blockinfile:
@@ -55,4 +56,13 @@
     block: |
       {{ ssh_work_config }}
     marker: "#{mark} ANSIBLE MANAGED BLOCK WORK SSH"
+  no_log: true
+
+- name: Template AWS work config
+  blockinfile:
+    insertbefore: BOF
+    dest: "~/.aws/config"
+    block: |
+      {{ aws_work_config }}
+    marker: "#{mark} ANSIBLE MANAGED BLOCK WORK AWS"
   no_log: true
