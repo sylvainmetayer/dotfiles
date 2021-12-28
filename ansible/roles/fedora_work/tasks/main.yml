@@ -1,3 +1,4 @@
+---
 - name: "Link work related script"
   file:
     src: ~/dotfiles/ansible/roles/fedora_work/files/gop.sh

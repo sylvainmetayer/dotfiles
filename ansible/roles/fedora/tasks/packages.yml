@@ -83,5 +83,5 @@
 - name: Enable service docker
   ansible.builtin.systemd:
     name: docker
-    enabled: yes
+    enabled: true
   when: ansible_distribution  == "Fedora" and ansible_distribution_major_version | int >= 35

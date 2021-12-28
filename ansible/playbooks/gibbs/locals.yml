@@ -13,7 +13,7 @@ custom_packages:
   - mailutils
 
 mysql_packages:
- - default-mysql-server
+  - default-mysql-server
 
 # Docker settings
 docker_compose_version: "1.29.1"
