@@ -48,6 +48,7 @@
       - libgnome-keyring
       # Codec
       - gstreamer1-libav
+      - graphviz
     state: latest
   tags:
     - network_access
