@@ -5,6 +5,9 @@ git_user: Sylvain
 # git_key: YOUR FINGER PRINT ID
 github_token: redacted
 
+# Install ledger app
+install_ledger: false
+
 gibbs:
   mysql_root_password: redacted
 

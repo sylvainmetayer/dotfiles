@@ -4,6 +4,9 @@
 
 - include: kDrive.yml
 
+- include: ledger.yml
+  when: install_ledger is defined and install_ledger
+
 - include: jetbrains.yml
 
 - include: flatpak.yml

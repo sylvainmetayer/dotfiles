@@ -1,0 +1,22 @@
+---
+- name: Ensure softs directory exists
+  file:
+    path: "~/.softs/"
+    state: directory
+    mode: "0755"
+
+- name: "Download ledger"
+  get_url:
+    url: "https://download-live.ledger.com/releases/latest/download/linux"
+    dest: ~/.softs/ledger
+    mode: "0700"
+  tags:
+    - network_access
+
+- name: Create desktop icon
+  template:
+    src: ./templates/ledger.desktop.j2
+    dest: ~/.local/share/applications/ledger.desktop
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
