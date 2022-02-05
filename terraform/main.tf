@@ -1,18 +1,13 @@
 terraform {
-  backend "s3" {
-    bucket                      = "tf-backend-state"
-    key                         = "terraform.tfstate"
-    region                      = "fr-par"
-    endpoint                    = "https://s3.fr-par.scw.cloud"
-    skip_credentials_validation = true
-    skip_region_validation      = true
+  cloud {
+    organization = "sylvainmetayer"
+    workspaces {
+      name = "homelab"
+    }
   }
   required_providers {
     uptimerobot = {
       source = "louy/uptimerobot"
-    }
-    scaleway = {
-      source = "scaleway/scaleway"
     }
     hcloud = {
       source  = "hetznercloud/hcloud"
@@ -23,8 +18,8 @@ terraform {
       version = "1.9.0"
     }
     gandi = {
-      source  = "psychopenguin/gandi"
-      version = "2.0.0-rc3"
+      source = "go-gandi/gandi"
+      version = "~> 2.0.0"
     }
   }
   required_version = ">= 0.15"
