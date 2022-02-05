@@ -1,10 +1,10 @@
 variable "backup_sftp_url" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "status_page_password" {
   type        = string
   description = "Uptime robot page password"
-  sensitive = true
+  sensitive   = true
 }
