@@ -56,6 +56,12 @@ Then, get the fingerprint of the wanted key with `gpg --list-secret-keys --keyid
 
 ## Terraform
 
+State is stored on Terraform cloud.
+
+```bash
+asdf install
+```
+
 ### Prerequisite
 
 Before running any terraform command, you need to source some environnement variables (see `params/.env.sample` for reference)
@@ -64,32 +70,17 @@ You should keep a copy of your env files on a non versionned place.
 
 Example
 
-```
+```bash
 ln -s ~/kDrive/config/.env.dotfiles params/.env
 ```
 
 Then before running any terraform command, use the `load_env` function to load environnement variables.
 
-A `.env` file symlink is available in `terraform` and `terraform/backend` folders and reference a `.env` in `params`
-
-### Initialize s3 backend
-
-To be available across multiple machine, state is stored on a scaleway bucket.
-
-You need to do this only one time
-
-```bash
-cd terraform/backend
-terraform init
-terraform apply
-```
-
-Once you do this, you may want to keep a backup of the `params/setup-backend.tfstate` file to avoid recreating another backend bucket and symlink it if you need to reuse it later.
-
-- `ln -s /backups/setup-backend.tfstate ~/dotfiles/params/setup-backend.tfstate`
+A `.env` file symlink is available in `terraform` folder and reference a `.env` in `params`
 
 ### Setup infra
 
+- `terraform login`
 - `terraform init`
 - `terraform plan`
 - `terraform apply`
