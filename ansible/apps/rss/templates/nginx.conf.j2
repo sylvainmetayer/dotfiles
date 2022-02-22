@@ -8,8 +8,7 @@ server {
 	root /var/www/default/;
 	index index.php;
 	client_max_body_size 10M;
-    add_header Content-Security-Policy "default-src 'none'; font-src 'self'; img-src 'self' *; media-src https://storage.googleapis.com; script-src 'self'; style-src 'self' 'unsafe-inline'";
-
+    add_header Content-Security-Policy "default-src 'none'; connect-src 'self'; form-action 'self'; frame-src 'self'; font-src 'self'; img-src 'self' *; media-src https://storage.googleapis.com; script-src 'self'; style-src 'self' 'unsafe-inline'";
     location = /robots.txt  { access_log off; log_not_found off; }
     location = /favicon.ico { access_log off; log_not_found off; }
     # Deny access to .htaccess files, if Apache's document root concurs with nginx's one
