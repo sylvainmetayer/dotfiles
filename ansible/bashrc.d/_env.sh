@@ -18,3 +18,6 @@ export GPG_TTY
 # For readability
 ANSIBLE_NOCOWS=1
 export ANSIBLE_NOCOWS
+
+EDITOR=$(which vim)
+export EDITOR=$EDITOR
