@@ -42,3 +42,4 @@
       fi
       [[ $- == *i* ]] && command -v starship >/dev/null && eval "$(starship init bash)"
       [[ $- == *i* ]] && command -v npm >/dev/null && source <(npm completion)
+      [[ $- == *i* ]] && command -v kubectl >/dev/null && source <(kubectl completion bash)

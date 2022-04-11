@@ -12,3 +12,11 @@ format = "via [🐋 $context](blue bold)"
 [vagrant]
 format = '(via [$symbol$version]($style))'
 
+[kubernetes]
+format = 'on [⛵ \($namespace\)](dimmed green) '
+disabled = false
+[kubernetes.context_aliases]
+"dev.local.cluster.k8s" = "dev"
+".*/openshift-cluster/.*" = "openshift"
+"gke_.*_(?P<var_cluster>[\\w-]+)" = "gke-$var_cluster"
+

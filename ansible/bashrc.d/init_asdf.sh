@@ -22,6 +22,7 @@ function init_asdf() {
     dockerComposeVersion='1.29.2'
     direnvVersion='2.30.1'
     redisVersion='5.0.13'
+    fzfVersion='0.30.0'
 
     if ! command -v asdf &>/dev/null; then
         echo "asdf could not be found"
@@ -75,4 +76,11 @@ function init_asdf() {
     asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
     asdf install awscli $awscliVersion
     asdf global awscli $awscliVersion
+
+    asdf plugin add kubectx
+    asdf plugin add argocd
+
+    asdf plugin add fzf
+    asdf install fzf $fzfVersion
+    asdf global fzf $fzfVersion
 }
