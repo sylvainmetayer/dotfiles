@@ -83,4 +83,6 @@ function init_asdf() {
     asdf plugin add fzf
     asdf install fzf $fzfVersion
     asdf global fzf $fzfVersion
+
+    asdf plugin add operator-sdk
 }
