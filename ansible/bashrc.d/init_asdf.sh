@@ -23,6 +23,7 @@ function init_asdf() {
     direnvVersion='2.30.1'
     redisVersion='5.0.13'
     fzfVersion='0.30.0'
+    ocVersion='v4.10.0'
 
     if ! command -v asdf &>/dev/null; then
         echo "asdf could not be found"
@@ -85,4 +86,9 @@ function init_asdf() {
     asdf global fzf $fzfVersion
 
     asdf plugin add operator-sdk
+
+    asdf plugin-add oc https://github.com/bartoszmajsak/asdf-oc.git
+    asdf install oc $ocVersion
+    asdf global oc $ocVersion
+
 }
