@@ -8,6 +8,4 @@ rules:
 
 ignore: |
   .github/workflows/*
-  ansible/roles/geerlingguy.*
-  ansible/roles/jaredhocutt.gnome_extensions
-  ansible/roles/sourcejedi.*
+  ansible/galaxy_roles/

@@ -47,4 +47,3 @@
       [[ $- == *i* ]] && command -v aws_completer >/dev/null && complete -C ~/.asdf/shims/aws_completer aws
       [[ $- == *i* ]] && command -v terraform >/dev/null && complete -C ~/.asdf/shims/terraform terraform
       [[ $- == *i* ]] && command -v direnv >/dev/null && eval "$(direnv hook bash)"
-
