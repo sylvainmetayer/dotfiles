@@ -1,12 +1,21 @@
 ---
-- src: geerlingguy.docker
-- src: jaredhocutt.gnome_extensions
-- src: sourcejedi.rpmfusion_free
-# - src: https://github.com/sestrella/ansible-role-asdf
-#  version: cf15bccbbae4330ef8afe1e05024fd5415092235
-#  name: sestrella.ansible_role_asdf
-- src: geerlingguy.docker_arm
-- src: geerlingguy.pip
-- src: geerlingguy.mysql
-- src: geerlingguy.certbot
-- src: geerlingguy.docker
+roles:
+  - src: geerlingguy.docker
+    version: 4.2.3
+  - src: jaredhocutt.gnome_extensions
+    version: master
+  - src: sourcejedi.rpmfusion_free
+    version: master
+  # - src: https://github.com/sestrella/ansible-role-asdf
+  #  version: cf15bccbbae4330ef8afe1e05024fd5415092235
+  #  name: sestrella.ansible_role_asdf
+  - src: geerlingguy.docker_arm
+    version: 5.0.0
+  - src: geerlingguy.pip
+    version: 2.1.0
+  - src: geerlingguy.mysql
+    version: 3.5.0
+  - src: geerlingguy.certbot
+    version: 5.0.1
+  - src: geerlingguy.docker
+    version: 4.2.3

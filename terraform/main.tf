@@ -43,6 +43,6 @@ module "domains" {
   source = "./modules/domains"
 }
 
-module "sl_main" {
+module "simplelogin" {
   source = "./modules/simplelogin"
 }

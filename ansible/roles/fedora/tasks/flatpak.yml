@@ -36,6 +36,13 @@
   tags:
     - network_access
 
+- name: Install the Signal flatpak
+  flatpak:
+    name: https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
+    state: present
+  tags:
+    - network_access
+
 - name: Install the Gnome extensions (fedora >= 34 only)
   flatpak:
     name: https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref

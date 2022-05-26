@@ -1,5 +1,5 @@
 ---
-- include: packages.yml
+- import_tasks: packages.yml
 
 # See ansible/home/.gitconfig where this file is included
 - name: Template git config
@@ -44,3 +44,7 @@
       [[ $- == *i* ]] && command -v npm >/dev/null && source <(npm completion)
       [[ $- == *i* ]] && command -v kubectl >/dev/null && source <(kubectl completion bash)
       [[ $- == *i* ]] && command -v openstack >/dev/null && source <(openstack complete)
+      [[ $- == *i* ]] && command -v aws_completer >/dev/null && complete -C ~/.asdf/shims/aws_completer aws
+      [[ $- == *i* ]] && command -v terraform >/dev/null && complete -C ~/.asdf/shims/terraform terraform
+      [[ $- == *i* ]] && command -v direnv >/dev/null && eval "$(direnv hook bash)"
+

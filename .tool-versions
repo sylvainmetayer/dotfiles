@@ -1,1 +1,2 @@
-terraform 1.1.5
+terraform 1.2.1
+direnv 2.31.0

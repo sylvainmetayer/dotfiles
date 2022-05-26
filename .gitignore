@@ -10,9 +10,7 @@ facts/
 run.log
 
 # Ansible galaxy roles
-ansible/roles/geerlingguy.*
-ansible/roles/jaredhocutt.gnome_extensions
-ansible/roles/sourcejedi.*
+ansible/galaxy_roles/
 
 # Terraform backend state
 params/setup-backend.tfstate

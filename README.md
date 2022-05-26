@@ -13,7 +13,8 @@
 
 ### Setup
 
-- `dnf install ansible git`
+- `dnf install git`
+- `python3 -m pip install --user wheel ansible`
 - `git clone git@github.com:sylvainmetayer/dotfiles.git $HOME/dotfiles`
 - Create a [Github Token](https://github.com/settings/tokens) with `user` and `admin:public_key` scopes
 - `cp $HOME/dotfiles/params/variables.yml.sample $HOME/dotfiles/params/variables.yml && vim $HOME/dotfiles/params/variables.yml`
@@ -71,7 +72,7 @@ You should keep a copy of your env files on a non versionned place.
 Example
 
 ```bash
-ln -s ~/kDrive/config/.env.dotfiles params/.env
+ln -s ~/kDrive/Backups/config/env.dotfiles params/.env
 ```
 
 Then before running any terraform command, use the `load_env` function to load environnement variables.
@@ -85,3 +86,7 @@ A `.env` file symlink is available in `terraform` folder and reference a `.env` 
 - `terraform plan`
 - `terraform apply`
 - `terraform [plan|target] --target=module.XXX` where `module.xxx` is the module you want to deploy
+
+### Lock providers
+
+`terraform providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=linux_amd64`

@@ -1,17 +1,17 @@
 ---
 
-- include: packages.yml
+- import_tasks: packages.yml
 
-- include: kDrive.yml
+- import_tasks: kDrive.yml
 
-- include: ledger.yml
+- import_tasks: ledger.yml
   when: install_ledger is defined and install_ledger
 
-- include: jetbrains.yml
+- import_tasks: jetbrains.yml
 
-- include: flatpak.yml
+- import_tasks: flatpak.yml
 
-- include: dconf.yml
+- import_tasks: dconf.yml
 
 - name: Set SELinux in permissive mode
   become: true
