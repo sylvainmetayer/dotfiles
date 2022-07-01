@@ -24,6 +24,7 @@ function init_asdf() {
     redisVersion='5.0.13'
     fzfVersion='0.30.0'
     ocVersion='v4.10.0'
+    k3dVersion='5.4.3'
 
     if ! command -v asdf &>/dev/null; then
         echo "asdf could not be found"
@@ -91,4 +92,7 @@ function init_asdf() {
     asdf install oc $ocVersion
     asdf global oc $ocVersion
 
+    asdf plugin add k3d https://github.com/spencergilbert/asdf-k3d.git
+    asdf install k3d $k3dVersion
+    asdf global k3d $k3dVersion
 }

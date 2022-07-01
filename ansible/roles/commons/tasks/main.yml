@@ -48,3 +48,4 @@
       [[ $- == *i* ]] && command -v terraform >/dev/null && complete -C ~/.asdf/shims/terraform terraform
       [[ $- == *i* ]] && command -v direnv >/dev/null && eval "$(direnv hook bash)"
       [[ $- == *i* ]] && command -v fzf > /dev/null && source $(asdf where fzf)/shell/key-bindings.bash
+      [[ $- == *i* ]] && command -v k3d > /dev/null && source <(k3d completion bash)
