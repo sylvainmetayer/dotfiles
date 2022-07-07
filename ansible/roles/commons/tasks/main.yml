@@ -49,3 +49,5 @@
       [[ $- == *i* ]] && command -v direnv >/dev/null && eval "$(direnv hook bash)"
       [[ $- == *i* ]] && command -v fzf > /dev/null && source $(asdf where fzf)/shell/key-bindings.bash
       [[ $- == *i* ]] && command -v k3d > /dev/null && source <(k3d completion bash)
+      [[ $- == *i* ]] && command -v quarkus > /dev/null && source <(quarkus completion bash)
+      [[ $- == *i* ]] && command -v argocd > /dev/null && source <(argocd completion bash)
