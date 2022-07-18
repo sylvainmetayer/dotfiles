@@ -1,4 +1,8 @@
 ---
+collections:
+  - name: ansible.posix
+  - name: donhector.workstation
+    version: 1.1.0
 roles:
   - src: geerlingguy.docker
     version: 4.2.3

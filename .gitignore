@@ -11,6 +11,7 @@ run.log
 
 # Ansible galaxy roles
 ansible/galaxy_roles/
+ansible/collections/
 
 # Terraform backend state
 params/setup-backend.tfstate

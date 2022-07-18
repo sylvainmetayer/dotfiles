@@ -9,3 +9,4 @@ rules:
 ignore: |
   .github/workflows/*
   ansible/galaxy_roles/
+  ansible/collections/

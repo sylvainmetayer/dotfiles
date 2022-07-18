@@ -11,7 +11,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.8, 3.9, '3.10']
-        ansible-version: [2.9.27]
+        ansible-version: [6.1.0]
 
     steps:
     - uses: actions/checkout@v1
@@ -26,8 +26,8 @@ jobs:
     - name: Lint playbook
       run: |
         cp params/variables.yml.sample params/variables.yml
-        ansible-galaxy install -r ansible/requirements.yml
-        ansible-galaxy collection install -r ansible/collections.yml
+        ansible-galaxy role install -r ansible/requirements.yml
+        ansible-galaxy collection install -r ansible/requirements.yml
         ansible-playbook ansible/playbooks/fedora/main.yml --syntax-check
         ansible-playbook ansible/playbooks/gibbs/main.yml --syntax-check
         ansible-playbook ansible/playbooks/fedora_work/main.yml --syntax-check
