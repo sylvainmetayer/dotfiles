@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+
+  pre_tasks:
+    - name: "Include locals vars"
+      include_vars:
+        file: "locals.yaml"
+
+  roles:
+    - role: donhector.workstation.asdf
+      become: true
+    - role: hostname
+      become: true

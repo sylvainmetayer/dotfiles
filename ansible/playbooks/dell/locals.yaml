@@ -1,0 +1,26 @@
+---
+# ASDF
+asdf_plugins:
+  - name: "rust"
+    repo: "https://github.com/asdf-community/asdf-rust.git"
+    versions:
+      - "1.62.0"
+    global: "1.62.0"
+    yum_deps: []
+  - name: "terraform"
+    versions:
+      - "1.2.1"
+      - "1.2.5"
+    global: "1.2.5"
+    yum_deps: []
+  - name: "direnv"
+    versions: ["2.31.0"]
+    global: "2.31.0"
+    yum_deps: []
+
+asdf_version: "v0.10.2"
+asdf_legacy_version_file: "no"
+
+# HOSTNAME
+hostname_name: dell
+hostname_fqdn: dell.localhost
