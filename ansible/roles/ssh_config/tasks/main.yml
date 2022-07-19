@@ -1,44 +1,30 @@
 ---
-- name: Ensure SSH folder exists
+- name: Ensure required folder exists
   file:
-    path: ~/.ssh
+    path: "{{ item }}"
     state: directory
     mode: "0700"
+  with_items:
+    - ~/.ssh
+    - ~/.config/systemd/user/
+    - ~/.config/autostart
 
-- name: Ensure SSH config file exists
-  copy:
-    content: ""
-    dest: "~/.ssh/config"
-    force: false
+- include_tasks: ssh_config.yaml
+- include_tasks: disable_gnome_ssh_agent.yaml
+- include_tasks: ssh_agent.yaml
+
+- name: Copy keepassxc.pub to .ssh folder
+  ansible.builtin.copy:
+    src: ./files/keepassxc.pub
+    dest: ~/.ssh/keepassxc.pub
     group: "{{ ansible_user_gid }}"
     owner: "{{ ansible_user_uid }}"
-    mode: 0600
+    mode: "0600"
 
-- name: Create a SSH key
-  openssh_keypair:
-    path: ~/.ssh/id_ed25519
-    state: present
-    type: ed25519
-    force: false
-    comment: "{{ ansible_user_id }}@{{ ansible_hostname }}"
-  register: ssh_key_status
-  notify:
-    - print ssh key
-    - upload ssh key github
+# Improvment : we need to make sure the "Ask user confirmation before using key" is disabled
 
-- name: Render base host template
-  set_fact:
-    ssh_base_config: "{{ lookup('template', 'ssh_config.j2') }}"
-
-- name: Template SSH Config
-  blockinfile:
-    dest: "~/.ssh/config"
-    block: |
-      {{ item.content }}
-    marker: "#{mark} ANSIBLE MANAGED BLOCK SSH"
-  loop:
-    - content: "{{ ssh_base_config }}"
-  no_log: true
-
-- name: Trigger handler
-  meta: flush_handlers
+# sources
+# https://keepassxc.org/docs/#faq-ssh-agent-auth-errors
+# https://www.padok.fr/en/blog/ssh-keys-keepassxc
+# https://peterbabic.dev/blog/make-ssh-prompt-password-keepassxc/
+# https://wiki.gnome.org/Projects/GnomeKeyring/Ssh

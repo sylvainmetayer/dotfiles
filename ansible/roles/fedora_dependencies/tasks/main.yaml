@@ -1,0 +1,10 @@
+---
+- ansible.builtin.include_tasks: repositories.yaml
+
+- ansible.builtin.include_tasks: packages.yaml
+
+- ansible.builtin.include_tasks: flatpak.yaml
+
+- ansible.builtin.include_tasks: python.yaml
+
+- ansible.builtin.include_tasks: selinux.yaml

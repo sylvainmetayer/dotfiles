@@ -1,0 +1,20 @@
+---
+- name: Ensure SSH config file exists
+  copy:
+    content: ""
+    dest: "~/.ssh/config"
+    force: false
+    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_user_uid }}"
+    mode: 0600
+
+- name: Render SSH config Template
+  set_fact:
+    ssh_config_template: "{{ lookup('template', 'ssh_config.j2') }}"
+
+- name: Add template in SSH config
+  blockinfile:
+    dest: "~/.ssh/config"
+    block: |
+      {{ ssh_config_template }}
+    marker: "#{mark} ANSIBLE MANAGED BLOCK SSH"

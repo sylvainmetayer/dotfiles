@@ -4,11 +4,6 @@ all:
     localhost:
       ansible_connection: local
       ansible_python_interpreter: /usr/bin/python3
-    raspberry:
-      ansible_python_interpreter: /usr/bin/python3
-      ansible_port: 22
-      ansible_host: pi.sylvain.dev
-      ansible_user: ocyhc
     gibbs:
       ansible_python_interpreter: /usr/bin/python3
       ansible_port: 22

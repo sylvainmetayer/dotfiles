@@ -1,18 +1,14 @@
 ---
 collections:
   - name: ansible.posix
+  - name: community.general
   - name: donhector.workstation
     version: 1.1.0
 roles:
-  - src: geerlingguy.docker
-    version: 4.2.3
   - src: jaredhocutt.gnome_extensions
     version: master
   - src: sourcejedi.rpmfusion_free
     version: master
-  # - src: https://github.com/sestrella/ansible-role-asdf
-  #  version: cf15bccbbae4330ef8afe1e05024fd5415092235
-  #  name: sestrella.ansible_role_asdf
   - src: geerlingguy.docker_arm
     version: 5.0.0
   - src: geerlingguy.pip
@@ -21,5 +17,7 @@ roles:
     version: 3.5.0
   - src: geerlingguy.certbot
     version: 5.0.1
+  - src: petermosmans.customize-gnome
+    version: 0.2.5
   - src: geerlingguy.docker
-    version: 4.2.3
+    version: 4.2.4

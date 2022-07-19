@@ -1,0 +1,19 @@
+---
+- name: Install packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ fedora_dependencies_packages }}"
+    state: present
+    update_cache: true
+
+- name: Remove packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ fedora_dependencies_remove_packages }}"
+    state: absent
+
+- name: Auto remove packages
+  become: true
+  ansible.builtin.dnf:
+    autoremove: true
+  when: fedora_dependencies_autoremove

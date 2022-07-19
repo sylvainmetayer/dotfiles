@@ -1,0 +1,69 @@
+---
+fedora_dependencies_autoremove: true
+
+fedora_dependencies_disable_selinux: true
+
+fedora_dependencies_repositories:
+  - name: code
+    description: Visual Studio Code repo
+    file: vscode
+    url: https://packages.microsoft.com/yumrepos/vscode
+    gpg_url: https://packages.microsoft.com/keys/microsoft.asc
+    gpg_check: true
+
+fedora_dependencies_packages:
+  - git
+  - git-lfs
+  - make
+  - unzip
+  - htop
+  - wget
+  - curl
+  - tmux
+  - vim
+  - rsync
+  - jq
+  - gnupg2
+  - docker-compose-plugin
+  - NetworkManager-tui
+  - firefox
+  - gimp
+  - gpaste-ui
+  - gpaste
+  - vlc
+  - xclip
+  - fortune-mod
+  - code
+  - qrencode
+  - keepassxc
+  - seahorse
+  - chromium
+  # Gnome related
+  - libappindicator
+  - dconf-editor
+  - python3-devel
+  - flatpak
+  - gnome-tweaks
+  - guake
+  - thunderbird
+  - filezilla
+  - libgnome-keyring
+  # Codec
+  - gstreamer1-libav
+  - graphviz
+
+fedora_dependencies_remove_packages:
+  - gnome-maps
+  - gnome-documents
+  - rhythmbox
+
+fedora_dependencies_pip_packages:
+  - psutil>4.0
+
+fedora_dependencies_flatpak:
+  - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
+  - https://flathub.org/repo/appstream/com.getpostman.Postman.flatpakref
+  - https://flathub.org/repo/appstream/org.onlyoffice.desktopeditors.flatpakref
+  - https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
+  - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
+  - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref

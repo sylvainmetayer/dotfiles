@@ -16,7 +16,6 @@
 - `python3 -m pip install --user -r requirements.txt`
 - Ensure the `selfhosted.kdbx` database is available
   - If needed, you can download it from <https://r.sylvain.dev/dotfiles-database>
-- `./scripts/extract-secrets.sh DATABASE_LOCATION` to fetch the secret file.
 - `./scripts/install-ansible-deps.sh`
 
 ## Usage
@@ -26,6 +25,8 @@
 My personal laptop, running Fedora.
 
 - `ansible-playbook ansible/playbooks/dell/main.yaml -K`
+- `systemctl status --user ssh-agent` to get the `SSH_AUTH_SOCK` value
+  - Configure KeepassXC to use this socket
 
 ## Terraform
 

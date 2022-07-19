@@ -1,0 +1,26 @@
+---
+- name: Ensure jetbrains_toolbox folder exists
+  become: true
+  file:
+    path: "{{ jetbrains_toolbox_folder }}"
+    state: directory
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0755"
+
+- name: "Download Jetbrains toolbox"
+  unarchive:
+    mode: 0700
+    src: "{{ jetbrains_toolbox_url }}"
+    dest: "{{ jetbrains_toolbox_folder }}"
+    remote_src: true
+    extra_opts:
+      - "--strip-components=1"
+
+- name: Create desktop icon
+  template:
+    src: ./templates/toolbox.desktop.j2
+    dest: ~/.local/share/applications/jetbrains-toolbox.desktop
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"

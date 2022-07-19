@@ -10,4 +10,5 @@ if [[ "$#" -ne 1 ]]; then
     exit 1
 fi
 
-keepassxc-cli attachment-export "$1" '/dotfiles/secret_files' variables.yml test.yaml
+# keepassxc-cli attachment-export "$1" '/dotfiles/secret_files' variables.yml test.yaml
+keepassxc-cli show -a password -s "$1" /dotfiles/work_vault_password > ~/.ansible_vault.txt

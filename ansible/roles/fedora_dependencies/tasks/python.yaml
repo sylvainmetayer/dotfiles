@@ -1,0 +1,6 @@
+---
+- name: Install python (pip) dependencies for current user
+  pip:
+    name: "{{ item }}"
+    extra_args: --user
+  loop: "{{ fedora_dependencies_pip_packages }}"
