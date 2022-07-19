@@ -1,0 +1,38 @@
+---
+commons_add_to_path:
+  - "$HOME/.local/bin"
+  - "$HOME/bin"
+  - "$HOME/.cargo/bin"
+
+# Will test the existence of the command and run script if available.
+commons_custom_scripts:
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: npm
+    script: "source <(npm completion)"
+  - command: kubectl
+    script: "source <(kubectl completion bash)"
+  - command: openstack
+    script: "source <(openstack complete)"
+  - command: aws_completer
+    script: "complete -C ~/.asdf/shims/aws_completer aws"
+  - command: terraform
+    script: 'complete -C ~/.asdf/shims/terraform terraform'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "source $(asdf where fzf)/shell/key-bindings.bash"
+  - command: k3d
+    script: "source <(k3d completion bash)"
+  - command: quarkus
+    script: "source <(quarkus completion bash)"
+  - command: argocd
+    script: "source <(argocd completion bash)"
+
+commons_symlinks:
+  - .vimrc
+  - .bash_aliases
+  - .tmux.conf
+  - .config/starship.toml
+  - .gnupg/gpg.conf
+  - .default-npm-packages

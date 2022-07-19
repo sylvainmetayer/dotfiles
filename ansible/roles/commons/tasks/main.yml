@@ -1,15 +1,4 @@
 ---
-- import_tasks: packages.yml
-
-# See ansible/home/.gitconfig where this file is included
-- name: Template git config
-  template:
-    src: templates/git_user.j2
-    dest: ~/.git_user
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-    mode: "0644"
-
 - name: Ensure local bin directory exists
   file:
     path: "~/.local/bin"
@@ -21,33 +10,9 @@
   timezone:
     name: Europe/Paris
 
-- name: Ensure that .bashrc load custom scripts
-  blockinfile:
-    path: ~/.bashrc
-    block: |
-      # User specific environment
-      if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
-      then
-          PATH="$HOME/.local/bin:$HOME/bin:$PATH"
-          export PATH
-      fi
-      if [ -d ~/dotfiles/ansible/bashrc.d ]; then
-        for file in ~/dotfiles/ansible/bashrc.d/*.sh
-        do
-            source $file
-        done
-      fi
-      if [ -f ~/.bash_aliases ]; then
-        source ~/.bash_aliases
-      fi
-      [[ $- == *i* ]] && command -v starship >/dev/null && eval "$(starship init bash)"
-      [[ $- == *i* ]] && command -v npm >/dev/null && source <(npm completion)
-      [[ $- == *i* ]] && command -v kubectl >/dev/null && source <(kubectl completion bash)
-      [[ $- == *i* ]] && command -v openstack >/dev/null && source <(openstack complete)
-      [[ $- == *i* ]] && command -v aws_completer >/dev/null && complete -C ~/.asdf/shims/aws_completer aws
-      [[ $- == *i* ]] && command -v terraform >/dev/null && complete -C ~/.asdf/shims/terraform terraform
-      [[ $- == *i* ]] && command -v direnv >/dev/null && eval "$(direnv hook bash)"
-      [[ $- == *i* ]] && command -v fzf > /dev/null && source $(asdf where fzf)/shell/key-bindings.bash
-      [[ $- == *i* ]] && command -v k3d > /dev/null && source <(k3d completion bash)
-      [[ $- == *i* ]] && command -v quarkus > /dev/null && source <(quarkus completion bash)
-      [[ $- == *i* ]] && command -v argocd > /dev/null && source <(argocd completion bash)
+- import_tasks: add_to_path.yaml
+- import_tasks: custom_scripts.yaml
+
+- name: Setup symlinks
+  include_tasks: symlink.yml
+  loop: "{{ commons_symlinks }}"

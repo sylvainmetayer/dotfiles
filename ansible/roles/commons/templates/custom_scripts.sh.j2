@@ -1,0 +1,3 @@
+{% for item in commons_custom_scripts %}
+[[ $- == *i* ]] && command -v {{ item.command }} >/dev/null && {{ item.script }}
+{% endfor %}

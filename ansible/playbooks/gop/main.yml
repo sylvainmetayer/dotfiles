@@ -2,9 +2,9 @@
 - hosts: localhost
 
   pre_tasks:
-    - name: "Include locals vars"
+    - name: "Include locals variables"
       include_vars:
-        file: "locals.yaml"
+        file: "locals.yml"
       tags: always
 
   roles:
@@ -16,9 +16,6 @@
       tags: fedora_dependencies
     - role: donhector.workstation.asdf
       tags: asdf
-    - role: hostname
-      become: true
-      tags: hostname
     - role: sourcejedi.rpmfusion_free
       become: true
       tags: rpm
@@ -32,9 +29,9 @@
       tags: kdrive
     - role: jetbrains_toolbox
       tags: jetbrains_toolbox
-    - role: ledger
-      tags: ledger
     - role: gnome
       tags: gnome
     - role: commons
       tags: commons
+    - role: gop
+      tags: gop

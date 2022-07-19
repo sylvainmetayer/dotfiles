@@ -1,0 +1,7 @@
+---
+- name: Set SELinux in permissive mode
+  become: true
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+  when: fedora_dependencies_disable_selinux

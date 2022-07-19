@@ -1,0 +1,12 @@
+---
+git_config_user: Sylvain
+git_config_email: git@sylvain.dev
+git_config_insteads:
+  - use: "ssh://git@github.com/"
+    insteadOf: "https://github.com/"
+  - use: "ssh://git@gitlab.com/"
+    insteadOf: "https://gitlab.com/"
+  - use: "ssh://git@bitbucket.org/"
+    insteadOf: "https://bitbucket.org/"
+  # - use: "https://gitlab.groupeonepoint.com/"
+  #   insteadOf: "git@gitlab.groupeonepoint.com:"

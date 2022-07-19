@@ -1,0 +1,20 @@
+---
+- name: Ensure Git config file exists
+  copy:
+    content: ""
+    dest: "~/.gitconfig"
+    force: false
+    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_user_uid }}"
+    mode: 0600
+
+- name: Render Git config Template
+  set_fact:
+    git_config_template: "{{ lookup('template', 'gitconfig.j2') }}"
+
+- name: Add template in git config
+  blockinfile:
+    dest: "~/.gitconfig"
+    block: |
+      {{ git_config_template }}
+    marker: "#{mark} ANSIBLE MANAGED BLOCK GIT"
