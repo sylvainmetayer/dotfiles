@@ -1,0 +1,24 @@
+---
+- name: Copy ssh-agent service
+  ansible.builtin.copy:
+    src: ./files/ssh-agent.service
+    dest: ~/.config/systemd/user/ssh-agent.service
+    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_user_uid }}"
+    mode: "0644"
+
+- name: Make sure ssh-agent is running
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: true
+    name: ssh-agent
+    scope: user
+    enabled: true
+
+- name: Ensure SSH_AUTH_SOCK is properly defined
+  blockinfile:
+    insertafter: EOF
+    dest: "~/.bashrc"
+    block: |
+      export SSH_AUTH_SOCK=/run/user/{{ ansible_user_uid }}/ssh-agent.socket
+    marker: "#{mark} ANSIBLE SSH_AUTH_SOCK"

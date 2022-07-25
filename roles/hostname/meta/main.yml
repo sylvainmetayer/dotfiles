@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  role_name: hostname
+  description: Workstation setup
+  author: sylvainmetayer
+
+  license: MIT
+
+  min_ansible_version: "2.11"
+
+  platforms:
+    - name: Fedora
+      versions:
+        - all
+
+  galaxy_tags:
+    - fedora
+    - workstation
+
+dependencies: []

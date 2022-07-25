@@ -1,0 +1,8 @@
+---
+- name: Install "git-credential-keepassxc" Rust package
+  community.general.cargo:
+    name: git-credential-keepassxc
+
+- name: Configuration instructions
+  debug:
+    msg: Go to https://github.com/Frederick888/git-credential-keepassxc#configuration

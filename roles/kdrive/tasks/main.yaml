@@ -1,0 +1,24 @@
+---
+- name: Ensure kDrive folder exists
+  become: true
+  file:
+    path: "{{ kdrive_folder }}"
+    state: directory
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0755"
+
+- name: "Download kDrive"
+  get_url:
+    checksum: "sha256:{{ kdrive_sha256sum }}"
+    url: "{{ kdrive_url }}"
+    dest: "{{ kdrive_folder }}/kDrive"
+    mode: "0700"
+
+- name: Create desktop icon
+  template:
+    src: ./templates/kDrive.desktop.j2
+    dest: ~/.local/share/applications/kDrive.desktop
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"

@@ -1,0 +1,55 @@
+---
+commons_add_to_path:
+  - "$HOME/.local/bin"
+  - "$HOME/bin"
+  - "$HOME/.cargo/bin"
+
+# Will test the existence of the command and run script if available.
+commons_custom_scripts:
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: npm
+    script: "source <(npm completion)"
+  - command: kubectl
+    script: "source <(kubectl completion bash)"
+  - command: aws_completer
+    script: "complete -C ~/.asdf/shims/aws_completer aws"
+  - command: terraform
+    script: 'complete -C $(asdf where terraform)/bin/terraform terraform'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "source $(asdf where fzf)/shell/key-bindings.bash"
+  - command: k3d
+    script: "source <(k3d completion bash)"
+  - command: argocd
+    script: "source <(argocd completion bash)"
+
+
+commons_symlinks:
+  - .vimrc
+  - .bash_aliases
+  - .tmux.conf
+  - .config/starship.toml
+  - .gnupg/gpg.conf
+  - .default-npm-packages
+  - .bashrc.d/convertFile.sh
+  - .bashrc.d/define.sh
+  - .bashrc.d/_env.sh
+  - .bashrc.d/fixRights.sh
+  - .bashrc.d/git_clean.sh
+  - .bashrc.d/gitignore.sh
+  - .bashrc.d/ipLocation.sh
+  - .bashrc.d/ipv6.sh
+  - .bashrc.d/kill_me.sh
+  - .bashrc.d/kubernetes.sh
+  - .bashrc.d/ledger_udev.sh
+  - .bashrc.d/load_env.sh
+  - .bashrc.d/logs.sh
+  - .bashrc.d/server-functions.sh
+  - .bashrc.d/showHosts.sh
+  - .bashrc.d/t.sh
+
+setup_direnv: true
+setup_starship_init_script: true
+symlink_as_link: true

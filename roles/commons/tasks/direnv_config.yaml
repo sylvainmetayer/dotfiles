@@ -1,0 +1,14 @@
+---
+- name: Ensure direnv config exists
+  file:
+    mode: "0700"
+    path: "~/.config/direnv"
+    state: directory
+
+- name: Template direnv config
+  template:
+    src: ./templates/direnv.toml.j2
+    dest: ~/.config/direnv/direnv.toml
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"

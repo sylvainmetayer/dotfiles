@@ -10,4 +10,4 @@ jobs:
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:
-          scandir: "./ansible/bashrc.d"
+          scandir: "./roles/commons/files/bashrc.d"

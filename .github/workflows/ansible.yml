@@ -25,8 +25,9 @@ jobs:
         pip install yamllint ansible==${{ matrix.ansible-version }}
     - name: Lint playbook
       run: |
-        ansible-galaxy role install -r ansible/requirements.yml
-        ansible-galaxy collection install -r ansible/requirements.yml
-        ansible-playbook ansible/playbooks/dell/main.yaml --syntax-check
+        ansible-galaxy role install -r requirements.yml
+        ansible-galaxy collection install -r requirements.yml
+        ansible-playbook playbooks/dell/main.yaml --syntax-check
+        ansible-playbook playbooks/gop/main.yml --syntax-check
         yamllint .
 
