@@ -1,0 +1,19 @@
+---
+- name: Copy gnome-keyring-ssh
+  ansible.builtin.copy:
+    src: /etc/xdg/autostart/gnome-keyring-ssh.desktop
+    dest: ~/.config/autostart/gnome-keyring-ssh.desktop
+    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_user_uid }}"
+    mode: "0644"
+
+# https://askubuntu.com/a/607563
+- name: Ensure gnome-keyring-ssh is disabled
+  blockinfile:
+    insertafter: EOF
+    dest: "~/.config/autostart/gnome-keyring-ssh.desktop"
+    block: |
+      Hidden=true
+      X-GNOME-Autostart-enabled=false
+      NoDisplay=false
+    marker: "#{mark} ANSIBLE gnome-keyring-ssh"

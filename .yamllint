@@ -7,6 +7,8 @@ rules:
     level: warning
 
 ignore: |
-  .github/workflows/*
-  ansible/galaxy_roles/
-  ansible/collections/
+  /.github/workflows/*
+  /galaxy_roles/
+  /collections/
+  /.direnv/
+  playbooks/gop/locals.yml

@@ -1,0 +1,51 @@
+---
+namespace: sylvainmetayer
+
+name: workstation
+
+version: 1.0.2
+
+readme: README.md
+
+authors:
+  - Sylvain METAYER <git@sylvain.dev>
+
+description: Roles and playbooks to setup workstation
+
+license_file: "LICENSE"
+
+tags: []
+
+dependencies:
+  ansible.posix: "*"
+  community.general: "*"
+  donhector.workstation: "*"
+
+repository: https://github.com/sylvainmetayer/dotfiles
+
+documentation: https://github.com/sylvainmetayer/dotfiles
+
+homepage: https://github.com/sylvainmetayer/dotfiles
+
+issues: https://github.com/sylvainmetayer/dotfiles/issues
+
+build_ignore:
+  - .env
+  - .direnv
+  - inventory.yml
+  - .envrc
+  - .editorconfig
+  - .gitignore
+  - .yamllint
+  - .tool-versions
+  - ansible.cfg
+  - requirements.txt
+  - run.log
+  - scripts
+  - .github
+  - collections
+  - galaxy_roles
+  - sylvainmetayer-workstation-*.tar.gz
+  - facts
+  - playbooks/gibbs
+  - playbooks/gop

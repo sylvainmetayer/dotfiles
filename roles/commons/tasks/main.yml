@@ -1,0 +1,28 @@
+---
+- name: Ensure local bin directory exists
+  file:
+    path: "~/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Set timezone to Europe/Paris
+  become: true
+  timezone:
+    name: Europe/Paris
+
+- import_tasks: add_to_path.yaml
+
+- import_tasks: custom_scripts.yaml
+
+- import_tasks: direnv_config.yaml
+  when: setup_direnv | bool
+
+- name: Setup symlinks
+  include_tasks: symlink.yml
+  loop: "{{ commons_symlinks }}"
+  when: symlink_as_link | bool
+
+- name: Setup symlinks as copy
+  include_tasks: symlink_copy.yml
+  loop: "{{ commons_symlinks }}"
+  when: not symlink_as_link | bool

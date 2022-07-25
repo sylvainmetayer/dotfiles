@@ -10,13 +10,11 @@ facts/
 run.log
 
 # Ansible galaxy roles
-ansible/galaxy_roles/
-ansible/collections/
+/galaxy_roles/
+/collections/
 
-# Terraform backend state
-params/setup-backend.tfstate
-params/.env
-.terraform
+.direnv/
+.env
 
-# Terraform generated files
-params/healthchecks_urls.yml
+sylvainmetayer-workstation-*.tar.gz
+.idea/

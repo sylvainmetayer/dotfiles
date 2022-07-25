@@ -3,7 +3,7 @@
 🔧 🏠 Always WIP
 
 [![https://www.shellcheck.net/](https://img.shields.io/badge/%F0%9F%9B%A1-ShellCheck-brightgreen.svg)](https://www.shellcheck.net/)
-[![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/Ansible/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
+[![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
 [![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/Terraform/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
 [![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/Lint/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
 ![Cron status](https://healthchecks.io/badge/7373bc4e-5131-49ce-ae55-8b7c78e28a1e/kYvRrGbV/cron.svg)
@@ -13,10 +13,10 @@
 
 - `dnf install git keepassxc`
 - `git clone https://github.com/sylvainmetayer/dotfiles.git $HOME/dotfiles`
-- `python3 -m pip install --user -r requirements.txt`
-- Ensure the `selfhosted.kdbx` database is available
-  - If needed, you can download it from <https://r.sylvain.dev/dotfiles-database>
 - `./scripts/install-ansible-deps.sh`
+- If you want autocomplete
+  - `activate-global-python-argcomplete --dest ~/.bashrc.d/`
+  - `chmod +x ~/.bashrc.d/python-argcomplete`
 
 ## Usage
 
@@ -24,42 +24,39 @@
 
 My personal laptop, running Fedora.
 
-- `ansible-playbook ansible/playbooks/dell/main.yaml -K`
+- `ansible-playbook playbooks/dell/main.yaml -K`
 - `systemctl status --user ssh-agent` to get the `SSH_AUTH_SOCK` value
   - Configure KeepassXC to use this socket
 
-## Terraform
+### GOP
 
-State is stored on Terraform cloud.
+This playbook is similar with `dell` playbook but add a role `gop` which contains specific tasks required for company computer.
 
-```bash
-asdf install
-```
+You **need** to encrypt some files as it contains sensitive data.
 
-### Prerequisite
+- Ensure the `selfhosted.kdbx` database is available
+  - If needed, you can download it from <https://r.sylvain.dev/dotfiles-database>
+- `./scripts/extract-secrets.sh DATABASE_LOCATION` to extract the password and interact with the data inside the vault. It will be stored in `~/.ansible_vault_password.txt`
 
-Before running any terraform command, you need to source some environnement variables (see `params/.env.sample` for reference)
+Then you can do the following :
 
-You should keep a copy of your env files on a non versionned place.
+- `FILE=$HOME/dotfiles/roles/gop/templates/aws_config.j2`
+- `FILE=$HOME/dotfiles/roles/gop/templates/ssh_hosts.j2`
+- `FILE=$HOME/dotfiles/playbooks/gop/locals.yml`
 
-Example
+- view file : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault view $FILE`
+- edit file : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault edit $FILE`
+- encrypt file : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault encrypt $FILE`
+- decrypt file: `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault decrypt $FILE`
 
-```bash
-ln -s ~/kDrive/Backups/config/env.dotfiles params/.env
-```
+Use the following command : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-playbook playbooks/gop/main.yml -K` to run the playbook and decrypt the files.
 
-Then before running any terraform command, use the `load_env` function to load environnement variables.
+## Ansible Galaxy
 
-A `.env` file symlink is available in `terraform` folder and reference a `.env` in `params`
+### Build
 
-### Setup infra
+- `ansible-galaxy collection build`
 
-- `terraform login`
-- `terraform init`
-- `terraform plan`
-- `terraform apply`
-- `terraform [plan|target] --target=module.XXX` where `module.xxx` is the module you want to deploy
+### Publish
 
-### Lock providers
-
-`terraform providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=linux_amd64`
+- `ansible-galaxy collection publish sylvainmetayer-workstation-1.0.0.tar.gz --token TOKEN`

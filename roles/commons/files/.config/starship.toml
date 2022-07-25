@@ -1,0 +1,76 @@
+[time]
+disabled = false
+format = '🕙[\[ $time \]]($style) '
+time_format = "%T"
+utc_time_offset = "2"
+time_range = "08:00:00-19:00:00"
+
+[docker_context]
+disabled = false
+format = "via [🐋 $context](blue bold)"
+
+[vagrant]
+format = '(via [$symbol$version]($style))'
+
+[kubernetes]
+format = 'on [⛵ \($namespace\)](dimmed green) '
+disabled = false
+[kubernetes.context_aliases]
+"dev.local.cluster.k8s" = "dev"
+".*/openshift-cluster/.*" = "openshift"
+"gke_.*_(?P<var_cluster>[\\w-]+)" = "gke-$var_cluster"
+
+[aws]
+force_display = true
+
+[sudo]
+style = "bold green"
+symbol = "🧑💻 "
+disabled = true
+
+# https://github.com/starship/starship/discussions/1252#discussioncomment-3511948
+[custom.files]
+disabled = true
+description = "Show files count for current directory"
+command = "find ./ -maxdepth 1 -type f | wc -l"
+format = "📝[$output]($style) "
+style = "white"
+when = "true"
+
+[custom.directories]
+disabled = true
+description = "Show directory count count for current directory"
+command = "find ./ -maxdepth 1 -type d | tail -n +2 | wc -l"
+format = "📁[$output]($style) "
+style = "blue"
+when = "true"
+
+# https://github.com/starship/starship/discussions/1252#discussioncomment-3618594
+[custom.git_scope]
+disabled = true
+detect_folders = ['.git']
+shell = ["git", "config", "--get"]
+command = 'user.email'
+use_stdin = false
+format = '(as [$output]($style) )'
+style = "blue bold"
+description = 'The currently configured Git user.email'
+
+# https://github.com/starship/starship/discussions/1252#discussioncomment-102537
+[custom.ssh_no_keys]
+description = "SSH missing keys"
+when = "ssh-add -l | grep -q 'no identities'"
+command = "echo 🚫"
+format = "$symbol[$output]($style) "
+shell = ["bash", "--noprofile", "--norc"]
+symbol = "🔑"
+style = "bold fg:red"
+
+[custom.ssh_keys]
+description = "SSH key count"
+when = "ssh-add -l | grep -v -q 'no identities'"
+command = "ssh-add -l | grep -v 'no identities' | wc -l"
+format = "$symbol[$output]($style) "
+shell = ["bash", "--noprofile", "--norc"]
+symbol = "🔑"
+style = "bold fg:green"

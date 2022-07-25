@@ -1,0 +1,48 @@
+---
+- name: Render custom scripts Template
+  set_fact:
+    custom_script_template: "{{ lookup('template', 'custom_scripts.sh.j2') }}"
+
+- name: Ensure ~/.bashrc.d folder exists
+  become: true
+  file:
+    path: "~/.bashrc.d"
+    state: directory
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0755"
+
+- name: Add custom script in bashrc
+  blockinfile:
+    insertafter: '#!/usr/bin/env bash'
+    dest: "~/.bashrc"
+    block: |
+      if [ -d ~/.bashrc.d ]; then
+        for file in ~/.bashrc.d/*
+        do
+          source $file
+        done
+      fi
+
+      if [ -f ~/.bash_aliases ]; then
+        source ~/.bash_aliases
+      fi
+    marker: "#{mark} ANSIBLE STARTUP SCRIPTS"
+
+- name: Add starship init script in bashrc
+  blockinfile:
+    insertafter: '#!/usr/bin/env bash'
+    dest: "~/.bashrc"
+    block: |
+      # See donhector.workstation.asdf role
+      source ~/.shellrc.d/asdf.sh
+    marker: "#{mark} ANSIBLE STARSHIP INIT SCRIPTS"
+  when: setup_starship_init_script | bool
+
+- name: Add custom script in bashrc
+  blockinfile:
+    insertafter: 'EOF'
+    dest: "~/.bashrc"
+    block: |
+      {{ custom_script_template }}
+    marker: "#{mark} ANSIBLE CUSTOM SCRIPTS"

@@ -1,0 +1,15 @@
+---
+- name: Add repositories
+  ansible.builtin.include_tasks: repositories.yaml
+
+- name: Install packages
+  ansible.builtin.include_tasks: packages.yaml
+
+- name: Install flatpak packages
+  ansible.builtin.include_tasks: flatpak.yaml
+
+- name: Install python pip packages
+  ansible.builtin.include_tasks: python.yaml
+
+- name: Configure SELinux
+  ansible.builtin.include_tasks: selinux.yaml

@@ -1,0 +1,18 @@
+---
+- name: Import repositories GPG keys
+  become: true
+  rpm_key:
+    state: present
+    key: "{{ item.gpg_url }}"
+  loop: "{{ fedora_dependencies_repositories }}"
+
+- name: Add repositories
+  become: true
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    file: "{{ item.file }}"
+    baseurl: "{{ item.url }}"
+    gpgkey: "{{ item.gpg_url }}"
+    gpgcheck: "{{ item.gpg_check | bool }}"
+  loop: "{{ fedora_dependencies_repositories }}"

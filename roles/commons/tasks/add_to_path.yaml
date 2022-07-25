@@ -1,0 +1,16 @@
+---
+- name: Set PATH variable
+  set_fact:
+    commons_path_string: "{{ commons_add_to_path | join(':') }}"
+
+- name: Ensure that PATH contains custom directories
+  blockinfile:
+    path: ~/.bashrc
+    marker: "# {mark} ANSIBLE CUSTOM PATH"
+    block: |
+      if ! [[ "$PATH" =~ "{{ commons_path_string }}" ]]
+      then
+          PATH="{{ commons_path_string }}:$PATH"
+          export PATH
+      fi
+  when: commons_path_string | length > 0

@@ -1,0 +1,73 @@
+---
+- name: "Link work related script"
+  file:
+    src: ~/dotfiles/roles/gop/files/gop.sh
+    dest: ~/.gop.sh
+    state: link
+    force: false
+
+- name: "Link AWS SSM script"
+  file:
+    src: ~/dotfiles/roles/gop/files/aws-ssm-ec2-proxy-command.sh
+    dest: ~/.ssh/aws-ssm-ec2-proxy-command.sh
+    state: link
+    force: false
+
+- name: Load work script
+  blockinfile:
+    path: ~/.bashrc
+    insertbefore: EOF
+    marker: "#{mark} ANSIBLE WORK MANAGED BLOCK"
+    block: |
+      . $HOME/.gop.sh
+
+- name: "Install work related packages"
+  become: true
+  ansible.builtin.package:
+    name:
+      - openfortivpn
+      - NetworkManager-fortisslvpn-gnome
+      - NetworkManager-fortisslvpn
+      - telnet
+      - onedrive
+    state: present
+  tags:
+    - network_access
+
+- name: Render SSH work host template
+  set_fact:
+    ssh_work_config: "{{ lookup('template', 'ssh_hosts.j2') }}"
+    aws_work_config: "{{ lookup('template', 'aws_config.j2') }}"
+
+- name: Template SSH Config with work hosts
+  blockinfile:
+    insertbefore: BOF
+    dest: "~/.ssh/config"
+    block: |
+      {{ ssh_work_config }}
+    marker: "#{mark} ANSIBLE MANAGED BLOCK WORK SSH"
+  no_log: true
+
+- name: Template AWS work config
+  blockinfile:
+    insertbefore: BOF
+    dest: "~/.aws/config"
+    block: |
+      {{ aws_work_config }}
+    marker: "#{mark} ANSIBLE MANAGED BLOCK WORK AWS"
+  no_log: true
+
+- name: Install AWS Session Manager plugin
+  become: true
+  yum:
+    disable_gpg_check: true
+    name: https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm
+    state: present
+
+- name: Copy onepoint-keepassxc.pub to .ssh folder
+  ansible.builtin.copy:
+    src: ./files/onepoint-keepassxc.pub
+    dest: ~/.ssh/onepoint-keepassxc.pub
+    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_user_uid }}"
+    mode: "0600"

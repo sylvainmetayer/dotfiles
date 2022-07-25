@@ -1,0 +1,15 @@
+---
+- name: "{{ item }} : Ensure folder does exists"
+  file:
+    mode: "0700"
+    path: "~/{{ item | dirname }}"
+    state: directory
+
+- name: "{{ item }} : Copy dotfile"
+  copy:
+    src: "{{ role_path }}/files/{{ item }}"
+    dest: ~/{{ item }}
+    force: false
+    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_user_uid }}"
+    mode: "0700"
