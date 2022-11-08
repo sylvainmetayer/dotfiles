@@ -5,20 +5,21 @@
 {% if git_config_email is defined %}
   email = {{ git_config_email }}
 {% endif %}
-{% if git_config_key is defined %}
-  signingKey = {{ git_config_key }}
+
+signingkey =  {{ git_config_ssh_sign_pub_key }}
+
 [commit]
   gpgsign = true
-{% endif %}
+[gpg "ssh"]
+  allowedSignersFile = {{ ansible_user_dir }}/.ssh/allowed_signers
+[gpg]
+	format = ssh
 
 # https://stackoverflow.com/a/36500841/6187576
 {% for alternative in git_config_insteads %}
 [url "{{ alternative.use }}"]
   insteadOf = {{ alternative.insteadOf }}
 {% endfor %}
-
-[gpg]
-  program = gpg2
 
 [alias]
   # borrowed from mlcdf's dotfiles

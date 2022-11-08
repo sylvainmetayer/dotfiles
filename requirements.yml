@@ -5,19 +5,14 @@ collections:
   - name: donhector.workstation
     version: 1.1.0
 roles:
+  # TODO See https://github.com/PeterMosmans/ansible-role-customize-gnome as this one is archived ?
   - src: jaredhocutt.gnome_extensions
     version: master
   - src: sourcejedi.rpmfusion_free
     version: master
-  - src: geerlingguy.docker_arm
-    version: 5.0.0
   - src: geerlingguy.pip
-    version: 2.1.0
-  - src: geerlingguy.mysql
-    version: 3.5.0
-  - src: geerlingguy.certbot
-    version: 5.0.1
+    version: 2.2.0
   - src: petermosmans.customize-gnome
-    version: 0.2.5
+    version: 0.2.10
   - src: geerlingguy.docker
-    version: 4.2.4
+    version: 6.0.4

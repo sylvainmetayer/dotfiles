@@ -1,13 +1,12 @@
 ---
 - name: Add the flathub flatpak repository remote to the user installation
-  become: true
   flatpak_remote:
     name: flathub
     state: present
     flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
 
 - name: Install flatpak app
-  flatpak:
+  loop: "{{ fedora_dependencies_flatpak }}"
+  community.general.flatpak:
     name: "{{ item }}"
     state: present
-  loop: "{{ fedora_dependencies_flatpak }}"

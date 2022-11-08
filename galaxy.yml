@@ -3,7 +3,7 @@ namespace: sylvainmetayer
 
 name: workstation
 
-version: 1.0.2
+version: 1.0.3
 
 readme: README.md
 
@@ -30,8 +30,6 @@ homepage: https://github.com/sylvainmetayer/dotfiles
 issues: https://github.com/sylvainmetayer/dotfiles/issues
 
 build_ignore:
-  - .env
-  - .direnv
   - inventory.yml
   - .envrc
   - .editorconfig

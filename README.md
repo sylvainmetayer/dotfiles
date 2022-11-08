@@ -11,7 +11,7 @@
 
 ## Initial Setup
 
-- `dnf install git keepassxc`
+- `dnf install git keepassxc python3-pip`
 - `git clone https://github.com/sylvainmetayer/dotfiles.git $HOME/dotfiles`
 - `./scripts/install-ansible-deps.sh`
 - If you want autocomplete

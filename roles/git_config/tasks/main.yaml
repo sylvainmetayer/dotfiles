@@ -8,9 +8,22 @@
     owner: "{{ ansible_user_uid }}"
     mode: 0600
 
+- name: Ensure allowed_signers file exists
+  copy:
+    content: ""
+    dest: "~/.ssh/allowed_signers"
+    force: false
+    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_user_uid }}"
+    mode: 0600
+
 - name: Render Git config Template
   set_fact:
     git_config_template: "{{ lookup('template', 'gitconfig.j2') }}"
+
+- name: Render Git config Template
+  set_fact:
+    ssh_allowed_signers: "{{ lookup('template', 'ssh_allowed_signers.j2') }}"
 
 - name: Add template in git config
   blockinfile:
@@ -18,3 +31,10 @@
     block: |
       {{ git_config_template }}
     marker: "#{mark} ANSIBLE MANAGED BLOCK GIT"
+
+- name: Add template in allowed_signers
+  blockinfile:
+    dest: "~/.ssh/allowed_signers"
+    block: |
+      {{ ssh_allowed_signers }}
+    marker: "#{mark} ANSIBLE MANAGED BLOCK SSH SIGNING"
