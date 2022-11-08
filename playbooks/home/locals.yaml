@@ -1,48 +1,41 @@
 ---
 # ASDF
 asdf_plugins:
-  - name: docker-compose
-    repository: "https://github.com/virtualstaticvoid/asdf-docker-compose.git"
-    versions:
-      - 1.29.2
-    global: 1.29.2
-    yum_deps: []
   - name: "rust"
     repository: "https://github.com/asdf-community/asdf-rust.git"
     versions:
-      - "1.62.0"
-    global: "1.62.0"
+      - "1.65.0"
+    global: "1.65.0"
     yum_deps: []
   - name: "terraform"
     versions:
-      - "1.2.1"
-      - "1.2.5"
-    global: "1.2.5"
+      - "1.3.6"
+    global: "1.3.6"
     yum_deps: []
   - name: "direnv"
-    versions: ["2.31.0"]
-    global: "2.31.0"
+    versions: ["2.32.2"]
+    global: "2.32.2"
     yum_deps: []
   - name: "fzf"
-    versions: ["0.30.0"]
-    global: "0.30.0"
+    versions: ["0.35.1"]
+    global: "0.35.1"
     yum_deps: []
   - name: "starship"
-    versions: ["1.10.3"]
-    global: "1.10.3"
+    versions: ["1.11.0"]
+    global: "1.11.0"
     yum_deps: []
   - name: "hcloud"
     repository: "https://github.com/dhofer/asdf-hcloud.git"
-    versions: ["1.30.1"]
-    global: "1.30.1"
+    versions: ["1.31.1"]
+    global: "1.31.1"
     yum_deps: []
 
 asdf_version: "v0.10.2"
 asdf_legacy_version_file: "no"
 
 # HOSTNAME
-hostname_name: dell
-hostname_fqdn: dell.localhost
+hostname_name: home
+hostname_fqdn: home.localhost
 
 # GNOMES EXTENSIONS
 gnome_extension_ids:
@@ -60,5 +53,4 @@ gnome_extension_ids:
   - 4679
 
 # DOCKER
-docker_install_compose: false
 docker_users: ["{{ ansible_user_id }}"]

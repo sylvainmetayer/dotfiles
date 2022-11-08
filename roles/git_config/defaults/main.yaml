@@ -8,3 +8,4 @@ git_config_insteads:
     insteadOf: "https://gitlab.com/"
   - use: "ssh://git@bitbucket.org/"
     insteadOf: "https://bitbucket.org/"
+git_config_ssh_sign_pub_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHRXHnjOoW9mZpkOsJ0dgVzhTl/cBEvYKRchhKvwT5aB"

@@ -1,0 +1,35 @@
+---
+name: Deploy Collection
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run read-yaml action
+        id: yaml-data
+        uses: jbutcher5/read-yaml@1.6
+        with:
+          file: "./galaxy.yml"
+          key-path: '["version"]'
+
+      - name: Bump release version
+        id: bump_version
+        uses: christian-draeger/increment-semantic-version@1.1.0
+        with:
+          current-version: "${{ steps.yaml-data.outputs.data }}"
+          version-fragment: "feature"
+
+      - name: Build and Deploy Collection
+        uses: artis3n/ansible_galaxy_collection@v2
+        with:
+          api_key: "${{ secrets.GALAXY_API_KEY }}"
+          galaxy_version: "${{ steps.bump_version.outputs.next-version }}"
+          publish: true
+          build: true

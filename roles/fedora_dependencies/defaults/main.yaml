@@ -28,7 +28,6 @@ fedora_dependencies_packages:
   - rsync
   - jq
   - gnupg2
-  - docker-compose-plugin
   - NetworkManager-tui
   - firefox
   - gimp

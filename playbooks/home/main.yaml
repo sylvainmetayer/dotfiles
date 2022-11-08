@@ -8,9 +8,8 @@
       tags: always
 
   roles:
-    - role: docker
+    - role: geerlingguy.docker
       become: true
-      tags: docker
     - role: sourcejedi.rpmfusion_free
       become: true
       tags: rpm
