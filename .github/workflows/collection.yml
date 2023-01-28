@@ -26,13 +26,13 @@ jobs:
           current-version: "${{ steps.yaml-data.outputs.data }}"
           version-fragment: "bug"
 
-      # - name: Build and Deploy Collection
-      #   uses: artis3n/ansible_galaxy_collection@v2
-      #   with:
-      #     api_key: "${{ secrets.GALAXY_API_KEY }}"
-      #     galaxy_version: "${{ steps.bump_version.outputs.next-version }}"
-      #     publish: true
-      #     build: true
+      - name: Build and Deploy Collection
+        uses: artis3n/ansible_galaxy_collection@v2
+        with:
+          api_key: "${{ secrets.GALAXY_API_KEY }}"
+          galaxy_version: "${{ steps.bump_version.outputs.next-version }}"
+          publish: true
+          build: true
 
       - name: Update values.yaml
         uses: fjogeleit/yaml-update-action@main
