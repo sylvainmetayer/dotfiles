@@ -41,7 +41,7 @@ jobs:
           propertyPath: "version"
           value: "${{ steps.bump_version.outputs.next-version }}"
           commitChange: true
-          message: "update galaxy.yml version [skip ci]"
+          message: "update galaxy.yml version"
           branch: main
           createPR: false
           masterBranchName: main
