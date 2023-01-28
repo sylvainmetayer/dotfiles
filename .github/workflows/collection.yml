@@ -37,10 +37,19 @@ jobs:
       - name: Update values.yaml
         uses: fjogeleit/yaml-update-action@main
         with:
-          valueFile: 'galaxy.yml'
-          propertyPath: 'version'
+          valueFile: "galaxy.yml"
+          propertyPath: "version"
           value: "${{ steps.bump_version.outputs.next-version }}"
           commitChange: true
           message: "update galaxy.yml version [skip ci]"
           branch: main
           createPR: false
+
+      - name: Read file contents
+        id: read_file
+        uses: andstor/file-reader-action@v1
+        with:
+          path: "galaxy.yml"
+
+      - name: File contents
+        run: echo "${ steps.read_file.outputs.contents }"
