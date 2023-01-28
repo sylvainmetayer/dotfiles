@@ -42,3 +42,5 @@ jobs:
           value: "${{ steps.bump_version.outputs.next-version }}"
           commitChange: true
           message: "update galaxy.yml version [skip ci]"
+          branch: main
+          createPR: false
