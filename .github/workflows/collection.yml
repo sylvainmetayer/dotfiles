@@ -24,7 +24,7 @@ jobs:
         uses: christian-draeger/increment-semantic-version@1.1.0
         with:
           current-version: "${{ steps.yaml-data.outputs.data }}"
-          version-fragment: "feature"
+          version-fragment: "bug"
 
       - name: Build and Deploy Collection
         uses: artis3n/ansible_galaxy_collection@v2
@@ -33,3 +33,12 @@ jobs:
           galaxy_version: "${{ steps.bump_version.outputs.next-version }}"
           publish: true
           build: true
+
+      - name: Update values.yaml
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'galaxy.yml'
+          propertyPath: 'version'
+          value: "${{ steps.bump_version.outputs.next-version }}"
+          commitChange: true
+          message: "update galaxy.yml version [skip ci]"
