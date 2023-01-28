@@ -1,34 +1,20 @@
----
 namespace: sylvainmetayer
-
 name: workstation
-
-version: 1.2.3
-
+version: 1.2.4
 readme: README.md
-
 authors:
   - Sylvain METAYER <git@sylvain.dev>
-
 description: Roles and playbooks to setup workstation
-
-license_file: "LICENSE"
-
+license_file: LICENSE
 tags: []
-
 dependencies:
-  ansible.posix: "*"
-  community.general: "*"
-  donhector.workstation: "*"
-
+  ansible.posix: '*'
+  community.general: '*'
+  donhector.workstation: '*'
 repository: https://github.com/sylvainmetayer/dotfiles
-
 documentation: https://github.com/sylvainmetayer/dotfiles
-
 homepage: https://github.com/sylvainmetayer/dotfiles
-
 issues: https://github.com/sylvainmetayer/dotfiles/issues
-
 build_ignore:
   - inventory.yml
   - .envrc
