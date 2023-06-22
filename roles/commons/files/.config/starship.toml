@@ -2,7 +2,7 @@
 disabled = false
 format = '🕙[\[ $time \]]($style) '
 time_format = "%T"
-utc_time_offset = "1"
+utc_time_offset = "2"
 time_range = "08:00:00-19:00:00"
 
 [docker_context]
@@ -74,3 +74,8 @@ format = "$symbol[$output]($style) "
 shell = ["bash", "--noprofile", "--norc"]
 symbol = "🔑"
 style = "bold fg:green"
+
+[gcloud]
+disabled = true
+symbol = '️🇬️ '
+format = 'on [$symbol$account(\($project\))]($style) '

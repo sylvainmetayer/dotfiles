@@ -26,3 +26,6 @@ set_aws_creds_tf () {
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
 }
+
+# require by rust installed with asdf
+source /home/s.metayer/.asdf/installs/rust/1.70.0/env
