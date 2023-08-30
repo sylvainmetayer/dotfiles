@@ -1,0 +1,5 @@
+---
+joplin_url: "https://github.com/laurent22/joplin/releases/download/v2.11.11/Joplin-2.11.11.AppImage"
+# https://github.com/laurent22/joplin/releases => yaml file and update sha512
+joplin_sha512sum: "4611138ff850314c23d137ebb46da3da1eb8e870819821e010546d8bb664f299e3ba8101661e1fa1463289b23a563536a73cb7c7805fbb2b54495125553cd321"
+joplin_folder: "/opt/joplin"

@@ -27,6 +27,8 @@
       tags: git_config
     - role: kdrive
       tags: kdrive
+    - role: joplin
+      tags: joplin
     - role: jetbrains_toolbox
       tags: jetbrains_toolbox
     - role: gnome

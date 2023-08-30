@@ -1,0 +1,24 @@
+---
+- name: Ensure Joplin folder exists
+  become: true
+  file:
+    path: "{{ joplin_folder }}"
+    state: directory
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0755"
+
+- name: "Download joplin"
+  get_url:
+    checksum: "sha512:{{ joplin_sha512sum }}"
+    url: "{{ joplin_url }}"
+    dest: "{{ joplin_folder }}/joplin"
+    mode: "0700"
+
+- name: Create desktop icon
+  template:
+    src: ./templates/joplin.desktop.j2
+    dest: ~/.local/share/applications/joplin.desktop
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
