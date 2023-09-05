@@ -24,7 +24,8 @@ commons_custom_scripts:
     script: "source <(k3d completion bash)"
   - command: argocd
     script: "source <(argocd completion bash)"
-
+  - command: kustomize
+    script: "source <(kustomize completion bash)"
 
 commons_symlinks:
   - .vimrc
