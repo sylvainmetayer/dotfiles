@@ -28,4 +28,10 @@ set_aws_creds_tf () {
 }
 
 # require by rust installed with asdf
-source /home/s.metayer/.asdf/installs/rust/1.70.0/env
+RUST_VERSION=1.70.0
+test -f $HOME/.asdf/install/rust/$RUST_VERSION/env &&  source /home/s.metayer/.asdf/installs/rust/$RUST_VERSION/env
+
+test -d $HOME/.asdf/installs/gcloud && source /home/s.metayer/.asdf/installs/gcloud/430.0.0/path.bash.inc
+test -d $HOME/.asdf/installs/gcloud && source /home/s.metayer/.asdf/installs/gcloud/430.0.0/completion.bash.inc
+export USE_GKE_GCLOUD_AUTH_PLUGIN=False
+
