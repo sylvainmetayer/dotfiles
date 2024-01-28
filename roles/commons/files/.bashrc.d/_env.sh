@@ -22,5 +22,5 @@ export ANSIBLE_NOCOWS
 EDITOR=$(which vim)
 export EDITOR=$EDITOR
 
-SOPS_AGE_KEY_FILE=~/age.key
+SOPS_AGE_KEY_FILE=~/.age.key
 export SOPS_AGE_KEY_FILE=$SOPS_AGE_KEY_FILE
