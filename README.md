@@ -6,8 +6,6 @@
 [![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
 [![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/Terraform/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
 [![Github Action](https://github.com/sylvainmetayer/dotfiles/workflows/Lint/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions)
-![Cron status](https://healthchecks.io/badge/7373bc4e-5131-49ce-ae55-8b7c78e28a1e/kYvRrGbV/cron.svg)
-![Backup status](https://healthchecks.io/badge/7373bc4e-5131-49ce-ae55-8b7c78e28a1e/KhnZCMHl/backup.svg)
 
 ## Initial Setup
 
@@ -24,7 +22,7 @@
 
 My personal laptop, running Fedora.
 
-- `ansible-playbook playbooks/dell/main.yaml -K`
+- `pipenv run ansible-playbook playbooks/dell/main.yaml -K --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"`
 - `systemctl status --user ssh-agent` to get the `SSH_AUTH_SOCK` value
   - Configure KeepassXC to use this socket
 
@@ -50,6 +48,11 @@ Then you can do the following :
 - decrypt file: `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault decrypt $FILE`
 
 Use the following command : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-playbook playbooks/gop/main.yml -K` to run the playbook and decrypt the files.
+
+## TODO
+
+- [ ] Fedora 39 - enable rpmfusion repository
+- [ ] Fix errors with psutils when running with pipenv
 
 ## Ansible Galaxy
 

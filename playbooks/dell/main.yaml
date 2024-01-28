@@ -11,9 +11,6 @@
     - role: docker
       become: true
       tags: docker
-    - role: sourcejedi.rpmfusion_free
-      become: true
-      tags: rpm
     - role: fedora_dependencies
       become: true
       tags: fedora_dependencies
@@ -34,7 +31,7 @@
       tags: jetbrains_toolbox
     - role: ledger
       tags: ledger
-    - role: gnome
-      tags: gnome
+    #- role: gnome
+    #  tags: gnome
     - role: commons
       tags: commons

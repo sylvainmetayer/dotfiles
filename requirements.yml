@@ -1,7 +1,9 @@
 ---
 collections:
   - name: ansible.posix
+    version: 1.5.4
   - name: community.general
+    version: 8.2.0
   - name: donhector.workstation
     version: 1.1.0
 roles:
@@ -10,9 +12,7 @@ roles:
     version: master
   - src: sourcejedi.rpmfusion_free
     version: master
-  - src: geerlingguy.pip
-    version: 2.2.0
   - src: petermosmans.customize-gnome
     version: 0.2.10
   - src: geerlingguy.docker
-    version: 6.0.4
+    version: 7.0.2

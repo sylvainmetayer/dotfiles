@@ -1,12 +1,6 @@
 ---
 # ASDF
 asdf_plugins:
-  - name: docker-compose
-    repository: "https://github.com/virtualstaticvoid/asdf-docker-compose.git"
-    versions:
-      - 1.29.2
-    global: 1.29.2
-    yum_deps: []
   - name: "rust"
     repository: "https://github.com/asdf-community/asdf-rust.git"
     versions:
@@ -15,29 +9,28 @@ asdf_plugins:
     yum_deps: []
   - name: "terraform"
     versions:
-      - "1.2.1"
       - "1.2.5"
     global: "1.2.5"
     yum_deps: []
   - name: "direnv"
-    versions: ["2.31.0"]
-    global: "2.31.0"
+    versions: ["latest"]
+    global: "latest"
     yum_deps: []
   - name: "fzf"
-    versions: ["0.30.0"]
-    global: "0.30.0"
+    versions: ["latest"]
+    global: "latest"
     yum_deps: []
   - name: "starship"
-    versions: ["1.10.3"]
-    global: "1.10.3"
+    versions: ["latest"]
+    global: "latest"
     yum_deps: []
-  - name: "hcloud"
-    repository: "https://github.com/dhofer/asdf-hcloud.git"
-    versions: ["1.30.1"]
-    global: "1.30.1"
+  - name: "age"
+    repository: "https://github.com/threkk/asdf-age.git"
     yum_deps: []
+    global: "latest"
+    versions: ["latest"]
 
-asdf_version: "v0.10.2"
+asdf_version: "v0.14.0"
 asdf_legacy_version_file: "no"
 
 # HOSTNAME
@@ -46,8 +39,8 @@ hostname_fqdn: dell.localhost
 
 # GNOMES EXTENSIONS
 gnome_extension_ids:
-  # https://extensions.gnome.org/extension/1162/emoji-selector/
-  - 1162
+  # https://extensions.gnome.org/extension/6242/emoji-copy/
+  - 6242
   # https://extensions.gnome.org/extension/615/appindicator-support/
   - 615
   # https://extensions.gnome.org/extension/600/launch-new-instance/
@@ -60,5 +53,7 @@ gnome_extension_ids:
   - 4679
 
 # DOCKER
-docker_install_compose: false
+docker_install_compose_plugin: false
+docker_compose_package: docker-compose-plugin
+docker_compose_package_state: present
 docker_users: ["{{ ansible_user_id }}"]
