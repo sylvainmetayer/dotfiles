@@ -1,6 +1,16 @@
 ---
 # ASDF
 asdf_plugins:
+  - name: "opentofu"
+    versions: ["latest"]
+    global: "latest"
+    yum_deps: []
+  - name: "asdf-plugin-manager"
+    repository: "https://github.com/asdf-community/asdf-plugin-manager.git"
+    versions:
+      - "1.2.0"
+    global: "1.2.0"
+    yum_deps: []
   - name: "rust"
     repository: "https://github.com/asdf-community/asdf-rust.git"
     versions:
