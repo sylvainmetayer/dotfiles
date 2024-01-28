@@ -8,7 +8,7 @@
       tags: always
 
   roles:
-    - role: docker
+    - role: geerlingguy.docker
       become: true
       tags: docker
     - role: fedora_dependencies

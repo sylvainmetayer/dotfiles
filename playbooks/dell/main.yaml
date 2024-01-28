@@ -8,7 +8,7 @@
       tags: always
 
   roles:
-    - role: docker
+    - role: geerlingguy.docker
       become: true
       tags: docker
     - role: fedora_dependencies
@@ -27,11 +27,11 @@
       tags: git_config
     - role: kdrive
       tags: kdrive
-    - role: jetbrains_toolbox
-      tags: jetbrains_toolbox
     - role: ledger
       tags: ledger
-    #- role: gnome
+    # - role: gnome
     #  tags: gnome
     - role: commons
       tags: commons
+    - role: git_credential_keepassxc
+      tags: git_credential_keepassxc
