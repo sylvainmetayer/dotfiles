@@ -1,6 +1,10 @@
 ---
 # ASDF
 asdf_plugins:
+  - name: "sops"
+    versions: ["latest"]
+    global: "latest"
+    yum_deps: []
   - name: "opentofu"
     versions: ["latest"]
     global: "latest"
