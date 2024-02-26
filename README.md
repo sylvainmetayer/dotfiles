@@ -47,7 +47,7 @@ Then you can do the following :
 - encrypt file : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault encrypt $FILE`
 - decrypt file: `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault decrypt $FILE`
 
-Use the following command : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-playbook playbooks/gop/main.yml -K` to run the playbook and decrypt the files.
+Use the following command : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt pipenv run ansible-playbook playbooks/gop/main.yml -K  --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"` to run the playbook and decrypt the files.
 
 ## TODO
 
