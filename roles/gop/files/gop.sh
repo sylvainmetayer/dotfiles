@@ -31,8 +31,11 @@ set_aws_creds_tf () {
 RUST_VERSION=1.70.0
 test -f $HOME/.asdf/install/rust/$RUST_VERSION/env &&  source /home/s.metayer/.asdf/installs/rust/$RUST_VERSION/env
 
-#test -d $HOME/.asdf/installs/gcloud && source /home/s.metayer/.asdf/installs/gcloud/$(gcloud --version | head -n 1 | cut -d" " -f 4)/path.bash.inc
-#test -d $HOME/.asdf/installs/gcloud && source /home/s.metayer/.asdf/installs/gcloud/$(gcloud --version | head -n 1 | cut -d" " -f 4)/completion.bash.inc
+test -d $HOME/.asdf/installs/gcloud && source /home/s.metayer/.asdf/installs/gcloud/$(gcloud --version | head -n 1 | cut -d" " -f 4)/path.bash.inc
+test -d $HOME/.asdf/installs/gcloud && source /home/s.metayer/.asdf/installs/gcloud/$(gcloud --version | head -n 1 | cut -d" " -f 4)/completion.bash.inc
 
-export USE_GKE_GCLOUD_AUTH_PLUGIN=False
+alias kk="EDITOR='code --wait' k9s"
+
+
+#export USE_GKE_GCLOUD_AUTH_PLUGIN=False
 
