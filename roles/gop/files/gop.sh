@@ -36,6 +36,7 @@ test -d $HOME/.asdf/installs/gcloud && source /home/s.metayer/.asdf/installs/gcl
 
 alias kk="EDITOR='code --wait' k9s"
 
+alias tf_lock="terragrunt providers lock -platform=linux_amd64 -platform=darwin_arm64 -platform=darwin_amd64"
 
 #export USE_GKE_GCLOUD_AUTH_PLUGIN=False
 
