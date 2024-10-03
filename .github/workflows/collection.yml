@@ -10,18 +10,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Run read-yaml action
         id: yaml-data
-        uses: jbutcher5/read-yaml@1.6
+        uses: jbutcher5/read-yaml@39cf058cf4ea746b66d7f49f4da10a81204450cc # 1.6
         with:
           file: "./galaxy.yml"
           key-path: '["version"]'
 
       - name: Bump release version
         id: bump_version
-        uses: christian-draeger/increment-semantic-version@1.1.0
+        uses: christian-draeger/increment-semantic-version@4ac542a8ebf91f4edc224cbe3a19cc086826ae77 # 1.1.0
         with:
           current-version: "${{ steps.yaml-data.outputs.data }}"
           version-fragment: "bug"
@@ -39,7 +39,7 @@ jobs:
           masterBranchName: main
 
       - name: Build and Deploy Collection
-        uses: artis3n/ansible_galaxy_collection@v2
+        uses: artis3n/ansible_galaxy_collection@3368f56529a2ef47ef0ac1ecfcda039f90d0174a # v2
         with:
           api_key: "${{ secrets.GALAXY_API_KEY }}"
           galaxy_version: "${{ steps.bump_version.outputs.next-version }}"
@@ -48,6 +48,6 @@ jobs:
 
       - name: Read file contents
         id: read_file
-        uses: andstor/file-reader-action@v1
+        uses: andstor/file-reader-action@babb053761401147562e75be79d832978cc97325 # v1
         with:
           path: "galaxy.yml"
