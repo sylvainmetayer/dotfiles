@@ -14,9 +14,9 @@ jobs:
         ansible-version: [9.1.0]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@0f07f7f756721ebd886c2462646a35f78a8bc4de # v1
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install Ansible ${{ matrix.ansible-version }}
