@@ -13,6 +13,6 @@ roles:
   - src: sourcejedi.rpmfusion_free
     version: master
   - src: petermosmans.customize-gnome
-    version: 0.2.10
+    version: 0.2.12
   - src: geerlingguy.docker
     version: 7.0.2
