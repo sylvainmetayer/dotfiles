@@ -5,8 +5,3 @@ all:
       ansible_connection: local
       #ansible_python_interpreter: /usr/bin/python3
       #ansible_python_interpreter: "{{ ansible_playbook_python }}"
-    gibbs:
-      #ansible_python_interpreter: /usr/bin/python3
-      ansible_port: 22
-      ansible_host: gibbs.sylvain.dev
-      ansible_user: ocyhc
