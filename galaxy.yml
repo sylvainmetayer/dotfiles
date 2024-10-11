@@ -1,6 +1,6 @@
 namespace: sylvainmetayer
 name: workstation
-version: 1.2.50
+version: 1.2.51
 readme: README.md
 authors:
   - Sylvain METAYER <git@sylvain.dev>
