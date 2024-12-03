@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-ansible = "==10.6.0"
+ansible = "==10.7.0"
 psutil = "*"
 setuptools = "*"
 selinux = "*"
