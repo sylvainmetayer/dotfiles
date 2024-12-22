@@ -21,7 +21,7 @@ jobs:
 
       - name: Bump release version
         id: bump_version
-        uses: christian-draeger/increment-semantic-version@a430fd3cfcfd9267689c9ceb0002aafb9289c671 # 1.2.0
+        uses: christian-draeger/increment-semantic-version@18746485477492fd90f2664f8470b34d9208fa17 # 1.2.3
         with:
           current-version: "${{ steps.yaml-data.outputs.data }}"
           version-fragment: "bug"
