@@ -3,7 +3,7 @@ collections:
   - name: ansible.posix
     version: 2.0.0
   - name: community.general
-    version: 10.1.0
+    version: 10.3.0
   - name: donhector.workstation
     version: 1.1.0
 roles:
