@@ -1,0 +1,48 @@
+---
+# ASDF
+asdf_plugins:
+  - name: "opentofu"
+    versions:
+      - "1.9.0"
+    global: "1.9.0"
+    yum_deps: []
+    apt_deps: []
+  - name: "direnv"
+    versions: ["latest"]
+    global: "latest"
+    yum_deps: []
+    apt_deps: []
+  - name: "fzf"
+    versions: ["latest"]
+    global: "latest"
+    yum_deps: []
+    apt_deps: []
+  - name: "starship"
+    versions: ["1.22.1"]
+    global: "1.22.1"
+    yum_deps: []
+    apt_deps: []
+  - name: "hcloud"
+    repository: "https://github.com/dhofer/asdf-hcloud.git"
+    versions: ["1.50.0"]
+    global: "1.50.0"
+    yum_deps: []
+    apt_deps: []
+  - name: "age"
+    versions: ["latest"]
+    global: "latest"
+    apt_deps: []
+  - name: "sops"
+    versions: ["latest"]
+    global: "latest"
+    apt_deps: []
+
+asdf_version: "v0.15.0"
+asdf_legacy_version_file: "no"
+
+# DOCKER
+docker_users: ["{{ ansible_user_id }}"]
+
+git_config_user: Sylvain
+git_config_email: git@sylvain.dev
+git_config_ssh_sign_pub_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMR1fpT3G7XwJlYMPjA7/i4EwSqwFOnnzc1+LvFu57jO sylvain@Windows"

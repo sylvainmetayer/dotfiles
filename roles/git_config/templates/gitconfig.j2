@@ -6,6 +6,7 @@
   email = {{ git_config_email }}
 {% endif %}
 
+{% if git_config_ssh_sign_pub_key is defined and git_config_ssh_sign_pub_key != "" %}
 signingkey =  {{ git_config_ssh_sign_pub_key }}
 
 [commit]
@@ -14,6 +15,7 @@ signingkey =  {{ git_config_ssh_sign_pub_key }}
   allowedSignersFile = {{ ansible_user_dir }}/.ssh/allowed_signers
 [gpg]
 	format = ssh
+{% endif %}
 
 # https://stackoverflow.com/a/36500841/6187576
 {% for alternative in git_config_insteads %}

@@ -26,6 +26,12 @@ My personal laptop, running Fedora.
 - `systemctl status --user ssh-agent` to get the `SSH_AUTH_SOCK` value
   - Configure KeepassXC to use this socket
 
+### WSL
+
+WSL debian running on my Windows PC.
+
+- `pipenv run ansible-playbook playbooks/wsl/main.yaml -K --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"`
+
 ### GOP
 
 This playbook is similar with `dell` playbook but add a role `gop` which contains specific tasks required for company computer.
