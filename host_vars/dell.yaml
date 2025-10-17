@@ -1,0 +1,89 @@
+---
+# HOSTNAME
+hostname_name: dell
+hostname_fqdn: dell.localhost
+
+# GNOMES EXTENSIONS
+gnome_extension_ids:
+  # https://extensions.gnome.org/extension/6242/emoji-copy/
+  - 6242
+  # https://extensions.gnome.org/extension/615/appindicator-support/
+  - 615
+  # https://extensions.gnome.org/extension/600/launch-new-instance/
+  - 600
+  # https://extensions.gnome.org/extension/1262/bing-wallpaper-changer/
+  - 1262
+  # https://extensions.gnome.org/extension/7/removable-drive-menu/
+  - 7
+  # https://extensions.gnome.org/extension/4679/burn-my-windows/
+  - 4679
+
+# DOCKER
+docker_install_compose_plugin: true
+docker_compose_package: docker-compose-plugin
+docker_compose_package_state: present
+docker_users: ["{{ ansible_user_id }}"]
+
+mise_global_plugins:
+  sops: latest
+  age: latest
+  direnv: latest
+  fzf: latest
+  starship: latest
+
+
+fedora_dependencies_packages:
+  - fwupd
+  - openssh-askpass
+  - git
+  - make
+  - unzip
+  - htop
+  - wget
+  - curl
+  - tmux
+  - vim
+  - rsync
+  - jq
+  - gnupg2
+  - NetworkManager-tui
+  - firefox
+  - gimp
+  - gpaste-ui
+  - gpaste
+  - vlc
+  - xclip
+  - fortune-mod
+  - code
+  - qrencode
+  - keepassxc
+  - seahorse
+  - chromium
+  # Gnome related
+  - libappindicator
+  - dconf-editor
+  - python3-devel
+  - flatpak
+  - gnome-tweaks
+  - thunderbird
+  - libgnome-keyring
+  # Codec
+  - gstreamer1-libav
+  - graphviz
+  # Photos
+  - digikam
+
+fedora_dependencies_flatpak:
+  - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
+  - https://flathub.org/repo/appstream/org.onlyoffice.desktopeditors.flatpakref
+  - https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
+  - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
+  - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
+
+commons_custom_scripts:
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "source $(asdf where fzf)/shell/key-bindings.bash"

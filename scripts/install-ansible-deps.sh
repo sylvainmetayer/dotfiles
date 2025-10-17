@@ -6,5 +6,5 @@ if [[ -z $PIPENV_ACTIVE ]]; then
     pipenv install
 fi
 
-pipenv run ansible-galaxy role install -r "$HOME/dotfiles/requirements.yml"
-pipenv run ansible-galaxy collection install -r "$HOME/dotfiles/requirements.yml"
+pipenv run ansible-galaxy role install -r "requirements.yml"
+pipenv run ansible-galaxy collection install -r "requirements.yml"

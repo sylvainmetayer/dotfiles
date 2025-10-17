@@ -60,9 +60,6 @@ fedora_dependencies_remove_packages:
   - gnome-documents
   - rhythmbox
 
-fedora_dependencies_pip_packages:
-  - psutil>4.0
-
 fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
   - https://flathub.org/repo/appstream/com.getpostman.Postman.flatpakref
