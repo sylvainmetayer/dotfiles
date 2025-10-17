@@ -1,12 +1,5 @@
 ---
-- hosts: localhost
-
-  pre_tasks:
-    - name: "Include locals vars"
-      include_vars:
-        file: "locals.yaml"
-      tags: always
-
+- hosts: dell
   roles:
     - role: geerlingguy.docker
       become: true
@@ -14,8 +7,6 @@
     - role: fedora_dependencies
       become: true
       tags: fedora_dependencies
-    - role: donhector.workstation.asdf
-      tags: asdf
     - role: hostname
       become: true
       tags: hostname

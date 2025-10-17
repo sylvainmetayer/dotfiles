@@ -1,23 +1,41 @@
 ---
-fedora_dependencies_autoremove: true
+# HOSTNAME
+hostname_name: dell
+hostname_fqdn: dell.localhost
 
-fedora_dependencies_disable_selinux: true
+# GNOMES EXTENSIONS
+gnome_extension_ids:
+  # https://extensions.gnome.org/extension/6242/emoji-copy/
+  - 6242
+  # https://extensions.gnome.org/extension/615/appindicator-support/
+  - 615
+  # https://extensions.gnome.org/extension/600/launch-new-instance/
+  - 600
+  # https://extensions.gnome.org/extension/1262/bing-wallpaper-changer/
+  - 1262
+  # https://extensions.gnome.org/extension/7/removable-drive-menu/
+  - 7
+  # https://extensions.gnome.org/extension/4679/burn-my-windows/
+  - 4679
 
-fedora_dependencies_repositories:
-  - name: code
-    description: Visual Studio Code repo
-    file: vscode
-    url: https://packages.microsoft.com/yumrepos/vscode
-    gpg_url: https://packages.microsoft.com/keys/microsoft.asc
-    gpg_check: true
+# DOCKER
+docker_install_compose_plugin: true
+docker_compose_package: docker-compose-plugin
+docker_compose_package_state: present
+docker_users: ["{{ ansible_user_id }}"]
+
+mise_global_plugins:
+  sops: latest
+  age: latest
+  direnv: latest
+  fzf: latest
+  starship: latest
+
 
 fedora_dependencies_packages:
-  # Wayland cause Electron apps to bug when it come to screen sharing, use chrome (not chromium) because it work here.
-  - google-chrome-stable
   - fwupd
   - openssh-askpass
   - git
-  - git-lfs
   - make
   - unzip
   - htop
@@ -47,22 +65,16 @@ fedora_dependencies_packages:
   - python3-devel
   - flatpak
   - gnome-tweaks
-  - guake
   - thunderbird
-  - filezilla
   - libgnome-keyring
   # Codec
   - gstreamer1-libav
   - graphviz
-
-fedora_dependencies_remove_packages:
-  - gnome-maps
-  - gnome-documents
-  - rhythmbox
+  # Photos
+  - digikam
 
 fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
-  - https://flathub.org/repo/appstream/com.getpostman.Postman.flatpakref
   - https://flathub.org/repo/appstream/org.onlyoffice.desktopeditors.flatpakref
   - https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
   - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
