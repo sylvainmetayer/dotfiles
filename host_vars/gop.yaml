@@ -1,0 +1,39 @@
+---
+# HOSTNAME
+hostname_name: gop
+hostname_fqdn: gop.localhost
+
+# GNOME EXTENSIONS
+# Keep aligned with dell if same environment
+gnome_extension_ids:
+  - 6242   # emoji-copy
+  - 615    # appindicator-support
+  - 600    # launch-new-instance
+  - 1262   # bing-wallpaper-changer
+  - 7      # removable-drive-menu
+  - 4679   # burn-my-windows
+
+# DOCKER
+docker_install_compose_plugin: true
+docker_compose_package: docker-compose-plugin
+docker_compose_package_state: present
+docker_users: ["{{ ansible_user_id }}"]
+
+fedora_dependencies_packages: []  # rely on vaulted locals for specifics if needed
+fedora_dependencies_flatpak: []
+
+commons_custom_scripts:
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "[ -f ~/.fzf/shell/key-bindings.bash ] && source ~/.fzf/shell/key-bindings.bash || true"
+
+# Gestion des plugins via mise (successeur asdf)
+mise_global_plugins:
+  sops: latest
+  age: latest
+  direnv: latest
+  fzf: latest
+  starship: latest
