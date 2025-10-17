@@ -79,3 +79,11 @@ fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
   - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
   - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
+
+commons_custom_scripts:
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "source $(asdf where fzf)/shell/key-bindings.bash"

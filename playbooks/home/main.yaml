@@ -27,11 +27,29 @@
       tags: ssh_config
     - role: git_config
       tags: git_config
-    - role: kdrive
+    - role: generic_app
+      vars:
+        app_name: "kDrive"
+        app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.5.8.20240227-amd64.AppImage"
+        app_folder: "/opt/kDrive"
+        app_icon: "/workspaces/dotfiles/roles/kdrive/assets/kdrive.jpg"
+        desktop_name: "Infomaniak kDrive"
+        desktop_exec: "env QTWEBENGINE_CHROMIUM_FLAGS=\"--no-sandbox\" QT_QPA_PLATFORM=xcb /opt/kDrive/kDrive"
+        desktop_autostart: "true"
+        desktop_categories: "Network;"
       tags: kdrive
     - role: jetbrains_toolbox
       tags: jetbrains_toolbox
-    - role: ledger
+    - role: generic_app
+      vars:
+        app_name: "ledger"
+        app_url: "https://download.live.ledger.com/latest/linux"
+        app_folder: "/opt/ledger"
+        app_icon: "/workspaces/dotfiles/roles/ledger/assets/ledger.svg"
+        desktop_name: "Ledger Live"
+        desktop_exec: "/opt/ledger/ledger"
+        desktop_autostart: "false"
+        desktop_categories: "Finance;"
       tags: ledger
     - role: gnome
       tags: gnome

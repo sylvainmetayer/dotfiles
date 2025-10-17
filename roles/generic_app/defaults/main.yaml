@@ -1,0 +1,9 @@
+---
+app_name: ""
+app_url: ""
+app_folder: "~/Applications"
+app_icon: ""
+desktop_name: ""
+desktop_icon: ""
+desktop_exec: "{{ app_folder }}/{{ app_name }}"
+desktop_comment: ""
