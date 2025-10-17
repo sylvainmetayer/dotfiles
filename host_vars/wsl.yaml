@@ -1,0 +1,25 @@
+---
+# HOSTNAME (optional for WSL if desired)
+hostname_name: wsl
+hostname_fqdn: wsl.localhost
+
+# DOCKER (disabled; keep users list for potential future enablement)
+docker_users: ["{{ ansible_user_id }}"]
+
+commons_custom_scripts:
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "[ -f ~/.fzf/shell/key-bindings.bash ] && source ~/.fzf/shell/key-bindings.bash || true"
+
+mise_global_plugins:
+  sops: latest
+  age: latest
+  direnv: latest
+  fzf: latest
+  starship: latest
+
+# Git signing key example (also present in locals)
+# git_config_ssh_sign_pub_key: "ssh-ed25519 AAAAC3..."

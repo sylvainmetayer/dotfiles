@@ -1,0 +1,31 @@
+---
+# HOSTNAME
+hostname_name: home
+hostname_fqdn: home.localhost
+
+# GNOME EXTENSIONS
+gnome_extension_ids:
+  - 1162  # emoji-selector
+  - 615   # appindicator-support
+  - 600   # launch-new-instance
+  - 1262  # bing-wallpaper-changer
+  - 7     # removable-drive-menu
+  - 4679  # burn-my-windows
+
+# DOCKER
+docker_users: ["{{ ansible_user_id }}"]
+
+commons_custom_scripts:
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "[ -f ~/.fzf/shell/key-bindings.bash ] && source ~/.fzf/shell/key-bindings.bash || true"
+
+mise_global_plugins:
+  sops: latest
+  age: latest
+  direnv: latest
+  fzf: latest
+  starship: latest
