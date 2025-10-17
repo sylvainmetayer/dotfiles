@@ -1,0 +1,72 @@
+# This rpmfusion__impl role is used to avoid duplicated code between the -free
+# and -nonfree roles.  It simplifies maintenance and development.
+#
+# nonfree requires free to be enabled; the dependency is handled in the
+# nonfree role.
+#
+# You could have a single role with a variable to control whether the nonfree
+# repo is enabled.  However that method generates "a lot of 'skipped' output".
+#
+# The skipped output would be possible to avoid using a loop of include_task.
+# But then, "tasks which only exist inside a dynamic include will not show up
+# in --list-tasks output".  Remember `--check` mode is not a fully dry run,
+# making it "less useful ... if you have steps that use conditionals that
+# depend on the results of prior commands".  You can find an example of that
+# in install-nonidempotent.yml.
+
+- name: Check OS is Fedora
+  assert:
+    that: ansible_distribution == 'Fedora'
+
+
+- name: Check variable <repo> - "free" or "nonfree"
+  assert:
+    that:
+      - repo is defined
+      - repo == "free" or repo == "nonfree"
+    msg: Did you use rpmfusion__impl directly?
+         Please use sourcejedi.rpmfusion-free and/or
+         sourcejedi.rpmfusion-nonfree instead.
+
+# The role which pulled us in won't be shown, not yet.
+# Clarify which one it was.
+- name: Now installing <repo>
+  debug:
+    var: repo
+
+# Official rpmfusion instructions are a one-time process, which
+# installs the rpmfusion release package.  I found a problem when I
+# adapted that directly to Ansible:
+#
+# The rpmfusion release package may be updated within a release, and
+# the instructions don't account for this.  I guess they assume a
+# subsequent update at some point.  But after the update, the specific
+# release RPM that we downloaded will no longer be installed... and
+# this role would want to downgrade to the first version!
+#
+# The official instructions are purely a bootstrap towards installing
+# the rpmfusion release package. So I think we can use the obvious
+# workaround without losing anything.
+
+- name: rpmfusion release is already installed
+  package:
+    name: rpmfusion-{{ repo }}-release
+    state: present
+  check_mode: yes
+  ignore_errors: yes
+  register: install_idempotent
+
+# Run idempotent as much as possible.
+# In particular, this helps test the fragile task
+# "Check description of installed signing key".
+- import_tasks: install-idempotent.yml
+
+- import_tasks: install-nonidempotent.yml
+  when: install_idempotent.failed or install_idempotent.changed
+
+
+# This is for role development only.  Used "include_tasks" so the
+# include tasks do not show up, even as "skipped".
+- name: Update signing keys from managed node
+  include_tasks: update_master_keys.yml
+  when: rpmfusion__update_master_keys
