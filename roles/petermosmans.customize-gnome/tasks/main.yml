@@ -1,0 +1,201 @@
+---
+# tasks file for PeterMosmans.customize-gnome
+
+- name: Parse Gnome Shell version
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      gnome-shell --version | sed 's/^[^0-9.]*//' | sed 's/[^0-9]*$//'
+    executable: /bin/bash
+  register: r_gnome_extension_parse_shell_version
+  changed_when: false
+
+- name: Set Gnome Shell version as parameter
+  ansible.builtin.set_fact:
+    gnome_shell_version: "{{ r_gnome_extension_parse_shell_version.stdout }}"
+
+- name: Check if Gnome Shell was detected
+  ansible.builtin.debug:
+    msg: "Sorry - no Gnome Shell detected... exiting"
+  failed_when: true
+  when: not r_gnome_extension_parse_shell_version.stdout
+
+- name: Install (font) packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: true
+    install-recommends: false
+    state: present
+  become: true
+  loop: "{{ gnome_packages|default([]) }}"
+
+- name: Ensure that target directory exists
+  ansible.builtin.file:
+    path: "/home/{{ gnome_user }}/.config/{{ gtk_version }}"
+    state: directory
+  become_user: "{{ gnome_user }}"
+  when: gtk_version is defined
+
+- name: Copy files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ gnome_user }}"
+    group: "{{ gnome_user }}"
+    mode: 0644
+  loop: "{{ gnome_files|default([]) }}"
+  loop_control:
+    label: "{{ item.src }}"
+  tags:
+    - files
+
+- name: Install fonts
+  ansible.builtin.include_tasks:
+    file: install_font.yml
+  loop: "{{ gnome_fonts | default([]) }}"
+  loop_control:
+    label: "{{ gnome_font.name }}"
+    loop_var: gnome_font
+  tags:
+    - fonts
+
+- name: Refresh font list
+  ansible.builtin.command: fc-cache -fv
+  changed_when: false
+  tags:
+    - fonts
+
+- name: Create a temporary directory for extensions
+  ansible.builtin.tempfile:
+    state: directory
+  become_user: "{{ gnome_user }}"
+  register: customize_gnome_temp_dir
+  notify: Remove temporary directory for extensions
+  when: not ansible_check_mode
+
+- name: Create a list of current enabled extensions
+  become_user: "{{ gnome_user }}"
+  ansible.builtin.shell: gnome-extensions list --enabled > "{{ customize_gnome_temp_dir.path }}/before.txt"
+  changed_when: False
+  failed_when: False
+
+- name: Load Gnome extension information
+  include_tasks: get_extension_info.yml
+  loop: "{{ gnome_extensions|default([]) }}"
+
+- name: Download GNOME Shell extensions
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "{{ customize_gnome_temp_dir.path }}/{{ item.name }}.zip"
+    mode: 0644
+  loop: "{{ gnome_extensions_full|default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become_user: "{{ gnome_user }}"
+  tags:
+    - extensions
+  changed_when: False
+
+- name: Create GNOME extension directories
+  ansible.builtin.file:
+    path: /home/{{ gnome_user }}/.local/share/gnome-shell/extensions/{{ item.name }}
+    state: directory
+  become_user: "{{ gnome_user }}"
+  loop: "{{ gnome_extensions_full|default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  tags:
+    - extensions
+
+- name: Unzip GNOME extensions
+  ansible.builtin.unarchive:
+    src: "{{ customize_gnome_temp_dir.path }}/{{ item.name }}.zip"
+    dest: "/home/{{ gnome_user }}/.local/share/gnome-shell/extensions/{{ item.name }}"
+    remote_src: true
+  become_user: "{{ gnome_user }}"
+  loop: "{{ gnome_extensions_full|default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  tags:
+    - extensions
+  register: unzipped_extension
+
+- name: Restart Gnome Shell to ensure all extensions are visible
+  become_user: "{{ gnome_user }}"
+  ansible.builtin.command:
+    cmd: killall -3 gnome-shell
+  when: unzipped_extension.changed and not customize_gnome__skip_restart_gnome_shell
+
+- name: Enable extensions
+  ansible.builtin.command: gnome-shell-extension-tool -e {{ item.name }}
+  become_user: "{{ gnome_user }}"
+  when: item.enable | default(false)
+  loop: "{{ gnome_extensions_full | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  register: r_gnome_enable_extension
+  changed_when: "'is now enabled' in r_gnome_enable_extension.stderr"
+  failed_when: r_gnome_enable_extension.rc != 0 and 'already enabled' not in r_gnome_enable_extension.stderr
+  tags:
+    - settings
+
+- name: Enable extensions with newer command
+  ansible.builtin.command: gnome-extensions enable {{ item.item.name }}
+  become_user: "{{ gnome_user }}"
+  when:
+    - item.item.enable | default(false)
+    - "'gnome-shell-extension-tool is deprecated' in item.stderr"
+  loop: "{{ r_gnome_enable_extension.results | default([]) }}"
+  loop_control:
+    label: "{{ item.item.name }}"
+  changed_when: False
+  tags:
+    - settings
+  ignore_errors: true
+
+- name: Create a list of enabled extensions
+  become_user: "{{ gnome_user }}"
+  ansible.builtin.shell: gnome-extensions list --enabled > "{{ customize_gnome_temp_dir.path }}/after.txt"
+  changed_when: false
+  failed_when: False
+
+- name: Compare the list of enabled extensions
+  ansible.builtin.shell: diff --ignore-all-space "{{ customize_gnome_temp_dir.path }}/before.txt" "{{ customize_gnome_temp_dir.path }}/after.txt"|awk '/[<>]/{print $2}'
+
+  register: difference
+  changed_when: difference.rc != 0
+
+- debug:
+    msg: "Changes in enabled extensions: {{ difference.stdout }}"
+  when: difference.stdout
+
+- name: Modify application settings using gsettings
+  ansible.builtin.command:
+    cmd: gsettings {{ ('--schemadir ' + item.schemadir) if 'schemadir' in item else '' }} set {{ item.schema }} {{ item.key }} {{ item.value }}
+  become_user: "{{ gnome_user }}"
+  changed_when: false
+  loop: "{{ gnome_gsettings|default([]) }}"
+  loop_control:
+    label: "{{ item.key }}"
+  tags:
+    - settings
+
+- name: Install prerequisites for the dconf module
+  ansible.builtin.package:
+    name: python3-psutil
+    state: present
+  become: true
+  when: gnome_dconf|default(false)
+
+- name: Modify application settings using dconf
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  become_user: "{{ gnome_user }}"
+  loop: "{{ gnome_dconf|default([]) }}"
+  loop_control:
+    label: "{{ item.key }}"
+  changed_when: false
+  tags:
+    - settings
+    - dconf
