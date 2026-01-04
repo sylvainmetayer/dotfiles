@@ -7,5 +7,3 @@ all:
       ansible_connection: local
     home:
       ansible_connection: local
-    wsl:
-      ansible_connection: local

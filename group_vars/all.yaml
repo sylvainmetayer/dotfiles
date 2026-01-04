@@ -1,0 +1,16 @@
+---
+gnome_extension_ids:
+  # https://extensions.gnome.org/extension/6242/emoji-copy/
+  - 6242
+  # https://extensions.gnome.org/extension/615/appindicator-support/
+  - 615
+  # https://extensions.gnome.org/extension/600/launch-new-instance/
+  - 600
+  # https://extensions.gnome.org/extension/1262/bing-wallpaper-changer/
+  - 1262
+  # https://extensions.gnome.org/extension/7/removable-drive-menu/
+  - 7
+  # https://extensions.gnome.org/extension/4679/burn-my-windows/
+  - 4679
+  # https://extensions.gnome.org/extension/3780/ddterm/
+  - 3780

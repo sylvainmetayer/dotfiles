@@ -1,0 +1,4 @@
+[tools]
+{% for item, version in mise_global_plugins.items() %}
+{{ item }} = "{{ version }}"
+{% endfor %}

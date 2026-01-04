@@ -47,7 +47,6 @@ fedora_dependencies_packages:
   - python3-devel
   - flatpak
   - gnome-tweaks
-  - guake
   - thunderbird
   - filezilla
   - libgnome-keyring

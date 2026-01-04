@@ -3,35 +3,6 @@
 hostname_name: dell
 hostname_fqdn: dell.localhost
 
-# GNOMES EXTENSIONS
-gnome_extension_ids:
-  # https://extensions.gnome.org/extension/6242/emoji-copy/
-  - 6242
-  # https://extensions.gnome.org/extension/615/appindicator-support/
-  - 615
-  # https://extensions.gnome.org/extension/600/launch-new-instance/
-  - 600
-  # https://extensions.gnome.org/extension/1262/bing-wallpaper-changer/
-  - 1262
-  # https://extensions.gnome.org/extension/7/removable-drive-menu/
-  - 7
-  # https://extensions.gnome.org/extension/4679/burn-my-windows/
-  - 4679
-
-# DOCKER
-docker_install_compose_plugin: true
-docker_compose_package: docker-compose-plugin
-docker_compose_package_state: present
-docker_users: ["{{ ansible_user_id }}"]
-
-mise_global_plugins:
-  sops: latest
-  age: latest
-  direnv: latest
-  fzf: latest
-  starship: latest
-
-
 fedora_dependencies_packages:
   - fwupd
   - openssh-askpass
@@ -72,6 +43,8 @@ fedora_dependencies_packages:
   - graphviz
   # Photos
   - digikam
+  # Zellij
+  - wl-clipboard
 
 fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
@@ -81,6 +54,8 @@ fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
 
 commons_custom_scripts:
+  - command: mise
+    script: 'eval "$(mise activate bash)"'
   - command: starship
     script: 'eval "$(starship init bash)"'
   - command: direnv
