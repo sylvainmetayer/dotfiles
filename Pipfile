@@ -5,12 +5,11 @@ name = "pypi"
 
 [packages]
 ansible = "==12.1.0"
-psutil = "*"
-setuptools = "*"
 selinux = "*"
+psutil = "*"
 ansible-lint = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.12"
+python_version = "3.14"

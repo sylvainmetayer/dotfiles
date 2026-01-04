@@ -3,29 +3,72 @@
 hostname_name: home
 hostname_fqdn: home.localhost
 
-# GNOME EXTENSIONS
-gnome_extension_ids:
-  - 1162  # emoji-selector
-  - 615   # appindicator-support
-  - 600   # launch-new-instance
-  - 1262  # bing-wallpaper-changer
-  - 7     # removable-drive-menu
-  - 4679  # burn-my-windows
-
-# DOCKER
-docker_users: ["{{ ansible_user_id }}"]
-
 commons_custom_scripts:
+  - command: mise
+    script: 'eval "$(mise activate bash)"'
   - command: starship
     script: 'eval "$(starship init bash)"'
   - command: direnv
     script: 'eval "$(direnv hook bash)"'
   - command: fzf
-    script: "[ -f ~/.fzf/shell/key-bindings.bash ] && source ~/.fzf/shell/key-bindings.bash || true"
+    script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"
 
-mise_global_plugins:
-  sops: latest
-  age: latest
-  direnv: latest
-  fzf: latest
-  starship: latest
+fedora_dependencies_packages:
+  - fwupd
+  - openssh-askpass
+  - git
+  - make
+  - unzip
+  - htop
+  - wget
+  - curl
+  - vim
+  - fzf
+  - rsync
+  - jq
+  - gnupg2
+  - NetworkManager-tui
+  - firefox
+  - gimp
+  - gpaste-ui
+  - gpaste
+  - vlc
+  - xclip
+  - fortune-mod
+  - code
+  - qrencode
+  - seahorse
+  - chromium
+  # Gnome related
+  - libappindicator
+  - dconf-editor
+  - python3-devel
+  - flatpak
+  - gnome-tweaks
+  - thunderbird
+  - filezilla
+  - libgnome-keyring
+  # Codec
+  - gstreamer1-libav
+  - graphviz
+  # Containers
+  - podman
+  # Zellij
+  - wl-clipboard
+  - digikam
+
+
+fedora_dependencies_remove_packages:
+  - keepassxc # use flatpak
+  - gnome-maps
+  - gnome-documents
+  - rhythmbox
+
+fedora_dependencies_flatpak:
+  - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
+  - https://flathub.org/repo/appstream/org.onlyoffice.desktopeditors.flatpakref
+  - https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
+  - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
+  - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
+  - https://flathub.org/repo/appstream/org.keepassxc.KeePassXC.flatpakref
+  - https://flathub.org/repo/appstream/com.github.tchx84.Flatseal
