@@ -1,9 +1,9 @@
 ---
-- name: Display battery percentage
-  dconf:
-    key: "/org/gnome/desktop/interface/show-battery-percentage"
-    value: "true"
-    state: present
+# - name: Display battery percentage
+#   dconf:
+#     key: "/org/gnome/desktop/interface/show-battery-percentage"
+#     value: "true"
+#     state: present
 
 - name: Configure buttons layout
   dconf:
@@ -63,66 +63,3 @@
     key: "/desktop/gnome/crypto/pgp/keyservers"
     value: "['hkp://pool.sks-keyservers.net', 'ldap://keyserver.pgp.com']"
     state: present
-
-- name: Configure guake
-  block:
-    - name: Set bind key
-      dconf:
-        key: "/apps/guake/keybindings/global/show-hide"
-        value: "'twosuperior'"
-        state: present
-    - name: Set transparency
-      dconf:
-        key: "/apps/guake/style/background/transparency"
-        value: "86"
-        state: present
-    - name: Enable dark theme
-      dconf:
-        key: "/apps/guake/general/gtk-prefer-dark-theme"
-        value: "true"
-        state: present
-    - name: Enable infinite history
-      dconf:
-        key: "/apps/guake/general/infinite-history"
-        value: "true"
-        state: present
-    - name: Disable popup when start
-      dconf:
-        key: "/apps/guake/general/use-popup"
-        value: "false"
-        state: present
-    - name: Set height
-      dconf:
-        key: "/apps/guake/general/window-height"
-        value: "71"
-        state: present
-    - name: Set start after login
-      dconf:
-        key: "/apps/guake/general/start-at-login"
-        value: "true"
-        state: present
-    - name: Save when changed
-      dconf:
-        key: "/apps/guake/general/save-tabs-when-changed"
-        value: "true"
-        state: present
-    - name: Gnome shortcut name
-      dconf:
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name"
-        value: "'Guake Toggle'"
-        state: present
-    - name: Gnome shortcut command
-      dconf:
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command"
-        value: "'/usr/bin/guake-toggle'"
-        state: present
-    - name: Gnome shortcut key
-      dconf:
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding"
-        value: "'twosuperior'"
-        state: present
-    # @see https://gist.github.com/carlwgeorge/c560a532b6929f49d9c0df52f75a68ae#file-gnome-yml-L85
-    - name: enable custom keybindings
-      dconf:
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
-        value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"

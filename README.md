@@ -9,7 +9,7 @@
 
 ## Initial Setup
 
-- `dnf install git keepassxc python3-pip`
+- `dnf install git python3-pip`
 - `git clone https://github.com/sylvainmetayer/dotfiles.git $HOME/dotfiles`
 - `./scripts/install-ansible-deps.sh`
 - If you want autocomplete
@@ -65,7 +65,6 @@ ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt pipenv run ansible-playbook pla
 
 ## TODO
 
-- [ ] Fedora 39 - enable rpmfusion repository
 - [ ] Fix errors with psutils when running with pipenv
 
 ## Ansible Galaxy

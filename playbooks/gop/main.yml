@@ -28,7 +28,7 @@
     - role: generic_app
       vars:
         app_name: "kDrive"
-        app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.5.8.20240227-amd64.AppImage"
+        app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.9.1-amd64.AppImage"
         app_folder: "/opt/kDrive"
         app_icon: "/workspaces/dotfiles/roles/kdrive/assets/kdrive.jpg"
         desktop_name: "Infomaniak kDrive"

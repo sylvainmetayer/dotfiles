@@ -1,0 +1,8 @@
+mise_global_plugins:
+  sops: latest
+  age: latest
+  direnv: latest
+  starship: latest
+  zellij: latest
+  usage: latest
+  rust: 1.92.0
