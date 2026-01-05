@@ -5,4 +5,3 @@ mise_global_plugins:
   starship: latest
   zellij: latest
   usage: latest
-  rust: 1.92.0

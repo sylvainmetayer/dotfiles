@@ -13,6 +13,7 @@ fedora_dependencies_packages:
   - wget
   - curl
   - tmux
+  - fzf
   - vim
   - rsync
   - jq
@@ -61,4 +62,4 @@ commons_custom_scripts:
   - command: direnv
     script: 'eval "$(direnv hook bash)"'
   - command: fzf
-    script: "source $(asdf where fzf)/shell/key-bindings.bash"
+    script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"
