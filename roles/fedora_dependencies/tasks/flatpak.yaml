@@ -34,4 +34,3 @@
     mode: '0644'
   when: "'https://flathub.org/repo/appstream/org.keepassxc.KeePassXC.flatpakref' in fedora_dependencies_flatpak"
 
-  # TODO https://github.com/flathub/org.keepassxc.KeePassXC/issues/117
