@@ -14,4 +14,4 @@ commons_custom_scripts:
   - command: direnv
     script: 'eval "$(direnv hook bash)"'
   - command: fzf
-    script: "[ -f ~/.fzf/shell/key-bindings.bash ] && source ~/.fzf/shell/key-bindings.bash || true"
+    script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"

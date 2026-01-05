@@ -15,14 +15,14 @@
 
 - name: Create mise global folder
   file:
-    path: "~/.config/mise"
+    path: "{{ ansible_env.HOME }}/.config/mise"
     state: directory
     mode: '0755'
 
 - name: Create config mise file
   template:
     src: "config.toml.j2"
-    dest: "~/.config/mise/config.toml"
+    dest: "{{ ansible_env.HOME }}/.config/mise/config.toml"
     mode: '0644'
 
 - name: Run mise install

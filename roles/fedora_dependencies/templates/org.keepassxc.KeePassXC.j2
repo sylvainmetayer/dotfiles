@@ -1,5 +1,5 @@
 [Context]
-filesystems=/run/user/{{ ansible_user_id }}/ssh-agent.socket;
+filesystems=/run/user/{{ ansible_user_uid }}/ssh-agent.socket;
 
 [Environment]
-SSH_AUTH_SOCK=/run/user/{{ ansible_user_id }}/ssh-agent.socket
+SSH_AUTH_SOCK=/run/user/{{ ansible_user_uid }}/ssh-agent.socket
