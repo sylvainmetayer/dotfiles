@@ -9,7 +9,7 @@
 
 # https://askubuntu.com/a/607563
 - name: Ensure gnome-keyring-ssh is disabled
-  blockinfile:
+  ansible.builtin.blockinfile:
     insertafter: EOF
     dest: "~/.config/autostart/gnome-keyring-ssh.desktop"
     block: |

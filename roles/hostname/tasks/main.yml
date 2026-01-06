@@ -1,11 +1,11 @@
 ---
 - name: "Set the hostname"
-  hostname:
+  ansible.builtin.hostname:
     name: "{{ hostname_name }}"
   when: hostname_name is defined
 
 - name: "Update the hostname - (/etc/hosts)"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/hosts
     regexp: "^{{ ansible_lo.ipv4.address }}"
     line: "{{ ansible_lo.ipv4.address }} localhost {{ hostname_fqdn }} {{ hostname_name }}"
