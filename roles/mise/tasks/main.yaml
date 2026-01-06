@@ -14,16 +14,16 @@
     update_cache: true
 
 - name: Create mise global folder
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/mise"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Create config mise file
-  template:
+  ansible.builtin.template:
     src: "config.toml.j2"
     dest: "{{ ansible_env.HOME }}/.config/mise/config.toml"
-    mode: '0644'
+    mode: "0644"
 
 - name: Run mise install
-  command: "mise install"
+  ansible.builtin.command: "mise install"

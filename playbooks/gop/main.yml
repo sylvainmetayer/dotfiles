@@ -3,7 +3,7 @@
 
   pre_tasks:
     - name: "Include locals variables"
-      include_vars:
+      ansible.builtin.include_vars:
         file: "locals.yml"
       tags: always
 

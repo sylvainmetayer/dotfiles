@@ -3,13 +3,13 @@
 
   pre_tasks:
     - name: "Include locals vars"
-      include_vars:
+      ansible.builtin.include_vars:
         file: "locals.yaml"
       tags: always
 
   roles:
-    #! - role: geerlingguy.docker
-    #!   become: true
+    # ! - role: geerlingguy.docker
+    # !   become: true
     - role: donhector.workstation.asdf
       tags: asdf
     - role: commons

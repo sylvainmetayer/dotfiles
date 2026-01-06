@@ -1,6 +1,6 @@
 ---
 - name: Ensure required folder exists
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: "0700"
@@ -9,10 +9,9 @@
     - ~/.config/systemd/user/
     - ~/.config/autostart
 
-- include_tasks: ssh_config.yaml
-- include_tasks: disable_gnome_ssh_agent.yaml
-- include_tasks: ssh_agent.yaml
-
+- ansible.builtin.include_tasks: ssh_config.yaml
+- ansible.builtin.include_tasks: disable_gnome_ssh_agent.yaml
+- ansible.builtin.include_tasks: ssh_agent.yaml
 - name: Copy keepassxc.pub to .ssh folder
   ansible.builtin.copy:
     src: ./files/keepassxc.pub

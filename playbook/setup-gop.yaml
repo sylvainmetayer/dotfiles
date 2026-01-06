@@ -5,7 +5,7 @@
 
   pre_tasks:
     - name: "Include vaulted locals variables"
-      include_vars:
+      ansible.builtin.include_vars:
         file: "playbooks/gop/locals.yml"
       tags: always
 

@@ -25,12 +25,11 @@
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.local/share/flatpak/overrides"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Create keepassxc override to bind SSH socket
   ansible.builtin.template:
     src: "org.keepassxc.KeePassXC.j2"
     dest: "{{ ansible_env.HOME }}/.local/share/flatpak/overrides/org.keepassxc.KeePassXC"
-    mode: '0644'
+    mode: "0644"
   when: "'https://flathub.org/repo/appstream/org.keepassxc.KeePassXC.flatpakref' in fedora_dependencies_flatpak"
-

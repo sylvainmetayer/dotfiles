@@ -1,0 +1,12 @@
+[project]
+name = "dotfiles"
+version = "0.1.0"
+description = "Ansible playbooks to setup my environment"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ansible>=13.2.0",
+    "ansible-lint>=25.12.2",
+    "psutil>=7.2.1",
+    "selinux>=0.3.0",
+]

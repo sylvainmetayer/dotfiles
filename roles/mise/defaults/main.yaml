@@ -1,3 +1,4 @@
+---
 mise_global_plugins:
   sops: latest
   age: latest
@@ -5,3 +6,4 @@ mise_global_plugins:
   starship: latest
   zellij: latest
   usage: latest
+  github-cli: latest

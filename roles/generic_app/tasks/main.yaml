@@ -1,7 +1,7 @@
 ---
 - name: Ensure app folder exists
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ app_folder }}"
     state: directory
     owner: "{{ ansible_user_uid | default(omit) }}"
@@ -9,13 +9,13 @@
     mode: "0755"
 
 - name: Download app binary
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ app_url }}"
     dest: "{{ app_folder }}/{{ app_name }}"
     mode: "0700"
 
 - name: Create desktop icon
-  template:
+  ansible.builtin.template:
     src: "app.desktop.j2"
     dest: "~/.local/share/applications/{{ desktop_name | default(app_name) }}.desktop"
     owner: "{{ ansible_user_uid | default(omit) }}"

@@ -6,60 +6,60 @@
 #     state: present
 
 - name: Configure buttons layout
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/wm.preferences/button-layout"
     value: "'appmenu:minimize,maximize,close'"
     state: present
 
 - name: Limit switch applications to current workspace only
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/shell/app-switcher/current-workspace-only"
     value: "true"
     state: present
 
 - name: Disallow location access
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/system/location/enabled"
     value: "false"
     state: present
 
 # See https://askubuntu.com/a/1071888
 - name: Allow separate multiple windows per workspace
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/mutter/workspaces-only-on-primary"
     value: "false"
     state: present
 
 # See https://superuser.com/a/860001
 - name: Disable switch applications
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/wm/keybindings/switch-applications"
     value: "@as []"
     state: present
 - name: Enable switch windows instead of applications
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/wm/keybindings/switch-windows"
     value: "['<Super>Tab', '<Alt>Tab']"
     state: present
 - name: Disable switch applications backward
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/wm/keybindings/switch-applications-backward"
     value: "@as []"
     state: present
 - name: Enable switch windows backward instead of applications
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/wm/keybindings/switch-windows-backward"
     value: "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
     state: present
 
 - name: Clipboard extension - disable shortcut
-  dconf:
+  community.general.dconf:
     key: "/org/gnome/shell/extensions/clipboard-indicator/enable-keybindings"
     value: "false"
     state: present
 
 - name: Setup GPG Keyservers
-  dconf:
+  community.general.dconf:
     key: "/desktop/gnome/crypto/pgp/keyservers"
     value: "['hkp://pool.sks-keyservers.net', 'ldap://keyserver.pgp.com']"
     state: present

@@ -1,0 +1,29 @@
+[tools]
+uv = "0.9"
+python = "{{ get_env(name='PYTHON_VERSION', default='3.14') }}"
+
+[env]
+# Use the project name derived from the current directory
+PROJECT_NAME = "{{ config_root | basename }}"
+
+# Automatic virtualenv activation
+_.python.venv = { path = ".venv", create = true }
+
+[tasks.info]
+description = "Print project information"
+run = '''
+echo "Project: $PROJECT_NAME"
+echo "Virtual Environment: $VIRTUAL_ENV"
+'''
+
+[tasks.lint]
+description = "Run ansible-lint"
+run = "ansible-lint"
+
+[tasks.lint-fix]
+description = "Run ansible-lint with auto-fix"
+run = "ansible-lint --fix"
+
+[tasks.home]
+description = "Setup home environment"
+run = "ansible-playbook playbook/setup-home.yaml -K"
