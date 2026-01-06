@@ -35,6 +35,6 @@ commons_symlinks:
   - .bashrc.d/showHosts.sh
   - .bashrc.d/t.sh
 
-setup_direnv: true
-setup_starship_init_script: true
-symlink_as_link: true
+commons_setup_direnv: true
+commons_setup_starship_init_script: true
+commons_symlink_as_link: true
