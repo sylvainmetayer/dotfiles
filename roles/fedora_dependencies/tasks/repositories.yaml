@@ -1,14 +1,14 @@
 ---
 - name: Import repositories GPG keys
   become: true
-  rpm_key:
+  ansible.builtin.rpm_key:
     state: present
     key: "{{ item.gpg_url }}"
   loop: "{{ fedora_dependencies_repositories }}"
 
 - name: Add repositories
   become: true
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: "{{ item.name }}"
     description: "{{ item.description }}"
     file: "{{ item.file }}"

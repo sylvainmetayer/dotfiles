@@ -43,5 +43,5 @@
         desktop_categories: "Finance;"
       tags: [ledger]
       # FIXME psutil
-    # - role: gnome
-    #   tags: [gnome]
+    - role: gnome
+      tags: [gnome]

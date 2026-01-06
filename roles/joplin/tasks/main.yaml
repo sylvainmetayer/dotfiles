@@ -1,7 +1,7 @@
 ---
 - name: Ensure Joplin folder exists
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ joplin_folder }}"
     state: directory
     owner: "{{ ansible_user_uid }}"
@@ -9,14 +9,14 @@
     mode: "0755"
 
 - name: "Download joplin"
-  get_url:
+  ansible.builtin.get_url:
     checksum: "sha512:{{ joplin_sha512sum }}"
     url: "{{ joplin_url }}"
     dest: "{{ joplin_folder }}/joplin"
     mode: "0700"
 
 - name: Create desktop icon
-  template:
+  ansible.builtin.template:
     src: ./templates/joplin.desktop.j2
     dest: ~/.local/share/applications/joplin.desktop
     owner: "{{ ansible_user_uid }}"
