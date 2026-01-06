@@ -16,6 +16,13 @@ echo "Project: $PROJECT_NAME"
 echo "Virtual Environment: $VIRTUAL_ENV"
 '''
 
+[tasks.install]
+description = "Install project dependencies"
+run = [
+    'ansible-galaxy role install -r "requirements.yml"',
+    'ansible-galaxy collection install -r "requirements.yml"'
+]
+
 [tasks.lint]
 description = "Run ansible-lint"
 run = "ansible-lint"
@@ -27,3 +34,4 @@ run = "ansible-lint --fix"
 [tasks.home]
 description = "Setup home environment"
 run = "ansible-playbook playbook/setup-home.yaml -K"
+depends = "install"

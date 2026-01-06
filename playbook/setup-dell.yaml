@@ -4,9 +4,6 @@
   gather_facts: true
 
   roles:
-    - role: geerlingguy.docker
-      become: true
-      tags: [docker]
     - role: sourcejedi.rpmfusion_free
       become: true
       tags: [rpm]
@@ -26,14 +23,13 @@
       tags: [git_config]
     - role: generic_app
       vars:
-        app_name: "kDrive"
-        app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.9.1-amd64.AppImage"
-        app_folder: "/opt/kDrive"
-        app_icon: "~/dotfiles/assets/kdrive.jpg"
-        desktop_name: "Infomaniak kDrive"
-        desktop_exec: "env QTWEBENGINE_CHROMIUM_FLAGS=\"--no-sandbox\" QT_QPA_PLATFORM=xcb /opt/kDrive/kDrive"
-        desktop_autostart: "true"
-        desktop_categories: "Network;"
+        generic_app_name: "kDrive"
+        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.9.1-amd64.AppImage"
+        generic_app_folder: "/opt/kDrive"
+        generic_app_icon: "~/dotfiles/assets/kdrive.jpg"
+        generic_app_exec: "env QTWEBENGINE_CHROMIUM_FLAGS=\"--no-sandbox\" QT_QPA_PLATFORM=xcb /opt/kDrive/kDrive"
+        generic_app_autostart: "true"
+        generic_app_categories: "Network;"
       tags: [kdrive]
     - role: jetbrains_toolbox
       tags: [jetbrains_toolbox]

@@ -10,17 +10,22 @@
   community.general.timezone:
     name: Europe/Paris
 
-- ansible.builtin.import_tasks: add_to_path.yaml
-- ansible.builtin.import_tasks: custom_scripts.yaml
-- ansible.builtin.import_tasks: direnv_config.yaml
-  when: setup_direnv | bool
+- name: Add scripts to PATH
+  ansible.builtin.import_tasks: add_to_path.yaml
+
+- name: Configure custom scripts in bashrc
+  ansible.builtin.import_tasks: custom_scripts.yaml
+
+- name: Setup direnv
+  ansible.builtin.import_tasks: direnv_config.yaml
+  when: commons_setup_direnv | bool
 
 - name: Setup symlinks
   ansible.builtin.include_tasks: symlink.yml
   loop: "{{ commons_symlinks }}"
-  when: symlink_as_link | bool
+  when: commons_symlink_as_link | bool
 
 - name: Setup symlinks as copy
   ansible.builtin.include_tasks: symlink_copy.yml
   loop: "{{ commons_symlinks }}"
-  when: not symlink_as_link | bool
+  when: not commons_symlink_as_link | bool

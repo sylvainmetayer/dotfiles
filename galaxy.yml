@@ -7,7 +7,8 @@ authors:
   - Sylvain METAYER <git@sylvain.dev>
 description: Roles and playbooks to setup workstation
 license_file: LICENSE
-tags: []
+tags:
+  - linux
 dependencies:
   ansible.posix: "*"
   community.general: "*"

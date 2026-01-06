@@ -1,0 +1,11 @@
+---
+skip_list:
+  - galaxy[no-changelog]
+
+warn_list: []
+
+exclude_paths:
+  - .ansible/
+  - .venv/
+  - collections/
+  - galaxy_roles/
