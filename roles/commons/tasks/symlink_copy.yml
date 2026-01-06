@@ -1,11 +1,11 @@
 ---
-- name: "{{ item }} : Ensure folder does exists"
+- name: "Ensure folder does exists {{ item }}"
   ansible.builtin.file:
     mode: "0700"
     path: "~/{{ item | dirname }}"
     state: directory
 
-- name: "{{ item }} : Copy dotfile"
+- name: "Copy dotfile {{ item }}"
   ansible.builtin.copy:
     src: "{{ role_path }}/files/{{ item }}"
     dest: ~/{{ item }}

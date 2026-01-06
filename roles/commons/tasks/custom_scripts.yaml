@@ -1,7 +1,7 @@
 ---
 - name: Render custom scripts Template
   ansible.builtin.set_fact:
-    custom_script_template: "{{ lookup('template', 'custom_scripts.sh.j2') }}"
+    commons_custom_script_template: "{{ lookup('template', 'custom_scripts.sh.j2') }}"
 
 - name: Ensure ~/.bashrc.d folder exists
   become: true
@@ -34,5 +34,5 @@
     insertafter: "EOF"
     dest: "~/.bashrc"
     block: |
-      {{ custom_script_template }}
+      {{ commons_custom_script_template }}
     marker: "#{mark} ANSIBLE CUSTOM SCRIPTS"

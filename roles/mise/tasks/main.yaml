@@ -15,15 +15,14 @@
 
 - name: Create mise global folder
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/mise"
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/mise"
     state: directory
     mode: "0755"
 
 - name: Create config mise file
+  notify: Run mise install
   ansible.builtin.template:
     src: "config.toml.j2"
-    dest: "{{ ansible_env.HOME }}/.config/mise/config.toml"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/mise/config.toml"
     mode: "0644"
-
-- name: Run mise install
-  ansible.builtin.command: "mise install"
+  register: mise_config

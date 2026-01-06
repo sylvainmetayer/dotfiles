@@ -1,11 +1,11 @@
 [Desktop Entry]
 Type=Application
-Name={{ desktop_name | default(app_name) }}
-Exec={{ desktop_exec | default(app_exec) }}
-Icon={{ desktop_icon | default(app_icon) }}
-Comment={{ desktop_comment | default("") }}
-Terminal={{ desktop_terminal | default('false') }}
-StartupNotify={{ desktop_startup_notify | default('false') }}
-X-GNOME-Autostart-enabled={{ desktop_autostart | default('false') }}
-Categories={{ desktop_categories | default('Utility;') }}
+Name={{ generic_app_name }}
+Exec={{ generic_app_exec }}
+Icon={{ generic_app_icon }}
+Comment={{ generic_app_comment | default("") }}
+Terminal={{ generic_app_terminal | default('false') }}
+StartupNotify={{ generic_app_startup_notify | default('false') }}
+X-GNOME-Autostart-enabled={{ generic_app_autostart | default('false') }}
+Categories={{ generic_app_categories | default('Utility;') }}
 Version=1.0

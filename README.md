@@ -9,9 +9,9 @@
 
 ## Initial Setup
 
+- Install mise
 - `dnf install git python3-pip`
 - `git clone https://github.com/sylvainmetayer/dotfiles.git $HOME/dotfiles`
-- `./scripts/install-ansible-deps.sh`
 - If you want autocomplete
   - `activate-global-python-argcomplete --dest ~/.bashrc.d/`
   - `chmod +x ~/.bashrc.d/python-argcomplete`

@@ -23,7 +23,7 @@
 
 - name: Render Git config Template
   ansible.builtin.set_fact:
-    ssh_allowed_signers: "{{ lookup('template', 'ssh_allowed_signers.j2') }}"
+    git_config_ssh_allowed_signers: "{{ lookup('template', 'ssh_allowed_signers.j2') }}"
 
 - name: Add template in git config
   ansible.builtin.blockinfile:
@@ -36,5 +36,5 @@
   ansible.builtin.blockinfile:
     dest: "~/.ssh/allowed_signers"
     block: |
-      {{ ssh_allowed_signers }}
+      {{ git_config_ssh_allowed_signers }}
     marker: "#{mark} ANSIBLE MANAGED BLOCK SSH SIGNING"
