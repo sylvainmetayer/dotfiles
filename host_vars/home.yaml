@@ -10,6 +10,8 @@ commons_custom_scripts:
     script: 'eval "$(starship init bash)"'
   - command: direnv
     script: 'eval "$(direnv hook bash)"'
+  - command: zoxide
+    script: 'eval "$(zoxide init bash)"'
   - command: fzf
     script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"
 

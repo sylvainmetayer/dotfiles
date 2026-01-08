@@ -7,3 +7,4 @@ mise_global_plugins:
   zellij: latest
   usage: latest
   github-cli: latest
+  zoxide: latest
