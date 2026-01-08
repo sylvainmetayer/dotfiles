@@ -57,6 +57,7 @@ fedora_dependencies_packages:
   # Zellij
   - wl-clipboard
   - digikam
+  - steam
 
 fedora_dependencies_remove_packages:
   - keepassxc # use flatpak
