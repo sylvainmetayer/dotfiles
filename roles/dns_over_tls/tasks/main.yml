@@ -1,0 +1,15 @@
+---
+- name: Create systemd-resolved configuration directory
+  ansible.builtin.file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Configure DNS over TLS
+  ansible.builtin.template:
+    src: 00-custom.conf.j2
+    dest: /etc/systemd/resolved.conf.d/00-custom.conf
+    mode: '0644'
+  become: true
+  notify: Restart systemd-resolved
