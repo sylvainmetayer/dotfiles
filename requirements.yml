@@ -15,4 +15,4 @@ roles:
   - src: petermosmans.customize-gnome
     version: 0.2.12
   - src: geerlingguy.docker
-    version: 7.7.0
+    version: 8.0.0
