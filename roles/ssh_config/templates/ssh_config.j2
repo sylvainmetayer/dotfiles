@@ -7,13 +7,12 @@ Host bitbucket.org
 Host gitlab.com
     IdentityFile ~/.ssh/keepassxc.pub
 
-Host gibbs
-    User ocyhc
-    HostName gibbs.sylvain.dev
-    Port 22
+Host pangolin
     IdentityFile ~/.ssh/keepassxc.pub
-    ServerAliveInterval 120
+    HostName pangolin.sylvain.cloud
+    User sylvain
 
 # https://serverfault.com/a/515214
 Host *
   IdentitiesOnly yes
+  IdentityFile ~/.ssh/keepassxc.pub
