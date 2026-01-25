@@ -1,0 +1,65 @@
+---
+# HOSTNAME
+hostname_name: dell
+hostname_fqdn: dell.localhost
+
+fedora_dependencies_packages:
+  - fwupd
+  - openssh-askpass
+  - git
+  - make
+  - unzip
+  - htop
+  - wget
+  - curl
+  - tmux
+  - fzf
+  - vim
+  - rsync
+  - jq
+  - gnupg2
+  - NetworkManager-tui
+  - firefox
+  - gimp
+  - gpaste-ui
+  - gpaste
+  - vlc
+  - xclip
+  - fortune-mod
+  - code
+  - qrencode
+  - keepassxc
+  - seahorse
+  - chromium
+  # Gnome related
+  - libappindicator
+  - dconf-editor
+  - python3-devel
+  - flatpak
+  - gnome-tweaks
+  - thunderbird
+  - libgnome-keyring
+  # Codec
+  - gstreamer1-libav
+  - graphviz
+  # Photos
+  - digikam
+  # Zellij
+  - wl-clipboard
+
+fedora_dependencies_flatpak:
+  - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
+  - https://flathub.org/repo/appstream/org.onlyoffice.desktopeditors.flatpakref
+  - https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
+  - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
+  - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
+
+commons_custom_scripts:
+  - command: mise
+    script: 'eval "$(mise activate bash)"'
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"

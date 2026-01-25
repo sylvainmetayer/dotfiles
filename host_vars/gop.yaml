@@ -1,0 +1,16 @@
+---
+# HOSTNAME
+hostname_name: gop
+hostname_fqdn: gop.localhost
+
+fedora_dependencies_packages: [] # rely on vaulted locals for specifics if needed
+fedora_dependencies_flatpak: []
+commons_custom_scripts:
+  - command: mise
+    script: 'eval "$(mise activate bash)"'
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"

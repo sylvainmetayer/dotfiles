@@ -47,7 +47,6 @@ fedora_dependencies_packages:
   - python3-devel
   - flatpak
   - gnome-tweaks
-  - guake
   - thunderbird
   - filezilla
   - libgnome-keyring
@@ -59,9 +58,6 @@ fedora_dependencies_remove_packages:
   - gnome-maps
   - gnome-documents
   - rhythmbox
-
-fedora_dependencies_pip_packages:
-  - psutil>4.0
 
 fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref

@@ -1,4 +1,0 @@
----
-kdrive_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.5.8.20240227-amd64.AppImage"
-kdrive_sha256sum: "bfe670ed1fc9bb044292274c6fe85d997f5d6aee5a4211c88dcc206c27399e94"
-kdrive_folder: "/opt/kDrive"

@@ -1,3 +1,7 @@
 {% for item in commons_custom_scripts %}
+{% if item.command is defined and item.command and item.script is defined and item.script %}
 [[ $- == *i* ]] && command -v {{ item.command }} >/dev/null && {{ item.script }}
+{% elif item.script is defined and item.script %}
+[[ $- == *i* ]] && {{ item.script }}
+{% endif %}
 {% endfor %}

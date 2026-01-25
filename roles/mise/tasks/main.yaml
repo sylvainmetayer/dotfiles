@@ -1,0 +1,28 @@
+---
+- name: Enable mise copr
+  become: true
+  community.general.copr:
+    host: copr.fedorainfracloud.org
+    name: jdxcode/mise
+    state: enabled
+
+- name: Install mise
+  become: true
+  ansible.builtin.dnf:
+    name: "mise"
+    state: present
+    update_cache: true
+
+- name: Create mise global folder
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/mise"
+    state: directory
+    mode: "0755"
+
+- name: Create config mise file
+  notify: Run mise install
+  ansible.builtin.template:
+    src: "config.toml.j2"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/mise/config.toml"
+    mode: "0644"
+  register: mise_config

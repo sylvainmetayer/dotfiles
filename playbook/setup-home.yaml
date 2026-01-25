@@ -1,0 +1,57 @@
+---
+- name: Home workstation setup
+  hosts: home
+  gather_facts: true
+
+  roles:
+    - role: fedora_dependencies
+      become: true
+      tags: [fedora_dependencies]
+    - role: hostname
+      become: true
+      tags: [hostname]
+    - role: mise
+      tags: [mise]
+    - role: jaredhocutt.gnome_extensions
+      tags: [gnome_extensions]
+    - role: ssh_config
+      tags: [ssh_config]
+    - role: git_config
+      tags: [git_config]
+    - role: zellij
+      tags: [zellij]
+    - role: commons
+      tags: [commons]
+    - role: generic_app
+      vars:
+        generic_app_name: "kDrive"
+        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.9.1-amd64.AppImage"
+        generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+        generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/kdrive.jpg"
+        generic_app_exec:
+          "env QTWEBENGINE_CHROMIUM_FLAGS=\"--no-sandbox\" QT_QPA_PLATFORM=xcb {{ ansible_facts['env']['HOME'] }}/.local/bin/kDrive"
+        generic_app_autostart: "true"
+        generic_app_categories: "Network;"
+      tags: [kdrive]
+    - role: generic_app
+      vars:
+        generic_app_name: "ledger"
+        generic_app_url: "https://download.live.ledger.com/latest/linux"
+        generic_app_folder: "/opt/ledger"
+        generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/ledger.svg"
+        generic_app_exec: "/opt/ledger/ledger"
+        generic_app_autostart: "false"
+        generic_app_categories: "Finance;"
+      tags: [ledger]
+    - role: generic_app
+      vars:
+        generic_app_name: "obsidian"
+        generic_app_url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.10.6/Obsidian-1.10.6.AppImage"
+        generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+        generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/obsidian.png"
+        generic_app_exec: "{{ ansible_facts['env']['HOME'] }}/.local/bin/obsidian"
+        generic_app_autostart: "false"
+        generic_app_categories: "Productivity;"
+      tags: [obsidian]
+    - role: gnome
+      tags: [gnome]

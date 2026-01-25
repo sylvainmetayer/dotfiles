@@ -18,3 +18,7 @@ run.log
 
 sylvainmetayer-workstation-*.tar.gz
 .idea/
+
+.venv/
+.ansible/
+.python-version

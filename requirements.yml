@@ -4,8 +4,6 @@ collections:
     version: 2.1.0
   - name: community.general
     version: 11.4.0
-  - name: donhector.workstation
-    version: 1.1.0
 roles:
   # TODO See https://github.com/PeterMosmans/ansible-role-customize-gnome as this one is archived ?
   - src: jaredhocutt.gnome_extensions
@@ -14,5 +12,3 @@ roles:
     version: master
   - src: petermosmans.customize-gnome
     version: 0.2.12
-  - src: geerlingguy.docker
-    version: 7.7.0

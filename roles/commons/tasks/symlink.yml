@@ -1,23 +1,23 @@
 ---
-- name: "{{ item }} : Collect file info"
-  stat:
+- name: "Collect file info {{ item }}"
+  ansible.builtin.stat:
     path: "~/{{ item }}"
-  register: dotfile
+  register: commons_dotfile
 
-- name: "{{ item }} : Ensure folder does exists"
-  file:
+- name: "Ensure folder does exists {{ item }}"
+  ansible.builtin.file:
     mode: "0700"
     path: "~/{{ item | dirname }}"
     state: directory
 
-- name: "{{ item }} : Delete regular file"
-  file:
+- name: "Delete regular file {{ item }}"
+  ansible.builtin.file:
     path: "~/{{ item }}"
     state: absent
-  when: dotfile.stat.islnk is defined and dotfile.stat is defined and dotfile.stat.isreg
+  when: commons_dotfile.stat.islnk is defined and commons_dotfile.stat is defined and commons_dotfile.stat.isreg
 
-- name: "{{ item }} : Update dotfile symlink"
-  file:
+- name: "Update commons_dotfile symlink {{ item }}"
+  ansible.builtin.file:
     src: "{{ role_path }}/files/{{ item }}"
     dest: ~/{{ item }}
     state: link

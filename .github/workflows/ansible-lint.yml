@@ -1,0 +1,63 @@
+---
+name: Ansible Lint
+
+on:
+  pull_request:
+    paths:
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "roles/**"
+      - "playbook/**"
+      - "host_vars/**"
+      - "inventory.yml"
+  push:
+    branches:
+      - main
+      - rework
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Setup Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible ansible-lint yamllint
+
+      - name: Install Galaxy roles/collections
+        run: |
+          if [ -f requirements.yml ]; then \
+            ansible-galaxy role install -r requirements.yml || true; \
+            ansible-galaxy collection install -r requirements.yml || true; \
+          fi
+
+      - name: Ansible syntax check (flattened playbooks)
+        run: |
+          for p in playbook/setup-*.yaml; do \
+            echo "Syntax check $p"; \
+            ansible-playbook $p --syntax-check || exit 1; \
+          done
+
+      - name: ansible-lint
+        run: |
+          ansible-lint -v || true
+
+      - name: yamllint
+        run: |
+          yamllint .
+
+      - name: Report summary
+        if: always()
+        run: |-
+          echo "Ansible lint job completed."

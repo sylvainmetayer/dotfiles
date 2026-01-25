@@ -9,55 +9,62 @@
 
 ## Initial Setup
 
-- `dnf install git keepassxc python3-pip`
+- Install mise
+- `dnf install git python3-pip`
 - `git clone https://github.com/sylvainmetayer/dotfiles.git $HOME/dotfiles`
-- `./scripts/install-ansible-deps.sh`
 - If you want autocomplete
   - `activate-global-python-argcomplete --dest ~/.bashrc.d/`
   - `chmod +x ~/.bashrc.d/python-argcomplete`
 
 ## Usage
 
-### Dell
+### Playbooks (nouvelle structure)
 
-My personal laptop, running Fedora.
+Les playbooks sont maintenant aplatis dans le dossier `playbook/` à la racine pour simplifier l'exécution. Chaque machine possède un fichier `setup-<host>.yaml`.
 
-- `pipenv run ansible-playbook playbooks/dell/main.yaml -K --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"`
-- `systemctl status --user ssh-agent` to get the `SSH_AUTH_SOCK` value
-  - Configure KeepassXC to use this socket
+| Machine | Fichier | Commande |
+|---------|---------|----------|
+| Dell (Fedora perso) | `playbook/setup-dell.yaml` | `pipenv run ansible-playbook playbook/setup-dell.yaml -K --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"` |
+| Home (Fedora desktop) | `playbook/setup-home.yaml` | `pipenv run ansible-playbook playbook/setup-home.yaml -K --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"` |
+| GOP (Laptop entreprise) | `playbook/setup-gop.yaml` | `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt pipenv run ansible-playbook playbook/setup-gop.yaml -K --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"` |
+| WSL (Debian sous Windows) | `playbook/setup-wsl.yaml` | `pipenv run ansible-playbook playbook/setup-wsl.yaml --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"` |
 
-### WSL
+Pour récupérer la valeur `SSH_AUTH_SOCK` (utile pour KeepassXC) : `systemctl status --user ssh-agent` puis configurer KeepassXC avec ce socket.
 
-WSL debian running on my Windows PC.
+### GOP (vault / secrets)
 
-- `pipenv run ansible-playbook playbooks/wsl/main.yaml -K --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"`
+Le playbook GOP ajoute le rôle `gop` contenant des tâches spécifiques. Certains fichiers sont chiffrés via Ansible Vault. Gestion des outils (ex plugins) désormais via `mise_global_plugins` dans `host_vars`.
 
-### GOP
+Pré-requis :
 
-This playbook is similar with `dell` playbook but add a role `gop` which contains specific tasks required for company computer.
+1. Base de données `selfhosted.kdbx` disponible (sinon la télécharger depuis <https://r.sylvain.dev/dotfiles-database>).
+2. Exécuter `./scripts/extract-secrets.sh DATABASE_LOCATION` pour extraire le mot de passe (stocké dans `~/.ansible_vault_password.txt`).
 
-You **need** to encrypt some files as it contains sensitive data.
+Fichiers sensibles :
 
-- Ensure the `selfhosted.kdbx` database is available
-  - If needed, you can download it from <https://r.sylvain.dev/dotfiles-database>
-- `./scripts/extract-secrets.sh DATABASE_LOCATION` to extract the password and interact with the data inside the vault. It will be stored in `~/.ansible_vault_password.txt`
+```bash
+FILE=$HOME/dotfiles/roles/gop/templates/aws_config.j2
+FILE=$HOME/dotfiles/roles/gop/templates/ssh_hosts.j2
+FILE=$HOME/dotfiles/playbooks/gop/locals.yml
+```
 
-Then you can do the following :
+Opérations Vault :
 
-- `FILE=$HOME/dotfiles/roles/gop/templates/aws_config.j2`
-- `FILE=$HOME/dotfiles/roles/gop/templates/ssh_hosts.j2`
-- `FILE=$HOME/dotfiles/playbooks/gop/locals.yml`
+```bash
+ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault view $FILE
+ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault edit $FILE
+ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault encrypt $FILE
+ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault decrypt $FILE
+```
 
-- view file : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault view $FILE`
-- edit file : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault edit $FILE`
-- encrypt file : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault encrypt $FILE`
-- decrypt file: `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-vault decrypt $FILE`
+Exécution :
 
-Use the following command : `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt pipenv run ansible-playbook playbooks/gop/main.yml -K  --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"` to run the playbook and decrypt the files.
+```bash
+ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt pipenv run ansible-playbook playbook/setup-gop.yaml -K --extra-vars="ansible_python_interpreter=$(pipenv --venv)/bin/python"
+```
 
 ## TODO
 
-- [ ] Fedora 39 - enable rpmfusion repository
 - [ ] Fix errors with psutils when running with pipenv
 
 ## Ansible Galaxy

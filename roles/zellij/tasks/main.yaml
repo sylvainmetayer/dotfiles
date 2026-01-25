@@ -1,0 +1,13 @@
+---
+- name: Ensure zellij config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/zellij"
+    state: directory
+    mode: "0755"
+
+# https://tech.kibatic.com/linux/zellij-wayland-cut-paste/
+- name: Uncomment wl-copy plugin in zellij config
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/zellij/config.kdl"
+    regexp: '// copy_command "wl-copy"'
+    line: copy_command "wl-copy"

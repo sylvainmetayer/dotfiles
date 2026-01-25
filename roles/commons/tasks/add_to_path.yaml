@@ -1,10 +1,10 @@
 ---
 - name: Set PATH variable
-  set_fact:
+  ansible.builtin.set_fact:
     commons_path_string: "{{ commons_add_to_path | join(':') }}"
 
 - name: Ensure that PATH contains custom directories
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: ~/.bashrc
     marker: "# {mark} ANSIBLE CUSTOM PATH"
     block: |

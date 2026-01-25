@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Sylvain
+  description: Configure DNS over TLS using systemd-resolved
+  license: MIT
+  min_ansible_version: '2.9'
+  platforms:
+    - name: Fedora
+      versions:
+        - all
+
+dependencies: []

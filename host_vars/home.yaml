@@ -1,0 +1,78 @@
+---
+# HOSTNAME
+hostname_name: home
+hostname_fqdn: home.localhost
+
+commons_custom_scripts:
+  - script: "export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt"
+  - command: mise
+    script: 'eval "$(mise activate bash)"'
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: zoxide
+    script: 'eval "$(zoxide init bash)"'
+  - command: fzf
+    script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"
+
+fedora_dependencies_packages:
+  - fwupd
+  - openssh-askpass
+  - git
+  - make
+  - unzip
+  - htop
+  - wget
+  - curl
+  - vim
+  - fzf
+  - rsync
+  - jq
+  - gnupg2
+  - NetworkManager-tui
+  - firefox
+  - gimp
+  - gpaste-ui
+  - gpaste
+  - vlc
+  - xclip
+  - fortune-mod
+  - code
+  - qrencode
+  - seahorse
+  - chromium
+  # Gnome related
+  - libappindicator
+  - dconf-editor
+  - python3-devel
+  - flatpak
+  - gnome-tweaks
+  - thunderbird
+  - filezilla
+  - libgnome-keyring
+  - python3-psutil
+  # Codec
+  - gstreamer1-libav
+  - graphviz
+  # Containers
+  - podman
+  # Zellij
+  - wl-clipboard
+  - digikam
+  - steam
+
+fedora_dependencies_remove_packages:
+  - keepassxc # use flatpak
+  - gnome-maps
+  - gnome-documents
+  - rhythmbox
+
+fedora_dependencies_flatpak:
+  - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
+  - https://flathub.org/repo/appstream/org.onlyoffice.desktopeditors.flatpakref
+  - https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
+  - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
+  - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
+  - https://flathub.org/repo/appstream/org.keepassxc.KeePassXC.flatpakref
+  - https://flathub.org/repo/appstream/com.github.tchx84.Flatseal

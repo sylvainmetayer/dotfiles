@@ -16,7 +16,7 @@
     enabled: true
 
 - name: Ensure SSH_AUTH_SOCK is properly defined
-  blockinfile:
+  ansible.builtin.blockinfile:
     insertafter: EOF
     dest: "~/.bashrc"
     block: |
