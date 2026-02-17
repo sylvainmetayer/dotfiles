@@ -39,7 +39,7 @@ jobs:
           masterBranchName: main
 
       - name: Build and Deploy Collection
-        uses: artis3n/ansible_galaxy_collection@f6110aef877db4caaa7e9a192975fb006dea61fe # v2
+        uses: artis3n/ansible_galaxy_collection@ffbca2460a5a1c600b941bbf1536bd61de1c2227 # v3
         with:
           api_key: "${{ secrets.GALAXY_API_KEY }}"
           galaxy_version: "${{ steps.bump_version.outputs.next-version }}"
