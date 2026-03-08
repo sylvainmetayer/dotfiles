@@ -25,7 +25,7 @@
     - role: generic_app
       vars:
         generic_app_name: "kDrive"
-        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.9.1-amd64.AppImage"
+        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.10.1-amd64.AppImage"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/kdrive.jpg"
         generic_app_exec:
@@ -46,7 +46,7 @@
     - role: generic_app
       vars:
         generic_app_name: "obsidian"
-        generic_app_url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.10.6/Obsidian-1.10.6.AppImage"
+        generic_app_url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.11.5/Obsidian-1.11.5.AppImage"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/obsidian.png"
         generic_app_exec: "{{ ansible_facts['env']['HOME'] }}/.local/bin/obsidian"

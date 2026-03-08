@@ -57,6 +57,7 @@ fedora_dependencies_packages:
   - graphviz
   # Containers
   - podman
+  - podman-compose
   # Zellij
   - wl-clipboard
   - digikam
