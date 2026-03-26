@@ -27,7 +27,7 @@ jobs:
           version-fragment: "bug"
 
       - name: Update values.yaml
-        uses: fjogeleit/yaml-update-action@main
+        uses: fjogeleit/yaml-update-action@04ff6ec06568fd21197db746472e36cc425de850 # main
         with:
           valueFile: "galaxy.yml"
           propertyPath: "version"
