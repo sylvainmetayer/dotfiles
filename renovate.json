@@ -14,10 +14,10 @@
   ],
   "customManagers": [
     {
-      "customType": "regex",
       "managerFilePatterns": [
-        "/.*\.ya?ml$/"
+        ".*\\.yaml$"
       ],
+      "customType": "regex",
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\n]+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s+generic_app_url: \\\"[^\\\"]*?(?<currentValue>[0-9]+(?:\\.[0-9]+)+)\\\""
       ]
