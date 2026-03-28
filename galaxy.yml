@@ -1,7 +1,6 @@
----
 namespace: sylvainmetayer
 name: workstation
-version: 1.2.73
+version: 1.2.74
 readme: README.md
 authors:
   - Sylvain METAYER <git@sylvain.dev>
@@ -10,9 +9,9 @@ license_file: LICENSE
 tags:
   - linux
 dependencies:
-  ansible.posix: "*"
-  community.general: "*"
-  donhector.workstation: "*"
+  ansible.posix: '*'
+  community.general: '*'
+  donhector.workstation: '*'
 repository: https://github.com/sylvainmetayer/dotfiles
 documentation: https://github.com/sylvainmetayer/dotfiles
 homepage: https://github.com/sylvainmetayer/dotfiles
