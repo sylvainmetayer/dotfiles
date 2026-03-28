@@ -1,5 +1,5 @@
 [tools]
-uv = "0.9"
+uv = "0.11.2"
 python = "{{ get_env(name='PYTHON_VERSION', default='3.14') }}"
 
 [env]
