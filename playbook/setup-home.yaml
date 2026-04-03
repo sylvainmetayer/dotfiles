@@ -24,6 +24,17 @@
       tags: [commons]
     - role: generic_app
       vars:
+        generic_app_name: "pangolin"
+        # renovate: datasource=github-releases depName=fosrl/cli
+        generic_app_url: "https://github.com/fosrl/cli/releases/download/0.5.2/pangolin-cli_linux_amd64"
+        generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+        generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/pangolin.jpg"
+        generic_app_exec: "{{ ansible_facts['env']['HOME'] }}/.local/bin/pangolin"
+        generic_app_autostart: "true"
+        generic_app_categories: "Network;"
+      tags: [pangolin]
+    - role: generic_app
+      vars:
         generic_app_name: "kDrive"
         # renovate: datasource=github-releases depName=Infomaniak/desktop-kDrive
         generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.10.1-amd64.AppImage"
