@@ -15,7 +15,7 @@
   "customManagers": [
     {
       "managerFilePatterns": [
-        ".*\\.yaml$"
+        "**/*.yaml"
       ],
       "customType": "regex",
       "matchStrings": [
