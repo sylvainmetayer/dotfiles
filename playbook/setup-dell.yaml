@@ -25,7 +25,7 @@
       vars:
         generic_app_name: "kDrive"
         # renovate: datasource=github-releases depName=Infomaniak/desktop-kDrive
-        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.8.3-amd64.AppImage"
+        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.9.1-amd64.AppImage"
         generic_app_folder: "/opt/kDrive"
         generic_app_icon: "~/dotfiles/assets/kdrive.jpg"
         generic_app_exec: "env QTWEBENGINE_CHROMIUM_FLAGS=\"--no-sandbox\" QT_QPA_PLATFORM=xcb /opt/kDrive/kDrive"
