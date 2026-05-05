@@ -36,8 +36,8 @@
     - role: generic_app
       vars:
         generic_app_name: "kDrive"
-        # renovate: datasource=github-releases depName=Infomaniak/desktop-kDrive
-        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.7.10.1-amd64.AppImage"
+        # norenovate: datasource=github-releases depName=Infomaniak/desktop-kDrive
+        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.8.2.6-arm64.AppImage"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/kdrive.jpg"
         generic_app_exec:
@@ -48,7 +48,7 @@
     - role: generic_app
       vars:
         generic_app_name: "ledger"
-        # renovate: datasource=github-releases depName=LedgerHQ/ledger-live extractVersion=^@ledgerhq/live-desktop@(?<version>.+)$
+        # norenovate: datasource=github-releases depName=LedgerHQ/ledger-live extractVersion=^@ledgerhq/live-desktop@(?<version>.+)$
         generic_app_url: "https://download.live.ledger.com/ledger-live-desktop-4.3.0-linux-x86_64.AppImage"
         generic_app_folder: "/opt/ledger"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/ledger.svg"
