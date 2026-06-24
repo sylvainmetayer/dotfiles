@@ -1,6 +1,6 @@
 [tools]
 uv = "0.11.24"
-python = "{{ get_env(name='PYTHON_VERSION', default='3.14') }}"
+python = "3.14.6"
 
 [env]
 # Use the project name derived from the current directory
