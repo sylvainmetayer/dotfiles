@@ -36,8 +36,7 @@
     - role: generic_app
       vars:
         generic_app_name: "kDrive"
-        # norenovate: datasource=github-releases depName=Infomaniak/desktop-kDrive
-        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.8.2.6-arm64.AppImage"
+        generic_app_url: "https://download.storage.infomaniak.com/drive/desktopclient/kDrive-3.8.5.2-amd64.AppImage"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/kdrive.jpg"
         generic_app_exec:
@@ -48,8 +47,7 @@
     - role: generic_app
       vars:
         generic_app_name: "ledger"
-        # norenovate: datasource=github-releases depName=LedgerHQ/ledger-live extractVersion=^@ledgerhq/live-desktop@(?<version>.+)$
-        generic_app_url: "https://download.live.ledger.com/ledger-live-desktop-4.3.0-linux-x86_64.AppImage"
+        generic_app_url: "http://download.live.ledger.com/ledger-live-desktop-4.13.1-linux-x86_64.AppImage"
         generic_app_folder: "/opt/ledger"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/ledger.svg"
         generic_app_exec: "/opt/ledger/ledger"
@@ -60,7 +58,7 @@
       vars:
         generic_app_name: "obsidian"
         # renovate: datasource=github-releases depName=obsidianmd/obsidian-releases
-        generic_app_url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.13.4/Obsidian-1.12.7.AppImage"
+        generic_app_url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.13.4/Obsidian-1.13.4.AppImage"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/obsidian.png"
         generic_app_exec: "{{ ansible_facts['env']['HOME'] }}/.local/bin/obsidian"
