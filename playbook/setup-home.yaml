@@ -34,6 +34,8 @@
         generic_app_categories: "Network;"
       tags: [pangolin]
     - role: kdrive
+      vars:
+        kdrive_remove_legacy_install: true
       tags: [kdrive]
     - role: generic_app
       vars:
