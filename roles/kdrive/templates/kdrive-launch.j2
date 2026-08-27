@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Managed by Ansible, role kdrive.
+# kdrive-auto-update stores each release as kDrive-<arch>-v<version>.AppImage,
+# so resolve the most recent one at launch time.
+set -euo pipefail
+
+appimage=$(find "{{ kdrive_bin_folder }}" -maxdepth 1 -type f \
+  -name 'kDrive-{{ kdrive_architecture }}-v*.AppImage' | sort -V | tail -n 1)
+
+if [ -z "$appimage" ]; then
+  echo "No kDrive AppImage in {{ kdrive_bin_folder }}, run kdrive-auto-update first." >&2
+  exit 1
+fi
+
+exec {{ kdrive_exec_env }} "$appimage" "$@"

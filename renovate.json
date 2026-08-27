@@ -22,6 +22,15 @@
         "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\n]+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s+generic_app_url: \\\"[^\\\"]*?[-/]v?(?<currentValue>[0-9]+(?:\\.[0-9]+)+)[-/\\\"]",
         "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\n]+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s+generic_app_url: \\\"[^\\\"]*?[-/]v?[0-9]+(?:\\.[0-9]+)+[-/][^\\\"]*?[-/]v?(?<currentValue>[0-9]+(?:\\.[0-9]+)+)[.\\-/\\\"]"
       ]
+    },
+    {
+      "managerFilePatterns": [
+        "roles/kdrive/defaults/main.yaml"
+      ],
+      "customType": "regex",
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+) currentValue=(?<currentValue>\\S+)\\n\\s*kdrive_auto_update_ref: \"(?<currentDigest>[a-f0-9]{40})\""
+      ]
     }
   ]
 }

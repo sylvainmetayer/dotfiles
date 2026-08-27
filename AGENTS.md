@@ -28,7 +28,7 @@ There is no test suite. CI (`.github/workflows/`) runs `--syntax-check` on every
 
 **Playbooks are flat and per-host.** `playbook/setup-<host>.yaml` maps 1:1 to a host in `inventory.yml`. Each playbook is a plain list of roles, every one carrying a `tags: [<role>]` entry so individual pieces can be re-run. Non-secret per-host config lives in `host_vars/<host>.yaml`; shared config in `group_vars/all.yaml`. `playbooks/` (plural, legacy) only still holds `playbooks/gop/locals.yml`, the vaulted GOP variables loaded via a `pre_tasks` `include_vars`.
 
-**`roles/generic_app` is the pattern for third-party apps.** Rather than one role per application, playbooks include `generic_app` repeatedly with `generic_app_name/_url/_folder/_icon/_exec/_autostart/_categories` vars — it downloads a binary/AppImage and renders a `.desktop` entry. To add an app, add another `generic_app` block to the host playbook, not a new role.
+**`roles/generic_app` is the pattern for third-party apps.** Rather than one role per application, playbooks include `generic_app` repeatedly with `generic_app_name/_url/_folder/_icon/_exec/_autostart/_categories` vars — it downloads a binary/AppImage and renders a `.desktop` entry. To add an app, add another `generic_app` block to the host playbook, not a new role — unless the app ships its own updater, as kDrive does through `roles/kdrive`.
 
 **Renovate updates those URLs in place.** `renovate.json` has custom regex managers matching a `# renovate: datasource=... depName=...` comment immediately above a `generic_app_url:` line. New pinned download URLs should carry that comment so they stay updated; if a URL shape is unusual, the regexes in `renovate.json` may need extending (see commit `90258ff`).
 

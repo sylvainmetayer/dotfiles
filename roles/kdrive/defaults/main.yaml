@@ -1,0 +1,31 @@
+---
+# Architecture key exposed by https://www.infomaniak.com/drive/latest
+kdrive_architecture: "linux-amd64"
+
+kdrive_auto_update_repo: "https://github.com/oRiamn/kdrive-auto-update"
+# renovate: datasource=git-refs depName=https://github.com/oRiamn/kdrive-auto-update currentValue=master
+kdrive_auto_update_ref: "7be4cd28a418f75a0a4d6f29e35d1e94ada0b8b5"
+
+kdrive_bin_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+kdrive_config_folder: "{{ ansible_facts['env']['HOME'] }}/.config/kdrive-auto-update"
+kdrive_autostart_folder: "{{ ansible_facts['env']['HOME'] }}/.config/autostart"
+kdrive_applications_folder: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications"
+
+kdrive_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/kdrive.jpg"
+# Prepended to the AppImage in the launcher wrapper, needed under Wayland
+kdrive_exec_env: 'env QTWEBENGINE_CHROMIUM_FLAGS="--no-sandbox" QT_QPA_PLATFORM=xcb'
+
+# Dependencies of the upstream script
+kdrive_packages:
+  - curl
+  - wget
+  - jq
+
+# Run the updater once at the end of the role, so kDrive is installed right away
+kdrive_run_update: true
+
+# Opt-in cleanup of the previous generic_app based installation
+kdrive_remove_legacy_install: false
+kdrive_legacy_paths:
+  - "/opt/kDrive/kDrive"
+  - "{{ ansible_facts['env']['HOME'] }}/.local/bin/kDrive"
