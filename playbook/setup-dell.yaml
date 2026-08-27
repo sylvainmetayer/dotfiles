@@ -22,6 +22,8 @@
     - role: git_config
       tags: [git_config]
     - role: kdrive
+      vars:
+        kdrive_remove_legacy_install: true
       tags: [kdrive]
     - role: jetbrains_toolbox
       tags: [jetbrains_toolbox]
