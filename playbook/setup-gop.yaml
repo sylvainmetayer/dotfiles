@@ -36,6 +36,8 @@
       tags: [jetbrains_toolbox]
     - role: gnome
       tags: [gnome]
+    - role: xremap
+      tags: [xremap]
     - role: commons
       tags: [commons]
     - role: gop
