@@ -1,0 +1,5 @@
+# Managed by Ansible, role xremap.
+{% set xremap_config = {} %}
+{% if xremap_modmap %}{% set _ = xremap_config.update({'modmap': xremap_modmap}) %}{% endif %}
+{% if xremap_keymap %}{% set _ = xremap_config.update({'keymap': xremap_keymap}) %}{% endif %}
+{{ xremap_config | to_nice_yaml(indent=2) }}

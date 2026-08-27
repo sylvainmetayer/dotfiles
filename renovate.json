@@ -54,6 +54,16 @@
     },
     {
       "managerFilePatterns": [
+        "roles/xremap/defaults/main.yaml"
+      ],
+      "customType": "regex",
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s*xremap_version: \"(?<currentValue>[0-9]+(?:\\.[0-9]+)+)\""
+      ],
+      "versioningTemplate": "semver"
+    },
+    {
+      "managerFilePatterns": [
         ".github/workflows/*.yml"
       ],
       "customType": "regex",
