@@ -1,0 +1,71 @@
+---
+- name: Install kdrive-auto-update dependencies
+  become: true
+  ansible.builtin.package:
+    name: "{{ kdrive_packages }}"
+    state: present
+
+- name: Ensure kDrive folders exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ kdrive_bin_folder }}"
+    - "{{ kdrive_config_folder }}"
+    - "{{ kdrive_autostart_folder }}"
+    - "{{ kdrive_applications_folder }}"
+
+- name: Install kdrive-auto-update script
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/oRiamn/kdrive-auto-update/{{ kdrive_auto_update_ref }}/kdrive-auto-update"
+    dest: "{{ kdrive_bin_folder }}/kdrive-auto-update"
+    mode: "0755"
+    force: true
+
+- name: Configure the architecture watched by kdrive-auto-update
+  ansible.builtin.copy:
+    content: "{{ kdrive_architecture }}\n"
+    dest: "{{ kdrive_config_folder }}/architecture"
+    mode: "0644"
+
+- name: Autostart kdrive-auto-update at login
+  ansible.builtin.template:
+    src: "kdrive-auto-update.desktop.j2"
+    dest: "{{ kdrive_autostart_folder }}/kdrive-auto-update.desktop"
+    mode: "0755"
+
+# kdrive-auto-update rewrites the Exec line of this file on every update, so it is
+# only seeded here and never overwritten afterwards.
+- name: Seed the kDrive autostart entry
+  ansible.builtin.template:
+    src: "kdrive-autostart.desktop.j2"
+    dest: "{{ kdrive_autostart_folder }}/kDrive.desktop"
+    mode: "0755"
+    force: false
+
+- name: Install the kDrive launcher wrapper
+  ansible.builtin.template:
+    src: "kdrive-launch.j2"
+    dest: "{{ kdrive_bin_folder }}/kdrive-launch"
+    mode: "0755"
+
+- name: Create the kDrive desktop entry
+  ansible.builtin.template:
+    src: "kdrive.desktop.j2"
+    dest: "{{ kdrive_applications_folder }}/kDrive.desktop"
+    mode: "0644"
+
+- name: Run kdrive-auto-update
+  ansible.builtin.command: "{{ kdrive_bin_folder }}/kdrive-auto-update"
+  register: kdrive_update
+  changed_when: "'update needed' in kdrive_update.stdout"
+  when: kdrive_run_update | bool
+
+- name: Remove the previous generic_app based installation
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ kdrive_legacy_paths }}"
+  when: kdrive_remove_legacy_install | bool
