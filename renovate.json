@@ -31,6 +31,15 @@
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+) currentValue=(?<currentValue>\\S+)\\n\\s*kdrive_auto_update_ref: \"(?<currentDigest>[a-f0-9]{40})\""
       ]
+    },
+    {
+      "managerFilePatterns": [
+        "roles/*/defaults/main.yaml"
+      ],
+      "customType": "regex",
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s*[a-z_]+_version: \"(?<currentValue>[0-9]+(?:\\.[0-9]+)+)\""
+      ]
     }
   ]
 }
