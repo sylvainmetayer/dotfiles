@@ -1,0 +1,42 @@
+---
+# renovate: datasource=github-releases depName=xremap/xremap extractVersion=^v(?<version>.*)$
+xremap_version: "0.15.12"
+# Release flavour matching the compositor: gnome, kde, x11, wlroots, hypr, niri, ...
+xremap_flavour: "gnome"
+xremap_arch: "x86_64"
+
+xremap_bin_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+xremap_install_folder: "{{ ansible_facts['env']['HOME'] }}/.local/share/xremap"
+xremap_config_folder: "{{ ansible_facts['env']['HOME'] }}/.config/xremap"
+xremap_systemd_folder: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user"
+
+xremap_packages:
+  - unzip
+
+# Lets xremap open /dev/uinput without running as root
+xremap_udev_rule: 'KERNEL=="uinput", GROUP="input", TAG+="uaccess"'
+xremap_udev_rule_file: "/etc/udev/rules.d/input.rules"
+# Needed to read /dev/input/event*, takes effect at the next login
+xremap_add_user_to_input_group: true
+
+# https://extensions.gnome.org/extension/5060/xremap/
+# Required for per application remaps under Wayland, where xremap cannot see the focused window
+xremap_install_gnome_extension: true
+xremap_gnome_extension_id: 5060
+
+xremap_service_enabled: true
+
+# https://github.com/xremap/xremap#configuration
+xremap_modmap:
+  - name: RemoteTerminalEnter
+    remap:
+      KEY_PAGEDOWN: KEY_ENTER
+    application:
+      only:
+        - Gnome-terminal
+        - gnome-terminal-server
+    device:
+      only:
+        - "Wireless Present"
+
+xremap_keymap: []

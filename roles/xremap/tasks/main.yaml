@@ -1,0 +1,82 @@
+---
+- name: Install xremap dependencies
+  become: true
+  ansible.builtin.package:
+    name: "{{ xremap_packages }}"
+    state: present
+
+- name: Allow the input group to use uinput
+  become: true
+  ansible.builtin.copy:
+    content: "{{ xremap_udev_rule }}\n"
+    dest: "{{ xremap_udev_rule_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload udev rules
+
+- name: Add the user to the input group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_facts['user_id'] }}"
+    groups: input
+    append: true
+  when: xremap_add_user_to_input_group | bool
+
+- name: Ensure xremap folders exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ xremap_bin_folder }}"
+    - "{{ xremap_install_folder }}"
+    - "{{ xremap_config_folder }}"
+    - "{{ xremap_systemd_folder }}"
+
+- name: Install xremap {{ xremap_version }}
+  ansible.builtin.unarchive:
+    src: >-
+      https://github.com/xremap/xremap/releases/download/v{{ xremap_version }}/xremap-linux-{{ xremap_arch }}-{{ xremap_flavour }}.zip
+    dest: "{{ xremap_install_folder }}/{{ xremap_version }}"
+    remote_src: true
+    mode: "0755"
+    creates: "{{ xremap_install_folder }}/{{ xremap_version }}/xremap"
+
+- name: Link the current xremap version
+  ansible.builtin.file:
+    src: "{{ xremap_install_folder }}/{{ xremap_version }}/xremap"
+    dest: "{{ xremap_bin_folder }}/xremap"
+    state: link
+  notify: Restart xremap
+
+- name: Install the xremap gnome extension
+  ansible.builtin.include_role:
+    name: jaredhocutt.gnome_extensions
+  vars:
+    gnome_extension_ids:
+      - "{{ xremap_gnome_extension_id }}"
+  when: xremap_install_gnome_extension | bool
+
+# xremap is started with --watch=config, so it picks the file up without a restart
+- name: Configure xremap
+  ansible.builtin.template:
+    src: "config.yml.j2"
+    dest: "{{ xremap_config_folder }}/config.yml"
+    mode: "0644"
+
+- name: Install the xremap user service
+  ansible.builtin.template:
+    src: "xremap.service.j2"
+    dest: "{{ xremap_systemd_folder }}/xremap.service"
+    mode: "0644"
+  notify: Restart xremap
+
+- name: Enable the xremap user service
+  ansible.builtin.systemd_service:
+    name: xremap
+    scope: user
+    daemon_reload: true
+    enabled: true
+    state: started
+  when: xremap_service_enabled | bool

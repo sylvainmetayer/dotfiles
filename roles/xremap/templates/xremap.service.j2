@@ -1,0 +1,11 @@
+[Unit]
+Description=xremap
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart={{ xremap_bin_folder }}/xremap --watch=config {{ xremap_config_folder }}/config.yml
+
+[Install]
+WantedBy=default.target
