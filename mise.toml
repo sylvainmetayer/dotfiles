@@ -1,5 +1,5 @@
 [tools]
-uv = "0.12.21"
+uv = "0.12.23"
 python = "{{ get_env(name='PYTHON_VERSION', default='3.14') }}"
 
 [env]
