@@ -7,7 +7,7 @@
 
 - name: Configure buttons layout
   community.general.dconf:
-    key: "/org/gnome/desktop/wm.preferences/button-layout"
+    key: "/org/gnome/desktop/wm/preferences/button-layout"
     value: "'appmenu:minimize,maximize,close'"
     state: present
 
@@ -50,16 +50,4 @@
   community.general.dconf:
     key: "/org/gnome/desktop/wm/keybindings/switch-windows-backward"
     value: "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
-    state: present
-
-- name: Clipboard extension - disable shortcut
-  community.general.dconf:
-    key: "/org/gnome/shell/extensions/clipboard-indicator/enable-keybindings"
-    value: "false"
-    state: present
-
-- name: Setup GPG Keyservers
-  community.general.dconf:
-    key: "/desktop/gnome/crypto/pgp/keyservers"
-    value: "['hkp://pool.sks-keyservers.net', 'ldap://keyserver.pgp.com']"
     state: present

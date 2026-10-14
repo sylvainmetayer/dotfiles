@@ -10,7 +10,5 @@ gnome_extension_ids:
   - 1262
   # https://extensions.gnome.org/extension/7/removable-drive-menu/
   - 7
-  # https://extensions.gnome.org/extension/4679/burn-my-windows/
-  - 4679
   # https://extensions.gnome.org/extension/3780/ddterm/
   - 3780
