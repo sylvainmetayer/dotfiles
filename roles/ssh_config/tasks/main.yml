@@ -12,9 +12,6 @@
 - name: Configure SSH settings
   ansible.builtin.include_tasks: ssh_config.yaml
 
-- name: Disable Gnome SSH Agent
-  ansible.builtin.include_tasks: disable_gnome_ssh_agent.yaml
-
 - name: Create custom SSH agent for user
   ansible.builtin.include_tasks: ssh_agent.yaml
 

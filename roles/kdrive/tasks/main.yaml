@@ -13,8 +13,13 @@
   loop:
     - "{{ kdrive_bin_folder }}"
     - "{{ kdrive_config_folder }}"
-    - "{{ kdrive_autostart_folder }}"
     - "{{ kdrive_applications_folder }}"
+
+- name: Ensure autostart folder exists
+  ansible.builtin.file:
+    path: "{{ kdrive_autostart_folder }}"
+    state: directory
+    mode: "0700"
 
 - name: Install kdrive-auto-update script
   ansible.builtin.get_url:

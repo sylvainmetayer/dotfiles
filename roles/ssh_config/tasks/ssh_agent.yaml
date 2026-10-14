@@ -1,4 +1,29 @@
 ---
+# Fedora ships gcr-ssh-agent (GNOME Keyring successor) as a user socket that
+# exports its own SSH_AUTH_SOCK, mask it so our ssh-agent.service is the only one.
+- name: Mask the gcr-ssh-agent socket and service
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    scope: user
+    state: stopped
+    masked: true
+  loop:
+    - gcr-ssh-agent.socket
+    - gcr-ssh-agent.service
+
+- name: Ensure environment.d folder exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/environment.d"
+    state: directory
+    mode: "0755"
+
+# Exported to the whole graphical session (GNOME apps, flatpaks), not only bash
+- name: Define SSH_AUTH_SOCK for the user session
+  ansible.builtin.copy:
+    content: "SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/ssh-agent.socket\n"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/environment.d/10-ssh-agent.conf"
+    mode: "0644"
+
 - name: Copy ssh-agent service
   ansible.builtin.copy:
     src: ./files/ssh-agent.service
