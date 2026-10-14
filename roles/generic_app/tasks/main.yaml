@@ -1,4 +1,29 @@
 ---
+# When the URL carries a version, the downloaded file name carries it too (the
+# URL basename, or <name>-<version> when only the path is versioned). A Renovate
+# bump then downloads a new file without needing get_url force, and the previous
+# versions are cleaned up. URLs without a version keep <folder>/<name>.
+- name: Extract the version from the download URL
+  ansible.builtin.set_fact:
+    generic_app_url_basename: "{{ generic_app_url | basename }}"
+    generic_app_basename_version: "{{ generic_app_url | basename | regex_search('[0-9]+(\\.[0-9]+)+') | default('', true) }}"
+    generic_app_url_version: "{{ generic_app_url | regex_findall('[0-9]+(?:\\.[0-9]+)+') | last | default('', true) }}"
+
+- name: Compute the downloaded file name
+  ansible.builtin.set_fact:
+    generic_app_file_name: >-
+      {{ generic_app_url_basename if generic_app_basename_version
+         else (generic_app_name ~ '-' ~ generic_app_url_version if generic_app_url_version
+         else generic_app_name) }}
+    generic_app_file_prefix: >-
+      {{ generic_app_url_basename.split(generic_app_basename_version)[0] if generic_app_basename_version
+         else generic_app_name ~ '-' }}
+
+- name: Compute the downloaded file path
+  ansible.builtin.set_fact:
+    generic_app_file: "{{ generic_app_folder }}/{{ generic_app_file_name }}"
+    generic_app_versioned: "{{ generic_app_file_name != generic_app_name }}"
+
 - name: Ensure app folder exists
   become: true
   ansible.builtin.file:
@@ -9,11 +34,57 @@
 - name: Download app binary
   ansible.builtin.get_url:
     url: "{{ generic_app_url }}"
-    dest: "{{ generic_app_folder }}/{{ generic_app_name }}"
+    dest: "{{ generic_app_file }}"
     mode: "0700"
+
+# Keeps <folder>/<name> usable from the shell and by older desktop entries
+- name: Link the app name to the downloaded version
+  ansible.builtin.file:
+    src: "{{ generic_app_file }}"
+    dest: "{{ generic_app_folder }}/{{ generic_app_name }}"
+    state: link
+    force: true
+  when: generic_app_versioned | bool
+
+- name: Find previous versions of the app
+  ansible.builtin.find:
+    paths: "{{ generic_app_folder }}"
+    patterns: "{{ generic_app_file_prefix }}[0-9]*"
+    file_type: file
+  register: generic_app_previous_versions
+  when: generic_app_versioned | bool
+
+- name: Remove previous versions of the app
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ generic_app_previous_versions.files | default([]) | rejectattr('path', 'equalto', generic_app_file) | list }}"
+  loop_control:
+    label: "{{ item.path }}"
+  when: generic_app_versioned | bool
 
 - name: Create desktop icon
   ansible.builtin.template:
     src: "app.desktop.j2"
-    dest: "~/.local/share/applications/{{ generic_app_name }}.desktop"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/{{ generic_app_name }}.desktop"
     mode: "0644"
+
+- name: Ensure autostart folder exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/autostart"
+    state: directory
+    mode: "0700"
+  when: generic_app_autostart | default('false') | bool
+
+- name: Create autostart entry
+  ansible.builtin.template:
+    src: "app.desktop.j2"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/autostart/{{ generic_app_name }}.desktop"
+    mode: "0644"
+  when: generic_app_autostart | default('false') | bool
+
+- name: Remove autostart entry
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/autostart/{{ generic_app_name }}.desktop"
+    state: absent
+  when: not (generic_app_autostart | default('false') | bool)

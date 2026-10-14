@@ -3,3 +3,5 @@ generic_app_name: ""
 generic_app_url: ""
 generic_app_folder: "~/Applications"
 generic_app_icon: ""
+generic_app_autostart: "false"
+# generic_app_exec defaults to the downloaded file (see tasks/main.yaml)

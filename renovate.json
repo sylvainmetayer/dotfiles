@@ -31,6 +31,24 @@
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+) currentValue=(?<currentValue>\\S+)\\n\\s*kdrive_auto_update_ref: \"(?<currentDigest>[a-f0-9]{40})\""
       ]
+    },
+    {
+      "managerFilePatterns": [
+        "roles/jetbrains_toolbox/defaults/main.yaml"
+      ],
+      "customType": "regex",
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z.-]+) depName=(?<depName>\\S+)\\n\\s*jetbrains_toolbox_url: \"[^\"]*?-(?<currentValue>[0-9]+(?:\\.[0-9]+)+)\\.tar\\.gz\""
+      ],
+      "versioningTemplate": "loose"
     }
-  ]
+  ],
+  "customDatasources": {
+    "jetbrains-toolbox": {
+      "defaultRegistryUrlTemplate": "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release",
+      "transformTemplates": [
+        "{\"releases\": [{\"version\": $.TBA[0].build}]}"
+      ]
+    }
+  }
 }

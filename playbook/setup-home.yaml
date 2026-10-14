@@ -37,7 +37,6 @@
         generic_app_url: "https://github.com/fosrl/cli/releases/download/0.18.0/pangolin-cli_linux_amd64"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/pangolin.jpg"
-        generic_app_exec: "{{ ansible_facts['env']['HOME'] }}/.local/bin/pangolin"
         generic_app_autostart: "true"
         generic_app_categories: "Network;"
       tags: [pangolin]
@@ -48,10 +47,10 @@
     - role: generic_app
       vars:
         generic_app_name: "ledger"
-        generic_app_url: "http://download.live.ledger.com/ledger-live-desktop-4.13.1-linux-x86_64.AppImage"
+        # renovate: datasource=github-releases depName=LedgerHQ/ledger-live extractVersion=^@ledgerhq/live-desktop@(?<version>.+)$
+        generic_app_url: "https://download.live.ledger.com/ledger-live-desktop-4.13.1-linux-x86_64.AppImage"
         generic_app_folder: "/opt/ledger"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/ledger.svg"
-        generic_app_exec: "/opt/ledger/ledger"
         generic_app_autostart: "false"
         generic_app_categories: "Finance;"
       tags: [ledger]
@@ -62,7 +61,6 @@
         generic_app_url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.13.7/Obsidian-1.13.7.AppImage"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/obsidian.png"
-        generic_app_exec: "{{ ansible_facts['env']['HOME'] }}/.local/bin/obsidian"
         generic_app_autostart: "false"
         generic_app_categories: "Productivity;"
       tags: [obsidian]

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name={{ generic_app_name }}
-Exec={{ generic_app_exec }}
+Exec={{ generic_app_exec | default(generic_app_file) }}
 Icon={{ generic_app_icon }}
 Comment={{ generic_app_comment | default("") }}
 Terminal={{ generic_app_terminal | default('false') }}
