@@ -1,0 +1,23 @@
+---
+# GTX 1070 (Pascal): 580xx is the last driver series supporting it
+nvidia_driver_series: "580xx"
+
+nvidia_rpmfusion_release_url: >-
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm
+
+# Repositories shipped (disabled) by fedora-workstation-repositories
+nvidia_repositories:
+  - rpmfusion-nonfree-nvidia-driver
+  - rpmfusion-nonfree-steam
+
+nvidia_packages:
+  - "akmod-nvidia-{{ nvidia_driver_series }}"
+  - "xorg-x11-drv-nvidia-{{ nvidia_driver_series }}"
+  - "xorg-x11-drv-nvidia-{{ nvidia_driver_series }}-cuda"
+  - "xorg-x11-drv-nvidia-{{ nvidia_driver_series }}-power"
+  - "nvidia-settings-{{ nvidia_driver_series }}"
+  - akmods
+  - dkms
+  - kernel-devel-matched
+  - nvtop
+  - broadcom-bt-firmware
