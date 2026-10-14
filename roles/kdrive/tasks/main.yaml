@@ -34,20 +34,34 @@
     dest: "{{ kdrive_config_folder }}/architecture"
     mode: "0644"
 
+# Run before rendering kDrive.desktop, so a pending update does not leave the
+# Exec= line pointing at a fixed AppImage at the end of the run.
+- name: Run kdrive-auto-update
+  ansible.builtin.command: "{{ kdrive_bin_folder }}/kdrive-auto-update"
+  register: kdrive_update
+  changed_when: "'update needed' in kdrive_update.stdout"
+  when: kdrive_run_update | bool
+
 - name: Autostart kdrive-auto-update at login
   ansible.builtin.template:
     src: "kdrive-auto-update.desktop.j2"
     dest: "{{ kdrive_autostart_folder }}/kdrive-auto-update.desktop"
     mode: "0755"
 
-# kdrive-auto-update rewrites the Exec line of this file on every update, so it is
-# only seeded here and never overwritten afterwards.
-- name: Seed the kDrive autostart entry
+# Three writers touch this file:
+# - this role renders it with Exec=kdrive-launch, which resolves the newest
+#   kDrive-<arch>-v*.AppImage kept by kdrive-auto-update at launch time;
+# - kdrive-auto-update deletes the Exec= line and appends Exec='<new AppImage>'
+#   after each update, which still starts the newest version;
+# - the kDrive client itself rewrites it with its own AppImage path when
+#   "launch at startup" is enabled, pinning the version that is running.
+# force: true brings the wrapper back on every run.
+- name: Render the kDrive autostart entry
   ansible.builtin.template:
     src: "kdrive-autostart.desktop.j2"
     dest: "{{ kdrive_autostart_folder }}/kDrive.desktop"
     mode: "0755"
-    force: false
+    force: true
 
 - name: Install the kDrive launcher wrapper
   ansible.builtin.template:
@@ -55,17 +69,13 @@
     dest: "{{ kdrive_bin_folder }}/kdrive-launch"
     mode: "0755"
 
+# applications/kDrive.desktop is (re)written by the kDrive client to register
+# the kdrive:// URL handler, so the menu entry uses its own file name.
 - name: Create the kDrive desktop entry
   ansible.builtin.template:
     src: "kdrive.desktop.j2"
-    dest: "{{ kdrive_applications_folder }}/kDrive.desktop"
+    dest: "{{ kdrive_applications_folder }}/kdrive-launch.desktop"
     mode: "0644"
-
-- name: Run kdrive-auto-update
-  ansible.builtin.command: "{{ kdrive_bin_folder }}/kdrive-auto-update"
-  register: kdrive_update
-  changed_when: "'update needed' in kdrive_update.stdout"
-  when: kdrive_run_update | bool
 
 - name: Remove the previous generic_app based installation
   become: true

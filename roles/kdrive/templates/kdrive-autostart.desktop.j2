@@ -1,7 +1,8 @@
-{# Exec= is intentionally missing: kdrive-auto-update appends it after each update #}
+{# kdrive-auto-update replaces the Exec= line after each update, see tasks/main.yaml #}
 [Desktop Entry]
 Type=Application
 Name=kDrive
+Exec={{ kdrive_bin_folder }}/kdrive-launch
 Icon={{ kdrive_icon }}
 Terminal=false
 StartupNotify=false

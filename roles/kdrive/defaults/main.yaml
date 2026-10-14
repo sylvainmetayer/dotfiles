@@ -27,5 +27,5 @@ kdrive_run_update: true
 # Opt-in cleanup of the previous generic_app based installation
 kdrive_remove_legacy_install: false
 kdrive_legacy_paths:
-  - "/opt/kDrive/kDrive"
+  - "/opt/kDrive"
   - "{{ ansible_facts['env']['HOME'] }}/.local/bin/kDrive"
