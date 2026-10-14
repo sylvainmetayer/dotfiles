@@ -62,12 +62,30 @@ fedora_dependencies_packages:
   - wl-clipboard
   - digikam
   - steam
+  # Dev tooling
+  - git-lfs
+  - tmux
+  - distrobox
+  - ncdu
+  - fuse-sshfs
+  - python3-pip
+  - "@development-tools"
+  # Apps
+  - lutris
+  - evolution
+  # GPU tooling
+  - corectrl
+  - radeontop
+  - vulkan-tools
+  - mesa-demos
+  - libva-utils
 
 fedora_dependencies_remove_packages:
   - keepassxc # use flatpak
   - gnome-maps
   - gnome-documents
   - rhythmbox
+  - rclone # pinned per project by mise
 
 fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
@@ -76,4 +94,21 @@ fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
   - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
   - https://flathub.org/repo/appstream/org.keepassxc.KeePassXC.flatpakref
-  - https://flathub.org/repo/appstream/com.github.tchx84.Flatseal
+  - https://flathub.org/repo/appstream/com.github.tchx84.Flatseal.flatpakref
+  - https://flathub.org/repo/appstream/io.kapsa.drive.flatpakref
+
+fedora_dependencies_remove_flatpak:
+  - com.getpostman.Postman
+
+mise_global_plugins:
+  sops: latest
+  age: latest
+  direnv: latest
+  starship: latest
+  zellij: latest
+  usage: latest
+  github-cli: latest
+  zoxide: latest
+  "aqua:SonarSource/sonarqube-cli": latest
+  gitleaks: latest
+  "github:fosrl/newt": latest

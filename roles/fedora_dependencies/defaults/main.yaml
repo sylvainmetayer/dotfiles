@@ -66,3 +66,6 @@ fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref
   - https://flathub.org/repo/appstream/org.signal.Signal.flatpakref
   - https://flathub.org/repo/appstream/org.gnome.Extensions.flatpakref
+
+# Flatpak application IDs to uninstall
+fedora_dependencies_remove_flatpak: []

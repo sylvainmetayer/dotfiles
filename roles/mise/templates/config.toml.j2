@@ -1,4 +1,8 @@
 [tools]
 {% for item, version in mise_global_plugins.items() %}
+{% if item is match('^[A-Za-z0-9_-]+$') %}
 {{ item }} = "{{ version }}"
+{% else %}
+"{{ item }}" = "{{ version }}"
+{% endif %}
 {% endfor %}

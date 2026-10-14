@@ -20,7 +20,12 @@
     name: "{{ item }}"
     state: present
 
-# FIXME Skipped but should be played
+- name: Remove flatpak app
+  loop: "{{ fedora_dependencies_remove_flatpak }}"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: absent
+
 - name: Create override folder for flatpak apps
   ansible.builtin.file:
     path: "{{ ansible_facts['env']['HOME'] }}/.local/share/flatpak/overrides"
