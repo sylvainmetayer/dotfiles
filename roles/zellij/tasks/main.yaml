@@ -6,8 +6,10 @@
     mode: "0755"
 
 # https://tech.kibatic.com/linux/zellij-wayland-cut-paste/
-- name: Uncomment wl-copy plugin in zellij config
+- name: Use wl-copy as zellij copy command
   ansible.builtin.lineinfile:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/zellij/config.kdl"
-    regexp: '// copy_command "wl-copy"'
-    line: copy_command "wl-copy"
+    regexp: '^\s*(//\s*)?copy_command\s'
+    line: 'copy_command "wl-copy"'
+    create: true
+    mode: "0644"
