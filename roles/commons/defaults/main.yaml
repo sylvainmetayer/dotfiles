@@ -16,6 +16,9 @@ commons_symlinks:
   - .bash_aliases
   - .tmux.conf
   - .config/starship.toml
+  - .config/htop/htoprc
+  - .config/git/ignore
+  - .local/bin/switch-gpu
   - .gnupg/gpg.conf
   - .default-npm-packages
   - .bashrc.d/convertFile.sh
@@ -31,9 +34,16 @@ commons_symlinks:
   - .bashrc.d/ledger_udev.sh
   - .bashrc.d/load_env.sh
   - .bashrc.d/logs.sh
+  - .bashrc.d/podman.sh
   - .bashrc.d/server-functions.sh
   - .bashrc.d/showHosts.sh
   - .bashrc.d/t.sh
+
+# Mode of the parent folders created for commons_symlinks (default 0700),
+# kept in line with the other tasks managing those folders.
+commons_folder_modes:
+  .local/bin: "0755"
+  .bashrc.d: "0755"
 
 commons_setup_direnv: true
 commons_setup_starship_init_script: true

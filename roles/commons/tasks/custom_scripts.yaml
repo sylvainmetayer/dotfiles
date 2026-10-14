@@ -4,7 +4,6 @@
     commons_custom_script_template: "{{ lookup('template', 'custom_scripts.sh.j2') }}"
 
 - name: Ensure ~/.bashrc.d folder exists
-  become: true
   ansible.builtin.file:
     path: "~/.bashrc.d"
     state: directory
@@ -12,24 +11,18 @@
     group: "{{ ansible_user_gid }}"
     mode: "0755"
 
-- name: Add custom script in bashrc
+# Fedora's default ~/.bashrc already sources ~/.bashrc.d/*
+- name: Source bash aliases in bashrc
   ansible.builtin.blockinfile:
     insertafter: "#!/usr/bin/env bash"
     dest: "~/.bashrc"
     block: |
-      if [ -d ~/.bashrc.d ]; then
-        for file in ~/.bashrc.d/*
-        do
-          source $file
-        done
-      fi
-
       if [ -f ~/.bash_aliases ]; then
         source ~/.bash_aliases
       fi
     marker: "#{mark} ANSIBLE STARTUP SCRIPTS"
 
-- name: Add custom script in bashrc
+- name: Add custom scripts in bashrc
   ansible.builtin.blockinfile:
     insertafter: "EOF"
     dest: "~/.bashrc"

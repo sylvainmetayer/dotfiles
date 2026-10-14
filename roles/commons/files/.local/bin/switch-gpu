@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Script pour basculer entre NVIDIA propriétaire et Nouveau
+# Usage: sudo switch-gpu [nvidia|nouveau]
+
+if [ "$1" != "nvidia" ] && [ "$1" != "nouveau" ]; then
+  echo "Usage: sudo $0 [nvidia|nouveau]"
+  exit 1
+fi
+
+BLACKLIST_FILE="/etc/modprobe.d/disable-nvidia.conf"
+
+if [ "$1" == "nouveau" ]; then
+  echo "==> Activation du driver Nouveau, désactivation de NVIDIA..."
+
+  # Créer le blacklist pour NVIDIA
+  echo -e "blacklist nvidia\nblacklist nvidia_drm\nblacklist nvidia_modeset\nblacklist nvidia_uvm" | sudo tee $BLACKLIST_FILE
+
+  # Rebuild initramfs
+  echo "==> Reconstruction de l'initramfs..."
+  sudo dracut --force
+
+  echo "==> NVIDIA désactivé. Redémarre pour appliquer Nouveau."
+
+elif [ "$1" == "nvidia" ]; then
+  echo "==> Activation du driver NVIDIA propriétaire..."
+
+  # Supprimer le blacklist
+  if [ -f $BLACKLIST_FILE ]; then
+    sudo rm $BLACKLIST_FILE
+  fi
+
+  # Rebuild initramfs
+  echo "==> Reconstruction de l'initramfs..."
+  sudo dracut --force
+
+  echo "==> NVIDIA activé. Redémarre pour appliquer."
+fi
+
+echo "Post-redemarrage, lance les commandes suivante"
+
+echo 'lsmod | grep nouveau'
+echo 'lsmod | grep nvidia'
+echo 'nvidia-smi si nvidia'

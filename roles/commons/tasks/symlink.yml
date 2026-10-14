@@ -4,9 +4,9 @@
     path: "~/{{ item }}"
   register: commons_dotfile
 
-- name: "Ensure folder does exists {{ item }}"
+- name: "Ensure parent folder exists for link {{ item }}"
   ansible.builtin.file:
-    mode: "0700"
+    mode: "{{ commons_folder_modes[item | dirname] | default('0700') }}"
     path: "~/{{ item | dirname }}"
     state: directory
 

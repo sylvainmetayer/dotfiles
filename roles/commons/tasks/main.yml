@@ -20,6 +20,13 @@
   ansible.builtin.import_tasks: direnv_config.yaml
   when: commons_setup_direnv | bool
 
+- name: Enable the rootless podman socket (Docker API compatibility)
+  ansible.builtin.systemd:
+    name: podman.socket
+    scope: user
+    enabled: true
+    state: started
+
 - name: Setup symlinks
   ansible.builtin.include_tasks: symlink.yml
   loop: "{{ commons_symlinks }}"
