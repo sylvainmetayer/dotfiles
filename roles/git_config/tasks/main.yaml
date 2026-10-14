@@ -4,8 +4,8 @@
     content: ""
     dest: "~/.gitconfig"
     force: false
-    group: "{{ ansible_user_gid }}"
-    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_facts['user_gid'] }}"
+    owner: "{{ ansible_facts['user_uid'] }}"
     mode: "0600"
 
 - name: Ensure allowed_signers file exists
@@ -13,8 +13,8 @@
     content: ""
     dest: "~/.ssh/allowed_signers"
     force: false
-    group: "{{ ansible_user_gid }}"
-    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_facts['user_gid'] }}"
+    owner: "{{ ansible_facts['user_uid'] }}"
     mode: "0600"
 
 - name: Render Git config Template

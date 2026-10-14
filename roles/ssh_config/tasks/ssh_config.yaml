@@ -4,8 +4,8 @@
     content: ""
     dest: "~/.ssh/config"
     force: false
-    group: "{{ ansible_user_gid }}"
-    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_facts['user_gid'] }}"
+    owner: "{{ ansible_facts['user_uid'] }}"
     mode: "0600"
 
 - name: Render SSH config Template

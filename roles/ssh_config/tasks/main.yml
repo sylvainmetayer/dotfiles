@@ -19,8 +19,8 @@
   ansible.builtin.copy:
     src: ./files/keepassxc.pub
     dest: ~/.ssh/keepassxc.pub
-    group: "{{ ansible_user_gid }}"
-    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_facts['user_gid'] }}"
+    owner: "{{ ansible_facts['user_uid'] }}"
     mode: "0600"
 
 # Improvment : we need to make sure the "Ask user confirmation before using key" is disabled

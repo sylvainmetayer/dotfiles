@@ -5,6 +5,11 @@ rules:
   line-length:
     max: 140
     level: warning
+  # galaxy.yml is re-serialized by fjogeleit/yaml-update-action on every
+  # release (collection.yml), which drops the document start marker.
+  document-start:
+    ignore: |
+      galaxy.yml
   comments:
     min-spaces-from-content: 1
   comments-indentation: false

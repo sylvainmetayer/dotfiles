@@ -68,6 +68,6 @@
   ansible.builtin.copy:
     src: ./files/onepoint-keepassxc.pub
     dest: ~/.ssh/onepoint-keepassxc.pub
-    group: "{{ ansible_user_gid }}"
-    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_facts['user_gid'] }}"
+    owner: "{{ ansible_facts['user_uid'] }}"
     mode: "0600"

@@ -12,7 +12,7 @@ signingkey =  {{ git_config_ssh_sign_pub_key }}
 [commit]
   gpgsign = true
 [gpg "ssh"]
-  allowedSignersFile = {{ ansible_user_dir }}/.ssh/allowed_signers
+  allowedSignersFile = {{ ansible_facts['user_dir'] }}/.ssh/allowed_signers
 [gpg]
 	format = ssh
 {% endif %}

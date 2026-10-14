@@ -51,7 +51,7 @@ jobs:
 
       - name: ansible-lint
         run: |
-          ansible-lint -v || true
+          ansible-lint -v
 
       - name: yamllint
         run: |

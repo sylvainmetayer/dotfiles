@@ -22,7 +22,7 @@ ansible-playbook playbook/setup-home.yaml -K --tags gnome  # run one role (every
 yamllint .
 ```
 
-There is no test suite. CI (`.github/workflows/`) runs `--syntax-check` on every `playbook/setup-*.yaml`, `ansible-lint`, `yamllint .`, and shellcheck over `roles/commons/files/bashrc.d` — note that path is missing the leading dot (the real directory is `.bashrc.d`), so the shell helpers are effectively not being linted.
+There is no test suite. CI (`.github/workflows/`) runs `--syntax-check` on every `playbook/setup-*.yaml`, `ansible-lint`, `yamllint .`, and shellcheck over `roles/commons/files/.bashrc.d`.
 
 ## Architecture
 

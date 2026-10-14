@@ -9,6 +9,6 @@
   ansible.builtin.template:
     src: ./templates/direnv.toml.j2
     dest: ~/.config/direnv/direnv.toml
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts['user_uid'] }}"
+    group: "{{ ansible_facts['user_gid'] }}"
     mode: "0644"
