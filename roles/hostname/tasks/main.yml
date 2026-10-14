@@ -7,7 +7,9 @@
 - name: "Update the hostname - (/etc/hosts)"
   ansible.builtin.lineinfile:
     dest: /etc/hosts
-    regexp: "^{{ ansible_lo.ipv4.address }}"
-    line: "{{ ansible_lo.ipv4.address }} localhost {{ hostname_fqdn }} {{ hostname_name }}"
+    # \s avoids matching 127.0.0.10 & co; only the last matching line is
+    # replaced, a duplicated 127.0.0.1 line has to be cleaned by hand once.
+    regexp: '^127\.0\.0\.1\s'
+    line: "127.0.0.1 localhost {{ hostname_fqdn }} {{ hostname_name }}"
     state: present
   when: hostname_name is defined and hostname_fqdn is defined
