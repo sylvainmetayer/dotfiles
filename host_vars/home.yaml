@@ -80,6 +80,10 @@ fedora_dependencies_packages:
   - mesa-demos
   - libva-utils
 
+# Full ffmpeg from RPM Fusion: HEVC decoding and multi-threaded H.264, needed for the cassette encoding
+fedora_dependencies_replace_packages:
+  - ffmpeg
+
 fedora_dependencies_remove_packages:
   - keepassxc # use flatpak
   - gnome-maps

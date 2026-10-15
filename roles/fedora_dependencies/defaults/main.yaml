@@ -54,6 +54,9 @@ fedora_dependencies_packages:
   - gstreamer1-libav
   - graphviz
 
+# RPM Fusion variants that replace a Fedora package (needs the rpmfusion repositories)
+fedora_dependencies_replace_packages: []
+
 fedora_dependencies_remove_packages:
   - gnome-maps
   - gnome-documents

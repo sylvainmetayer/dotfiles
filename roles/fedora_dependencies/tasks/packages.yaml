@@ -6,6 +6,16 @@
     state: present
     update_cache: true
 
+# Packages that replace a Fedora package with its RPM Fusion variant (ffmpeg-free -> ffmpeg):
+# the conflict is resolved by erasing the Fedora one, like `dnf swap`.
+- name: Install packages that replace their Fedora variant
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ fedora_dependencies_replace_packages }}"
+    state: present
+    allowerasing: true
+  when: fedora_dependencies_replace_packages | length > 0
+
 - name: Remove packages
   become: true
   ansible.builtin.dnf:
