@@ -1,0 +1,15 @@
+[Unit]
+Description=KeePass databases backup, restic snapshot
+# Managed by Ansible (roles/keepass_backup)
+OnFailure=keepass-backup-notify@%n.service
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile={{ keepass_backup_config_dir }}/env
+ExecStart={{ keepass_backup_bin_dir }}/keepass-backup run
+Nice=10
+IOSchedulingClass=idle
+# Login often happens before the network is up: retry instead of waiting for the next timer.
+Restart=on-failure
+RestartSec=10min

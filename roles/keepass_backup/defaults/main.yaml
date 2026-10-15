@@ -38,12 +38,15 @@ keepass_backup_restic: "{{ keepass_backup_restic_defaults | combine(keepass_back
 keepass_backup_restic_host: "{{ inventory_hostname }}"
 keepass_backup_restic_tag: keepass
 
-# Retention applied with `restic forget` (no prune: the writer key cannot delete data objects).
-keepass_backup_keep_daily: 30
-keepass_backup_keep_weekly: 12
-keepass_backup_keep_monthly: 24
-keepass_backup_keep_yearly: unlimited
+# The restic layer is only configured when every value is set and none is a placeholder.
+keepass_backup_restic_configured: >-
+  {{ keepass_backup_restic.repository is match('^s3:')
+     and (keepass_backup_restic.values() | select('equalto', '') | list | length == 0)
+     and (keepass_backup_restic.values() | select('search', 'CHANGEME') | list | length == 0) }}
 
-# Schedules (systemd OnCalendar). The path unit also triggers a run on every change of the source dir.
-keepass_backup_on_calendar: "daily"
+# Retention is NOT applied from the workstation: the writer key cannot delete snapshots.
+# Once a year, with the admin key (README): restic forget --keep-within 1y --keep-monthly 24 --keep-yearly unlimited --prune
+
+# Schedules (systemd OnCalendar). The path unit also triggers the local copies on every change of the source dir.
+keepass_backup_on_calendar: "hourly"
 keepass_backup_check_on_calendar: "monthly"
