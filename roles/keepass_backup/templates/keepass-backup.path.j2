@@ -1,0 +1,13 @@
+[Unit]
+Description=Back up the KeePass databases as soon as one changes
+# Managed by Ansible (roles/keepass_backup)
+
+[Path]
+PathChanged={{ keepass_backup_source_dir }}
+Unit=keepass-backup.service
+# KeePassXC writes a temp file then renames it; wait for the dust to settle.
+TriggerLimitIntervalSec=2min
+TriggerLimitBurst=1
+
+[Install]
+WantedBy=default.target

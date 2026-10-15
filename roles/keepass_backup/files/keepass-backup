@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# keepass-backup: three independent copies of the KeePass databases that live in a synced folder.
+#   local   timestamped copy of every database whose content changed (layer 1)
+#   remote  restic snapshot of the source dir, then retention without prune (layer 2)
+#   check   restic check + restore the latest snapshot and compare checksums with the source
+#   run     local + remote (what the timer and the path unit call)
+#   init    create the restic repository once
+# Configuration comes from the environment file written by Ansible (~/.config/keepass-backup/env).
+set -euo pipefail
+
+: "${KEEPASS_BACKUP_SOURCE_DIR:?}"
+: "${KEEPASS_BACKUP_GLOB:=*.kdbx}"
+: "${KEEPASS_BACKUP_HISTORY_DIR:?}"
+: "${KEEPASS_BACKUP_HISTORY_KEEP_DAYS:=365}"
+: "${KEEPASS_BACKUP_CHECK_DIR:?}"
+: "${KEEPASS_BACKUP_RESTIC_BIN:=restic}"
+: "${KEEPASS_BACKUP_RESTIC_HOST:=$(hostname)}"
+: "${KEEPASS_BACKUP_RESTIC_TAG:=keepass}"
+: "${KEEPASS_BACKUP_KEEP_DAILY:=30}"
+: "${KEEPASS_BACKUP_KEEP_WEEKLY:=12}"
+: "${KEEPASS_BACKUP_KEEP_MONTHLY:=24}"
+: "${KEEPASS_BACKUP_KEEP_YEARLY:=unlimited}"
+
+log() { printf '%s keepass-backup: %s\n' "$(date +%FT%T)" "$*"; }
+die() { log "ERROR: $*" >&2; exit 1; }
+
+restic_ready() {
+  [ -n "${RESTIC_REPOSITORY:-}" ] && [ -n "${RESTIC_PASSWORD:-}" ] && [ -x "$KEEPASS_BACKUP_RESTIC_BIN" ]
+}
+
+restic() { "$KEEPASS_BACKUP_RESTIC_BIN" --quiet "$@"; }
+
+sources() {
+  # NUL-separated list of databases, sorted, so that the caller can loop safely over odd names.
+  find "$KEEPASS_BACKUP_SOURCE_DIR" -maxdepth 1 -type f -name "$KEEPASS_BACKUP_GLOB" -print0 | sort -z
+}
+
+cmd_local() {
+  [ -d "$KEEPASS_BACKUP_SOURCE_DIR" ] || die "source dir missing: $KEEPASS_BACKUP_SOURCE_DIR"
+  local f name dir sum last copied=0
+  while IFS= read -r -d '' f; do
+    name=$(basename "$f" .kdbx)
+    dir="$KEEPASS_BACKUP_HISTORY_DIR/$name"
+    mkdir -p "$dir"
+    sum=$(sha256sum "$f" | cut -d' ' -f1)
+    last=$(cat "$dir/.last-sha256" 2>/dev/null || true)
+    if [ "$sum" = "$last" ]; then
+      continue
+    fi
+    # The copy keeps the source mtime; the name carries the time of the copy. Never overwrite.
+    cp --no-clobber --preserve=timestamps "$f" "$dir/$name.$(date +%Y%m%dT%H%M%S).kdbx"
+    printf '%s\n' "$sum" > "$dir/.last-sha256"
+    copied=$((copied + 1))
+    log "history: $name copied ($sum)"
+  done < <(sources)
+  log "history: $copied new copy(ies)"
+  # Thin out old copies, but always keep the two most recent of each database.
+  while IFS= read -r -d '' dir; do
+    find "$dir" -maxdepth 1 -type f -name '*.kdbx' -mtime "+$KEEPASS_BACKUP_HISTORY_KEEP_DAYS" -printf '%T@ %p\0' \
+      | sort -z -n | head -z -n -2 | cut -z -d' ' -f2- | xargs -0 -r rm -v --
+  done < <(find "$KEEPASS_BACKUP_HISTORY_DIR" -mindepth 1 -maxdepth 1 -type d -print0)
+}
+
+cmd_remote() {
+  restic_ready || { log "remote: restic not configured, skipped"; return 0; }
+  restic backup --host "$KEEPASS_BACKUP_RESTIC_HOST" --tag "$KEEPASS_BACKUP_RESTIC_TAG" \
+    --exclude-caches "$KEEPASS_BACKUP_SOURCE_DIR"
+  log "remote: snapshot done"
+  # forget only marks snapshots; data stays until an admin runs `restic prune` with the admin key.
+  restic forget --host "$KEEPASS_BACKUP_RESTIC_HOST" --tag "$KEEPASS_BACKUP_RESTIC_TAG" \
+    --keep-daily "$KEEPASS_BACKUP_KEEP_DAILY" --keep-weekly "$KEEPASS_BACKUP_KEEP_WEEKLY" \
+    --keep-monthly "$KEEPASS_BACKUP_KEEP_MONTHLY" --keep-yearly "$KEEPASS_BACKUP_KEEP_YEARLY"
+  log "remote: retention applied"
+}
+
+cmd_check() {
+  restic_ready || die "check: restic not configured"
+  restic check
+  rm -rf "$KEEPASS_BACKUP_CHECK_DIR"
+  mkdir -p "$KEEPASS_BACKUP_CHECK_DIR"
+  chmod 700 "$KEEPASS_BACKUP_CHECK_DIR"
+  restic restore latest --host "$KEEPASS_BACKUP_RESTIC_HOST" --tag "$KEEPASS_BACKUP_RESTIC_TAG" \
+    --target "$KEEPASS_BACKUP_CHECK_DIR"
+  local f restored failed=0
+  while IFS= read -r -d '' f; do
+    restored="$KEEPASS_BACKUP_CHECK_DIR$f"
+    if [ ! -f "$restored" ]; then
+      log "check: MISSING in restore: $f"; failed=1; continue
+    fi
+    if ! cmp -s "$f" "$restored"; then
+      # Legit when the database changed since the last snapshot: say so instead of failing.
+      if [ "$f" -nt "$restored" ]; then
+        log "check: $f changed after the snapshot, skipped"
+      else
+        log "check: CONTENT DIFFERS: $f"; failed=1
+      fi
+    fi
+  done < <(sources)
+  rm -rf "$KEEPASS_BACKUP_CHECK_DIR"
+  [ "$failed" -eq 0 ] || die "check: restore test failed"
+  log "check: restore test OK"
+}
+
+cmd_init() {
+  restic_ready || die "init: restic not configured"
+  if restic cat config >/dev/null 2>&1; then
+    log "init: repository already initialised"
+  else
+    restic init
+    log "init: repository created"
+  fi
+}
+
+case "${1:-}" in
+  local) cmd_local ;;
+  remote) cmd_remote ;;
+  run) cmd_local; cmd_remote ;;
+  check) cmd_check ;;
+  init) cmd_init ;;
+  *) echo "usage: keepass-backup {local|remote|run|check|init}" >&2; exit 2 ;;
+esac

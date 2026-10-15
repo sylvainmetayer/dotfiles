@@ -102,6 +102,7 @@ fedora_dependencies_remove_flatpak:
 
 mise_global_plugins:
   sops: latest
+  restic: latest
   age: latest
   direnv: latest
   starship: latest

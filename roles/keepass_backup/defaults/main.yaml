@@ -1,0 +1,49 @@
+---
+# Where the KeePass databases live (a kDrive-synced folder: the thing we protect against).
+keepass_backup_source_dir: "{{ ansible_facts['env']['HOME'] }}/kDrive/keepass"
+keepass_backup_glob: "*.kdbx"
+
+# Everything the role writes lives here, outside any synced folder, on the encrypted /home.
+keepass_backup_root: "{{ ansible_facts['env']['HOME'] }}/.local/share/keepass-backup"
+# Layer 0: KeePassXC copies the database here before every save.
+keepass_backup_keepassxc_dir: "{{ keepass_backup_root }}/keepassxc"
+# Layer 1: timestamped copies, one per change, never overwritten.
+keepass_backup_history_dir: "{{ keepass_backup_root }}/history"
+keepass_backup_history_keep_days: 365
+# Monthly restore test writes here and compares checksums.
+keepass_backup_check_dir: "{{ keepass_backup_root }}/restore-test"
+
+keepass_backup_bin_dir: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+keepass_backup_config_dir: "{{ ansible_facts['env']['HOME'] }}/.config/keepass-backup"
+keepass_backup_systemd_dir: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user"
+
+# KeePassXC (flatpak) settings: "Backup database file before saving".
+keepass_backup_keepassxc_flatpak_id: org.keepassxc.KeePassXC
+keepass_backup_keepassxc_config: >-
+  {{ ansible_facts['env']['HOME'] }}/.var/app/{{ keepass_backup_keepassxc_flatpak_id }}/config/keepassxc/keepassxc.ini
+keepass_backup_keepassxc_manage: true
+
+# Layer 2: restic repository on S3-compatible object storage (OVH, bucket created by OpenTofu in the homelab repo).
+# restic comes from mise (mise_global_plugins: restic), hence the shim path.
+keepass_backup_restic_bin: "{{ ansible_facts['env']['HOME'] }}/.local/share/mise/shims/restic"
+keepass_backup_sops_file: "{{ inventory_dir }}/host_vars/{{ inventory_hostname }}.sops.yaml"
+keepass_backup_age_keyfile: "{{ ansible_facts['env']['HOME'] }}/.config/sops/age/keys.txt"
+# Overridden by keepass_backup_restic in the sops file (repository, password, access_key_id, secret_access_key).
+keepass_backup_restic_defaults:
+  repository: ""
+  password: ""
+  access_key_id: ""
+  secret_access_key: ""
+keepass_backup_restic: "{{ keepass_backup_restic_defaults | combine(keepass_backup_sops.keepass_backup_restic | default({})) }}"
+keepass_backup_restic_host: "{{ inventory_hostname }}"
+keepass_backup_restic_tag: keepass
+
+# Retention applied with `restic forget` (no prune: the writer key cannot delete data objects).
+keepass_backup_keep_daily: 30
+keepass_backup_keep_weekly: 12
+keepass_backup_keep_monthly: 24
+keepass_backup_keep_yearly: unlimited
+
+# Schedules (systemd OnCalendar). The path unit also triggers a run on every change of the source dir.
+keepass_backup_on_calendar: "daily"
+keepass_backup_check_on_calendar: "monthly"

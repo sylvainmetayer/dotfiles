@@ -44,6 +44,9 @@
       vars:
         kdrive_remove_legacy_install: true
       tags: [kdrive]
+    # After kdrive: the databases it protects live in the synced folder
+    - role: keepass_backup
+      tags: [keepass_backup]
     - role: generic_app
       vars:
         generic_app_name: "ledger"
