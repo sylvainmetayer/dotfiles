@@ -1,0 +1,11 @@
+[Unit]
+Description=Monthly KeePass backup restore test
+# Managed by Ansible (roles/keepass_backup)
+
+[Timer]
+OnCalendar={{ keepass_backup_check_on_calendar }}
+Persistent=true
+RandomizedDelaySec=1h
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=KeePass backup restore test (restic check + restore + compare)
+# Managed by Ansible (roles/keepass_backup)
+
+[Service]
+Type=oneshot
+EnvironmentFile={{ keepass_backup_config_dir }}/env
+ExecStart={{ keepass_backup_bin_dir }}/keepass-backup check
+Nice=10
+IOSchedulingClass=idle
