@@ -1,0 +1,88 @@
+---
+- name: Load the sops-encrypted restic connection details
+  community.sops.load_vars:
+    file: "{{ keepass_backup_sops_file }}"
+    age_keyfile: "{{ keepass_backup_age_keyfile }}"
+    name: keepass_backup_sops
+  when: keepass_backup_sops_file is file
+
+- name: Ensure the backup directories exist, outside any synced folder
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+  loop:
+    - "{{ keepass_backup_root }}"
+    - "{{ keepass_backup_keepassxc_dir }}"
+    - "{{ keepass_backup_history_dir }}"
+    - "{{ keepass_backup_config_dir }}"
+    - "{{ keepass_backup_bin_dir }}"
+    - "{{ keepass_backup_systemd_dir }}"
+
+- name: Install the keepass-backup script
+  ansible.builtin.copy:
+    src: keepass-backup
+    dest: "{{ keepass_backup_bin_dir }}/keepass-backup"
+    mode: "0755"
+
+- name: Write the environment file (holds the restic password and S3 keys)
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ keepass_backup_config_dir }}/env"
+    mode: "0600"
+  no_log: true
+
+- name: Install the systemd user units
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ keepass_backup_systemd_dir }}/{{ item }}"
+    mode: "0644"
+  loop:
+    - keepass-backup.service
+    - keepass-backup.timer
+    - keepass-backup.path
+    - keepass-backup-check.service
+    - keepass-backup-check.timer
+  notify: Reload the systemd user daemon
+
+- name: Flush handlers so the units are known before enabling them
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable the timers and the path watcher
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    scope: user
+    enabled: true
+    state: started
+  loop:
+    - keepass-backup.timer
+    - keepass-backup.path
+    - keepass-backup-check.timer
+  # In check mode the units above were not written, so systemd cannot know them yet
+  ignore_errors: "{{ ansible_check_mode }}"
+
+# Layer 0: KeePassXC itself keeps a copy of the database before each save.
+# The flatpak needs to see the backup folder, hence the override.
+- name: Let the KeePassXC flatpak write its pre-save copies outside the sandbox
+  ansible.builtin.command:
+    argv:
+      - flatpak
+      - override
+      - --user
+      - "--filesystem={{ keepass_backup_keepassxc_dir }}:create"
+      - "{{ keepass_backup_keepassxc_flatpak_id }}"
+  changed_when: false
+  when: keepass_backup_keepassxc_manage | bool
+
+- name: Make KeePassXC back up the database before saving
+  community.general.ini_file:
+    path: "{{ keepass_backup_keepassxc_config }}"
+    section: General
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    mode: "0600"
+    no_extra_spaces: true
+  loop:
+    - { option: BackupBeforeSave, value: "true" }
+    - { option: BackupFilePathPattern, value: "{{ keepass_backup_keepassxc_dir }}/{DB_FILENAME}.old.kdbx" }
+  when: keepass_backup_keepassxc_manage | bool

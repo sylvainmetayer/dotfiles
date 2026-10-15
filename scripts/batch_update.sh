@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-roles=('commons' 'docker' 'fedora_dependencies' 'generic_app' 'git_config' 'git_credential_keepassxc' 'gnome' 'gop' 'hostname' 'jetbrains_toolbox' 'kdrive' 'ledger' 'mise' 'nvidia' 'obsidian_config' 'rpmfusion' 'ssh_config' 'zellij')
+roles=('commons' 'docker' 'fedora_dependencies' 'generic_app' 'git_config' 'git_credential_keepassxc' 'gnome' 'gop' 'hostname' 'jetbrains_toolbox' 'kdrive' 'keepass_backup' 'ledger' 'mise' 'nvidia' 'obsidian_config' 'rpmfusion' 'ssh_config' 'zellij')
 
 for role in "${roles[@]}"; do
   mkdir -p "roles/$role/meta"
