@@ -1,0 +1,9 @@
+---
+# Vault whose .obsidian settings are seeded. Content of the vault itself is synced by remotely-save, not by Ansible.
+obsidian_config_vault: "{{ ansible_facts['env']['HOME'] }}/obsidian/perso/Perso"
+# Stable settings deposited once (force: false): an existing file is never overwritten.
+obsidian_config_files:
+  - app.json
+  - daily-notes.json
+  - templates.json
+  - community-plugins.json

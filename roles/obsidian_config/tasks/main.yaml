@@ -1,0 +1,21 @@
+---
+- name: Check whether the vault exists
+  ansible.builtin.stat:
+    path: "{{ obsidian_config_vault }}"
+  register: obsidian_config_vault_stat
+
+- name: Ensure the vault settings directory exists
+  ansible.builtin.file:
+    path: "{{ obsidian_config_vault }}/.obsidian"
+    state: directory
+    mode: "0755"
+  when: obsidian_config_vault_stat.stat.exists
+
+- name: Seed stable vault settings without overwriting existing ones
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ obsidian_config_vault }}/.obsidian/{{ item }}"
+    force: false
+    mode: "0644"
+  loop: "{{ obsidian_config_files }}"
+  when: obsidian_config_vault_stat.stat.exists

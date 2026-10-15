@@ -64,6 +64,8 @@
         generic_app_autostart: "false"
         generic_app_categories: "Productivity;"
       tags: [obsidian]
+    - role: obsidian_config
+      tags: [obsidian]
     - role: generic_app
       vars:
         generic_app_name: "github-copilot"
