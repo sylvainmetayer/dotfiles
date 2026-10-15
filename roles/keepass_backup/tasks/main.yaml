@@ -5,6 +5,22 @@
     age_keyfile: "{{ keepass_backup_age_keyfile }}"
     name: keepass_backup_sops
   when: keepass_backup_sops_file is file
+  no_log: true
+
+- name: Refuse values that systemd and bash would read differently
+  ansible.builtin.assert:
+    that:
+      - keepass_backup_restic.values() | select('search', "'") | list | length == 0
+    fail_msg: "keepass_backup_restic values must not contain a single quote"
+    quiet: true
+  no_log: true
+
+- name: Warn that the restic layer stays off until the sops values are filled in
+  ansible.builtin.debug:
+    msg: >-
+      keepass_backup_restic is empty or still holds CHANGEME: only the local copies are set up.
+      Fill host_vars/{{ inventory_hostname }}.sops.yaml from `tofu output` (homelab tofu/keepass_backup), then rerun.
+  when: not (keepass_backup_restic_configured | bool)
 
 - name: Ensure the backup directories exist, outside any synced folder
   ansible.builtin.file:
@@ -16,8 +32,15 @@
     - "{{ keepass_backup_keepassxc_dir }}"
     - "{{ keepass_backup_history_dir }}"
     - "{{ keepass_backup_config_dir }}"
-    - "{{ keepass_backup_bin_dir }}"
     - "{{ keepass_backup_systemd_dir }}"
+
+- name: Ensure the script directory exists
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ keepass_backup_bin_dir }}"
 
 - name: Install the keepass-backup script
   ansible.builtin.copy:
@@ -25,12 +48,29 @@
     dest: "{{ keepass_backup_bin_dir }}/keepass-backup"
     mode: "0755"
 
-- name: Write the environment file (holds the restic password and S3 keys)
+- name: Write the restic password file
+  ansible.builtin.copy:
+    content: "{{ keepass_backup_restic.password }}"
+    dest: "{{ keepass_backup_config_dir }}/restic-password"
+    mode: "0600"
+  when: keepass_backup_restic_configured | bool
+  no_log: true
+
+- name: Write the environment file (holds the S3 keys)
   ansible.builtin.template:
     src: env.j2
     dest: "{{ keepass_backup_config_dir }}/env"
     mode: "0600"
   no_log: true
+
+- name: Remove the units of the first draft
+  ansible.builtin.file:
+    path: "{{ keepass_backup_systemd_dir }}/{{ item }}"
+    state: absent
+  loop:
+    - keepass-backup.service
+    - keepass-backup.timer
+  notify: Reload the systemd user daemon
 
 - name: Install the systemd user units
   ansible.builtin.template:
@@ -38,31 +78,41 @@
     dest: "{{ keepass_backup_systemd_dir }}/{{ item }}"
     mode: "0644"
   loop:
-    - keepass-backup.service
-    - keepass-backup.timer
     - keepass-backup.path
+    - keepass-backup-local.service
+    - keepass-backup-remote.service
+    - keepass-backup-remote.timer
     - keepass-backup-check.service
     - keepass-backup-check.timer
+    - keepass-backup-notify@.service
   notify: Reload the systemd user daemon
 
 - name: Flush handlers so the units are known before enabling them
   ansible.builtin.meta: flush_handlers
 
-- name: Enable the timers and the path watcher
+- name: Enable the path watcher and the timers
   ansible.builtin.systemd:
     name: "{{ item }}"
     scope: user
     enabled: true
     state: started
   loop:
-    - keepass-backup.timer
     - keepass-backup.path
+    - keepass-backup-remote.timer
     - keepass-backup-check.timer
   # In check mode the units above were not written, so systemd cannot know them yet
-  ignore_errors: "{{ ansible_check_mode }}"
+  when: not ansible_check_mode
 
 # Layer 0: KeePassXC itself keeps a copy of the database before each save.
-# The flatpak needs to see the backup folder, hence the override.
+# The flatpak needs to see the backup folder (already true with filesystems=host, kept explicit).
+- name: Read the KeePassXC flatpak overrides
+  ansible.builtin.command:
+    argv: [flatpak, override, --user, --show, "{{ keepass_backup_keepassxc_flatpak_id }}"]
+  register: keepass_backup_flatpak_override
+  changed_when: false
+  check_mode: false
+  when: keepass_backup_keepassxc_manage | bool
+
 - name: Let the KeePassXC flatpak write its pre-save copies outside the sandbox
   ansible.builtin.command:
     argv:
@@ -71,10 +121,12 @@
       - --user
       - "--filesystem={{ keepass_backup_keepassxc_dir }}:create"
       - "{{ keepass_backup_keepassxc_flatpak_id }}"
-  changed_when: false
-  when: keepass_backup_keepassxc_manage | bool
+  changed_when: true
+  when:
+    - keepass_backup_keepassxc_manage | bool
+    - keepass_backup_keepassxc_dir not in keepass_backup_flatpak_override.stdout
 
-- name: Make KeePassXC back up the database before saving
+- name: Make KeePassXC back up the database before saving (applies after a KeePassXC restart)
   community.general.ini_file:
     path: "{{ keepass_backup_keepassxc_config }}"
     section: General

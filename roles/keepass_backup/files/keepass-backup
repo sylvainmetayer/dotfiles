@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
-# keepass-backup: three independent copies of the KeePass databases that live in a synced folder.
-#   local   timestamped copy of every database whose content changed (layer 1)
-#   remote  restic snapshot of the source dir, then retention without prune (layer 2)
-#   check   restic check + restore the latest snapshot and compare checksums with the source
-#   run     local + remote (what the timer and the path unit call)
+# keepass-backup: independent copies of the KeePass databases that live in a synced folder.
+#   local   timestamped copy of every database whose content changed (layer 1), triggered by the path unit
+#   remote  restic snapshot of the source dir (layer 2), hourly timer; no forget/prune here (see README)
+#   check   restic check + restore the latest snapshot and compare it with the source (monthly timer)
+#   run     local + remote
 #   init    create the restic repository once
-# Configuration comes from the environment file written by Ansible (~/.config/keepass-backup/env).
+# Configuration: ~/.config/keepass-backup/env, written by Ansible (also loaded when run from a shell).
 set -euo pipefail
+
+env_file="${KEEPASS_BACKUP_ENV_FILE:-$HOME/.config/keepass-backup/env}"
+if [ -z "${KEEPASS_BACKUP_SOURCE_DIR:-}" ] && [ -r "$env_file" ]; then
+  set -a
+  # shellcheck source=/dev/null
+  . "$env_file"
+  set +a
+fi
 
 : "${KEEPASS_BACKUP_SOURCE_DIR:?}"
 : "${KEEPASS_BACKUP_GLOB:=*.kdbx}"
@@ -16,89 +24,124 @@ set -euo pipefail
 : "${KEEPASS_BACKUP_RESTIC_BIN:=restic}"
 : "${KEEPASS_BACKUP_RESTIC_HOST:=$(hostname)}"
 : "${KEEPASS_BACKUP_RESTIC_TAG:=keepass}"
-: "${KEEPASS_BACKUP_KEEP_DAILY:=30}"
-: "${KEEPASS_BACKUP_KEEP_WEEKLY:=12}"
-: "${KEEPASS_BACKUP_KEEP_MONTHLY:=24}"
-: "${KEEPASS_BACKUP_KEEP_YEARLY:=unlimited}"
+: "${KEEPASS_BACKUP_SETTLE_SECONDS:=5}"
+
+# First bytes of every KDBX 3.x/4.x file: a partial or foreign file is never copied.
+readonly KDBX_SIGNATURE="03d9a29a67fb4bb5"
 
 log() { printf '%s keepass-backup: %s\n' "$(date +%FT%T)" "$*"; }
 die() { log "ERROR: $*" >&2; exit 1; }
 
 restic_ready() {
-  [ -n "${RESTIC_REPOSITORY:-}" ] && [ -n "${RESTIC_PASSWORD:-}" ] && [ -x "$KEEPASS_BACKUP_RESTIC_BIN" ]
+  [[ "${RESTIC_REPOSITORY:-}" == s3:* ]] \
+    && [[ -n "${RESTIC_PASSWORD_FILE:-}" && -r "${RESTIC_PASSWORD_FILE}" ]] \
+    && [[ "${RESTIC_REPOSITORY}${AWS_ACCESS_KEY_ID:-}" != *CHANGEME* ]] \
+    && [ -x "$KEEPASS_BACKUP_RESTIC_BIN" ]
 }
 
-restic() { "$KEEPASS_BACKUP_RESTIC_BIN" --quiet "$@"; }
+restic() {
+  "$KEEPASS_BACKUP_RESTIC_BIN" --quiet --retry-lock 10m --cache-dir "${XDG_CACHE_HOME:-$HOME/.cache}/restic" "$@"
+}
 
 sources() {
-  # NUL-separated list of databases, sorted, so that the caller can loop safely over odd names.
+  # NUL-separated list of databases, sorted, so that callers can loop safely over odd names.
   find "$KEEPASS_BACKUP_SOURCE_DIR" -maxdepth 1 -type f -name "$KEEPASS_BACKUP_GLOB" -print0 | sort -z
 }
 
-cmd_local() {
-  [ -d "$KEEPASS_BACKUP_SOURCE_DIR" ] || die "source dir missing: $KEEPASS_BACKUP_SOURCE_DIR"
-  local f name dir sum last copied=0
+fingerprint() {
+  find "$KEEPASS_BACKUP_SOURCE_DIR" -maxdepth 1 -type f -name "$KEEPASS_BACKUP_GLOB" -printf '%p %s %T@\n' | sort | sha256sum
+}
+
+is_kdbx() {
+  [ "$(head -c 8 "$1" | od -An -tx1 | tr -d ' \n')" = "$KDBX_SIGNATURE" ]
+}
+
+copy_changed() {
+  local f name dir sum last dest copied=0
   while IFS= read -r -d '' f; do
     name=$(basename "$f" .kdbx)
+    if ! is_kdbx "$f"; then
+      log "history: $name skipped, not a complete KDBX file (write in progress?)"
+      continue
+    fi
     dir="$KEEPASS_BACKUP_HISTORY_DIR/$name"
     mkdir -p "$dir"
     sum=$(sha256sum "$f" | cut -d' ' -f1)
     last=$(cat "$dir/.last-sha256" 2>/dev/null || true)
-    if [ "$sum" = "$last" ]; then
-      continue
-    fi
+    [ "$sum" = "$last" ] && continue
     # The copy keeps the source mtime; the name carries the time of the copy. Never overwrite.
-    cp --no-clobber --preserve=timestamps "$f" "$dir/$name.$(date +%Y%m%dT%H%M%S).kdbx"
+    dest="$dir/$name.$(date +%Y%m%dT%H%M%S.%N).kdbx"
+    cp --update=none-fail --preserve=timestamps "$f" "$dest"
     printf '%s\n' "$sum" > "$dir/.last-sha256"
     copied=$((copied + 1))
     log "history: $name copied ($sum)"
   done < <(sources)
   log "history: $copied new copy(ies)"
-  # Thin out old copies, but always keep the two most recent of each database.
+}
+
+thin_history() {
+  # Delete copies older than the retention, but always keep the two most recent copies of each database.
+  local dir
   while IFS= read -r -d '' dir; do
-    find "$dir" -maxdepth 1 -type f -name '*.kdbx' -mtime "+$KEEPASS_BACKUP_HISTORY_KEEP_DAYS" -printf '%T@ %p\0' \
-      | sort -z -n | head -z -n -2 | cut -z -d' ' -f2- | xargs -0 -r rm -v --
+    find "$dir" -maxdepth 1 -type f -name '*.kdbx' -printf '%T@ %p\0' | sort -z -n | head -z -n -2 \
+      | while IFS= read -r -d '' entry; do
+          path=${entry#* }
+          if [ -n "$(find "$path" -maxdepth 0 -mtime "+$KEEPASS_BACKUP_HISTORY_KEEP_DAYS")" ]; then rm -v -- "$path"; fi
+        done
   done < <(find "$KEEPASS_BACKUP_HISTORY_DIR" -mindepth 1 -maxdepth 1 -type d -print0)
 }
 
+cmd_local() {
+  [ -d "$KEEPASS_BACKUP_SOURCE_DIR" ] || die "source dir missing: $KEEPASS_BACKUP_SOURCE_DIR"
+  local before after i
+  # A save by KeePassXC or a download by the sync client is several writes: wait for them to settle,
+  # and loop while the folder keeps changing, since the path unit does not re-trigger during a run.
+  for i in 1 2 3 4 5; do
+    before=$(fingerprint)
+    sleep "$KEEPASS_BACKUP_SETTLE_SECONDS"
+    copy_changed
+    after=$(fingerprint)
+    [ "$before" = "$after" ] && break
+    log "history: folder changed during pass $i, again"
+  done
+  thin_history
+}
+
 cmd_remote() {
-  restic_ready || { log "remote: restic not configured, skipped"; return 0; }
-  restic backup --host "$KEEPASS_BACKUP_RESTIC_HOST" --tag "$KEEPASS_BACKUP_RESTIC_TAG" \
-    --exclude-caches "$KEEPASS_BACKUP_SOURCE_DIR"
+  restic_ready || { log "remote: restic not configured (empty or CHANGEME values), skipped"; return 0; }
+  restic backup --host "$KEEPASS_BACKUP_RESTIC_HOST" --tag "$KEEPASS_BACKUP_RESTIC_TAG" "$KEEPASS_BACKUP_SOURCE_DIR"
+  # No forget here: the writer key cannot delete snapshots. Retention is a yearly
+  # `forget --prune` with the admin key (README).
   log "remote: snapshot done"
-  # forget only marks snapshots; data stays until an admin runs `restic prune` with the admin key.
-  restic forget --host "$KEEPASS_BACKUP_RESTIC_HOST" --tag "$KEEPASS_BACKUP_RESTIC_TAG" \
-    --keep-daily "$KEEPASS_BACKUP_KEEP_DAILY" --keep-weekly "$KEEPASS_BACKUP_KEEP_WEEKLY" \
-    --keep-monthly "$KEEPASS_BACKUP_KEEP_MONTHLY" --keep-yearly "$KEEPASS_BACKUP_KEEP_YEARLY"
-  log "remote: retention applied"
 }
 
 cmd_check() {
   restic_ready || die "check: restic not configured"
+  trap 'rm -rf "$KEEPASS_BACKUP_CHECK_DIR"' EXIT
   restic check
   rm -rf "$KEEPASS_BACKUP_CHECK_DIR"
   mkdir -p "$KEEPASS_BACKUP_CHECK_DIR"
   chmod 700 "$KEEPASS_BACKUP_CHECK_DIR"
   restic restore latest --host "$KEEPASS_BACKUP_RESTIC_HOST" --tag "$KEEPASS_BACKUP_RESTIC_TAG" \
     --target "$KEEPASS_BACKUP_CHECK_DIR"
-  local f restored failed=0
+  local f restored failed=0 compared=0
   while IFS= read -r -d '' f; do
     restored="$KEEPASS_BACKUP_CHECK_DIR$f"
     if [ ! -f "$restored" ]; then
       log "check: MISSING in restore: $f"; failed=1; continue
     fi
-    if ! cmp -s "$f" "$restored"; then
-      # Legit when the database changed since the last snapshot: say so instead of failing.
-      if [ "$f" -nt "$restored" ]; then
-        log "check: $f changed after the snapshot, skipped"
-      else
-        log "check: CONTENT DIFFERS: $f"; failed=1
-      fi
+    if cmp -s "$f" "$restored"; then
+      compared=$((compared + 1))
+    elif [ "$f" -nt "$restored" ]; then
+      # Legit when the database changed after the last snapshot: say so instead of failing.
+      log "check: $f changed after the snapshot, skipped"
+    else
+      log "check: CONTENT DIFFERS: $f"; failed=1
     fi
   done < <(sources)
-  rm -rf "$KEEPASS_BACKUP_CHECK_DIR"
   [ "$failed" -eq 0 ] || die "check: restore test failed"
-  log "check: restore test OK"
+  [ "$compared" -gt 0 ] || die "check: no database could be compared with the restore"
+  log "check: restore test OK ($compared database(s) identical)"
 }
 
 cmd_init() {

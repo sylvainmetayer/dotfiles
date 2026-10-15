@@ -1,0 +1,7 @@
+[Unit]
+Description=Notify that %i failed
+# Managed by Ansible (roles/keepass_backup)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/notify-send --urgency=critical --app-name=keepass-backup "Sauvegarde KeePass en échec" "%i a échoué : journalctl --user -u %i"
