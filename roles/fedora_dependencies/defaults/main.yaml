@@ -54,7 +54,9 @@ fedora_dependencies_packages:
   - gstreamer1-libav
   - graphviz
 
-# RPM Fusion variants that replace a Fedora package (needs the rpmfusion repositories)
+# RPM Fusion variants that replace a Fedora package (needs the rpmfusion repositories).
+# Never list the Fedora variant (e.g. ffmpeg-free) in fedora_dependencies_packages at the same time:
+# that task has no allowerasing and would conflict on every run.
 fedora_dependencies_replace_packages: []
 
 fedora_dependencies_remove_packages:
