@@ -7,3 +7,49 @@ obsidian_config_files:
   - daily-notes.json
   - templates.json
   - community-plugins.json
+
+# remotely-save (community plugin) settings, seeded once as well. The WebDAV password is never managed here:
+# it stays empty in the seed and is typed in Obsidian (Settings → Remotely Save). The plugin re-saves the file
+# obfuscated after the first run. Connection details live in a sops-encrypted vars file (see obsidian_config_sops_file).
+obsidian_config_sops_file: "{{ inventory_dir }}/host_vars/{{ inventory_hostname }}.sops.yaml"
+obsidian_config_age_keyfile: "{{ ansible_facts['env']['HOME'] }}/.config/sops/age/keys.txt"
+obsidian_config_remotely_save_defaults:
+  address: ""
+  username: ""
+  remote_base_dir: ""
+obsidian_config_remotely_save: >-
+  {{ obsidian_config_remotely_save_defaults
+     | combine(obsidian_config_sops.obsidian_config_remotely_save | default({})) }}
+obsidian_config_remotely_save_ignore_paths:
+  - ".git/"
+  - ".claude/"
+  - ".obsidian/plugins/remotely-save/"
+obsidian_config_remotely_save_settings:
+  serviceType: webdav
+  webdav:
+    address: "{{ obsidian_config_remotely_save.address }}"
+    username: "{{ obsidian_config_remotely_save.username }}"
+    password: ""
+    remoteBaseDir: "{{ obsidian_config_remotely_save.remote_base_dir }}"
+    authType: basic
+    depth: manual_1
+    manualRecursive: true
+    customHeaders: ""
+  syncConfigDir: true
+  syncUnderscoreItems: true
+  ignorePaths: "{{ obsidian_config_remotely_save_ignore_paths }}"
+  autoRunEveryMilliseconds: 600000
+  initRunAfterMilliseconds: 10000
+  syncOnSaveAfterMilliseconds: 1000
+  syncDirection: bidirectional
+  conflictAction: keep_newer
+  deleteToWhere: system
+  howToCleanEmptyFolder: clean_both
+  protectModifyPercentage: 50
+  concurrency: 5
+  skipSizeLargerThan: -1
+  agreeToUseSyncV3: true
+  agreeToUploadExtraMetadata: true
+  enableStatusBarInfo: true
+  currLogLevel: info
+  obfuscateSettingFile: true

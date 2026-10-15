@@ -21,6 +21,7 @@ rules:
 
 ignore: |
   /.github/workflows/*
+  /host_vars/*.sops.yaml
   /galaxy_roles/
   /collections/
   /.direnv/

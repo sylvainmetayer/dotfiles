@@ -1,0 +1,5 @@
+---
+# sops creation rules: encrypted Ansible vars files (host_vars/<host>.sops.yaml) are readable with the age key of the workstation.
+creation_rules:
+  - path_regex: host_vars/.*\.sops\.ya?ml$
+    age: age1pvr43f8dnpsq7swgc0r3cy799yvyk2y4wj8z3n57sckq3z6dx5yq4rntuu

@@ -34,3 +34,5 @@ build_ignore:
   - facts
   - playbooks/gibbs
   - playbooks/gop
+  - .sops.yaml
+  - host_vars/*.sops.yaml

@@ -5,6 +5,7 @@ skip_list:
 warn_list: []
 
 exclude_paths:
+  - host_vars/home.sops.yaml  # sops-encrypted, machine-generated
   - .ansible/
   - .venv/
   - collections/

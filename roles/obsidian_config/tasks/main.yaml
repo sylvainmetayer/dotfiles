@@ -19,3 +19,25 @@
     mode: "0644"
   loop: "{{ obsidian_config_files }}"
   when: obsidian_config_vault_stat.stat.exists
+
+- name: Load the sops-encrypted connection details of remotely-save
+  community.sops.load_vars:
+    file: "{{ obsidian_config_sops_file }}"
+    age_keyfile: "{{ obsidian_config_age_keyfile }}"
+    name: obsidian_config_sops
+  when: obsidian_config_sops_file is file
+
+- name: Ensure the remotely-save plugin directory exists
+  ansible.builtin.file:
+    path: "{{ obsidian_config_vault }}/.obsidian/plugins/remotely-save"
+    state: directory
+    mode: "0755"
+  when: obsidian_config_vault_stat.stat.exists and obsidian_config_remotely_save.address | length > 0
+
+- name: Seed the remotely-save settings once, password left empty for manual entry in Obsidian
+  ansible.builtin.template:
+    src: remotely-save-data.json.j2
+    dest: "{{ obsidian_config_vault }}/.obsidian/plugins/remotely-save/data.json"
+    force: false
+    mode: "0600"
+  when: obsidian_config_vault_stat.stat.exists and obsidian_config_remotely_save.address | length > 0
