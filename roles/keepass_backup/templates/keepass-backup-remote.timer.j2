@@ -1,11 +1,11 @@
 [Unit]
-Description=Daily KeePass databases backup
+Description=Hourly KeePass databases backup (local copies + restic snapshot)
 # Managed by Ansible (roles/keepass_backup)
 
 [Timer]
 OnCalendar={{ keepass_backup_on_calendar }}
 Persistent=true
-RandomizedDelaySec=15m
+RandomizedDelaySec=5m
 
 [Install]
 WantedBy=timers.target

@@ -6,10 +6,14 @@ outside that folder and never overwritten. Born from a sync failure that nearly 
 | Layer | What | Protects against | Where |
 |---|---|---|---|
 | 0 | KeePassXC copies the database before every save (`BackupBeforeSave`) | failed write, corruption, bad merge | `~/.local/share/keepass-backup/keepassxc/` |
-| 1 | timestamped copy of every database whose content changed, on each change (path unit) and daily (timer) | deletion or overwrite propagated by the sync | `~/.local/share/keepass-backup/history/<db>/` |
-| 2 | restic snapshots on S3 object storage, writer key without delete rights | lost machine, ransomware, mass deletion | OVH bucket, see `homelab/tofu/keepass_backup` |
+| 1 | timestamped copy of every database whose content changed (KDBX signature checked), on each change (path unit) and hourly (timer) | deletion or overwrite propagated by the sync | `~/.local/share/keepass-backup/history/<db>/` |
+| 2 | hourly restic snapshot on S3 object storage, writer key without delete rights, Object Lock bucket | lost machine, ransomware, mass deletion | OVH bucket, see `homelab/tofu/keepass_backup` |
 
-A monthly timer runs `restic check`, restores the latest snapshot and compares it with the source.
+A monthly timer runs `restic check`, restores the latest snapshot and compares it with the source. Any failure raises a
+desktop notification (`keepass-backup-notify@.service`); the remote and check services retry on failure.
+
+Units: `keepass-backup.path` → `keepass-backup-local.service`; `keepass-backup-remote.timer` (hourly) →
+`keepass-backup-remote.service` (local + restic); `keepass-backup-check.timer` (monthly) → `keepass-backup-check.service`.
 
 ## Secrets
 
@@ -23,7 +27,9 @@ keepass_backup_restic:
   secret_access_key: <writer S3 secret>
 ```
 
-They end up in `~/.config/keepass-backup/env` (mode 0600), read by the systemd user units.
+Until every value is filled in (no `CHANGEME` left), only the local layers are set up and the script skips restic.
+The S3 keys end up in `~/.config/keepass-backup/env` and the password in `~/.config/keepass-backup/restic-password`
+(both 0600). The script loads the env file itself, so the commands below also work from a shell.
 
 ## First run
 
@@ -35,8 +41,14 @@ keepass-backup check     # restore test
 systemctl --user list-timers keepass-backup\*
 ```
 
-`restic prune` is deliberately not run by the writer key: once a year, run `restic forget --prune` by hand with the
-admin key from KeePassXC.
+Restart KeePassXC once after the first run so it picks up `BackupBeforeSave`.
+
+Retention is deliberately not run from the workstation (the writer key cannot delete snapshots). Once a year, with the
+admin key from KeePassXC (procedure in `homelab/tofu/keepass_backup/README.md`):
+
+```bash
+restic forget --tag keepass --keep-within 1y --keep-monthly 24 --keep-yearly unlimited --prune
+```
 
 ## Requirements
 
