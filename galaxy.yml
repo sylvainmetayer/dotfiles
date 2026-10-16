@@ -33,7 +33,39 @@ build_ignore:
   - galaxy_roles
   - sylvainmetayer-workstation-*.tar.gz
   - facts
-  - playbooks/gibbs
-  - playbooks/gop
   - .sops.yaml
-  - host_vars/*.sops.yaml
+  # Personal per-machine configuration: useless to a consumer (inventory.yml is
+  # not shipped either) and it leaks hardware serials and local package lists.
+  - host_vars
+  - group_vars
+  # Vault ciphertext must not reach the public registry: publishing it exposes
+  # the secrets to unlimited offline brute-force against the vault passphrase.
+  # Consumers cannot decrypt them anyway, so nothing of value is lost.
+  - roles/gop/templates/ssh_hosts.j2
+  - roles/gop/templates/aws_config.j2
+  # Repository development tooling, not collection content.
+  - mise.toml
+  - pyproject.toml
+  - uv.lock
+  - .ansible-lint
+  - renovate.json
+  - .vscode
+  - AGENTS.md
+  # Only the roles are distributed. The per-host playbooks target an inventory
+  # that is not shipped, and requirements.yml only bootstraps the external
+  # Galaxy roles those playbooks use -- no role under roles/ depends on them.
+  # The collection's own dependencies are declared above in `dependencies:`.
+  - playbook
+  - requirements.yml
+  # Desktop icons, only ever referenced through $HOME/dotfiles/assets at runtime.
+  - assets
+  # Local-only, gitignored state: never publish it. .venv alone accounts for
+  # ~180 MB and 55k files of vendored collections in the tarball.
+  - .venv
+  - .ansible
+  - .direnv
+  - .idea
+  - .python-version
+  - .env
+  - debug.json
+  - variables.yml
