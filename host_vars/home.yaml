@@ -116,3 +116,4 @@ mise_global_plugins:
   "aqua:SonarSource/sonarqube-cli": latest
   gitleaks: latest
   "github:fosrl/newt": latest
+  "github:simulot/immich-go": latest
