@@ -1,0 +1,19 @@
+---
+# Stable path of the whole disk (/dev/disk/by-id/...). The role does nothing while it is empty,
+# so it is safe to include on any host: only set it in the host_vars of a machine with a disk to manage.
+data_disk_device: ""
+# Formatting is never implicit: pass -e data_disk_format=true on the first run. Even then the role refuses
+# any disk carrying a partition table, a filesystem or any other signature (wipe it by hand first).
+data_disk_format: false
+data_disk_name: data
+data_disk_label: data
+data_disk_keyfile: "/etc/cryptsetup-keys.d/{{ data_disk_name }}.key"
+data_disk_mountpoint: "/{{ data_disk_name }}"
+data_disk_mount_opts: "compress=zstd:1,noatime,nofail,x-systemd.device-timeout=30s"
+data_disk_owner: "{{ ansible_facts['user_id'] }}"
+# btrfs subvolumes, created at the top level and reached through data_disk_mountpoint/<name>.
+# With a `link` path, a symlink to the subvolume is created there. A link rather than a mount: when the disk
+# is missing the link dangles, so an application (e.g. a sync client) finds no folder instead of an empty one.
+#   - name: "@kdrive"
+#     link: "/home/me/kDrive"
+data_disk_subvolumes: []

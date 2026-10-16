@@ -18,6 +18,9 @@
     - role: hostname
       become: true
       tags: [hostname]
+    - role: data_disk
+      become: true
+      tags: [data_disk]
     - role: mise
       tags: [mise]
     - role: jaredhocutt.gnome_extensions

@@ -10,6 +10,7 @@ tags:
   - linux
 dependencies:
   ansible.posix: '*'
+  community.crypto: '*'
   community.general: '*'
   donhector.workstation: '*'
 repository: https://github.com/sylvainmetayer/dotfiles

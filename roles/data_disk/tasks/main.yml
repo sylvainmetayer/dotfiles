@@ -1,0 +1,195 @@
+---
+- name: Manage the data disk
+  when: data_disk_device | default('', true) | length > 0
+  block:
+    - name: Check the data disk is present
+      ansible.builtin.stat:
+        path: "{{ data_disk_device }}"
+        follow: true  # /dev/disk/by-id entries are symlinks to /dev/sdX
+      register: data_disk_device_stat
+
+    - name: Refuse a device that is not a stable whole-disk path
+      ansible.builtin.assert:
+        that:
+          - data_disk_device is match('^/dev/disk/by-id/')
+          - data_disk_device is not match('.*-part[0-9]+$')
+          - data_disk_device_stat.stat.exists
+          - data_disk_device_stat.stat.isblk
+        fail_msg: "{{ data_disk_device }} must be an existing /dev/disk/by-id/ whole-disk block device"
+
+    - name: Install cryptsetup and btrfs-progs
+      ansible.builtin.package:
+        name:
+          - cryptsetup
+          - btrfs-progs
+        state: present
+
+    # rc 0: a signature was found (filesystem, LUKS or partition table), rc 2: nothing at all on the disk
+    - name: Probe the data disk signatures
+      ansible.builtin.command: "blkid -p -o export '{{ data_disk_device }}'"
+      register: data_disk_probe
+      changed_when: false
+      failed_when: data_disk_probe.rc not in [0, 2]
+      check_mode: false
+
+    - name: List the data disk partitions and holders
+      ansible.builtin.command: "lsblk -nro NAME '{{ data_disk_device }}'"
+      register: data_disk_lsblk
+      changed_when: false
+      check_mode: false
+
+    # blkid also returns 2 on a missing or unreadable device: blank means rc 2, no error and no partition at all
+    - name: Decide whether the data disk is blank
+      ansible.builtin.set_fact:
+        data_disk_blank: >-
+          {{ data_disk_probe.rc == 2 and data_disk_probe.stderr | length == 0
+             and data_disk_lsblk.stdout_lines | length == 1 }}
+
+    - name: Refuse a disk holding something else than LUKS
+      ansible.builtin.assert:
+        that: data_disk_blank or 'TYPE=crypto_LUKS' in data_disk_probe.stdout_lines
+        fail_msg: "{{ data_disk_device }} is not blank ({{ data_disk_probe.stdout_lines | join(' ') }}), it will not be formatted"
+
+    - name: Refuse to format a blank disk without explicit consent
+      ansible.builtin.assert:
+        that: not data_disk_blank or data_disk_format | bool
+        fail_msg: "{{ data_disk_device }} is blank: rerun with -e data_disk_format=true to encrypt and format it"
+
+    - name: Stop here in check mode on a blank disk (nothing to inspect yet)
+      ansible.builtin.meta: end_role
+      when: ansible_check_mode and data_disk_blank
+
+    - name: Ensure the key folder exists
+      ansible.builtin.file:
+        path: "{{ data_disk_keyfile | dirname }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0700"
+
+    # The key sits on the system disk, itself encrypted: the data disk opens at boot without a second prompt.
+    - name: Generate the LUKS key file
+      ansible.builtin.shell: "umask 0377 && head -c 4096 /dev/urandom > '{{ data_disk_keyfile }}'"
+      args:
+        creates: "{{ data_disk_keyfile }}"
+
+    - name: Restrict the LUKS key file
+      ansible.builtin.file:
+        path: "{{ data_disk_keyfile }}"
+        owner: root
+        group: root
+        mode: "0400"
+
+    # luks_device formats any non-LUKS device for state present, opened or closed: every call repeats the guard,
+    # so skipping the asserts (--start-at-task, --step) cannot format anything.
+    - name: Create the LUKS container
+      community.crypto.luks_device:
+        device: "{{ data_disk_device }}"
+        state: present
+        type: luks2
+        label: "{{ data_disk_label }}"
+        keyfile: "{{ data_disk_keyfile }}"
+      when: data_disk_blank and data_disk_format | bool
+
+    - name: Open the LUKS container
+      community.crypto.luks_device:
+        device: "{{ data_disk_device }}"
+        state: opened
+        name: "{{ data_disk_name }}"
+        keyfile: "{{ data_disk_keyfile }}"
+        allow_discards: true
+      when: >-
+        'TYPE=crypto_LUKS' in data_disk_probe.stdout_lines
+        or (data_disk_blank and data_disk_format | bool)
+
+    - name: Read the LUKS UUID
+      ansible.builtin.command: "cryptsetup luksUUID '{{ data_disk_device }}'"
+      register: data_disk_luks_uuid
+      changed_when: false
+      check_mode: false
+
+    - name: Open the LUKS container at boot
+      community.general.crypttab:
+        name: "{{ data_disk_name }}"
+        backing_device: "UUID={{ data_disk_luks_uuid.stdout }}"
+        password: "{{ data_disk_keyfile }}"
+        opts: "luks,discard,nofail"
+        state: present
+
+    # community.general.filesystem never reformats a device that already has a filesystem
+    - name: Create the btrfs filesystem
+      community.general.filesystem:
+        dev: "/dev/mapper/{{ data_disk_name }}"
+        fstype: btrfs
+        opts: "-L {{ data_disk_label }}"
+
+    # Root-owned and not writable by the user: while the disk is not mounted, nothing can be created inside
+    - name: Ensure the mount point exists
+      ansible.builtin.file:
+        path: "{{ data_disk_mountpoint }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Mount the btrfs top level
+      ansible.posix.mount:
+        path: "{{ data_disk_mountpoint }}"
+        src: "/dev/mapper/{{ data_disk_name }}"
+        fstype: btrfs
+        opts: "subvolid=5,{{ data_disk_mount_opts }}"
+        state: mounted
+
+    # community.general.btrfs_subvolume resolves /dev/mapper/<name> to /dev/dm-N and then fails to match it
+    - name: Create the btrfs subvolumes
+      ansible.builtin.command: "btrfs subvolume create '{{ data_disk_mountpoint }}/{{ item.name }}'"
+      args:
+        creates: "{{ data_disk_mountpoint }}/{{ item.name }}"
+      loop: "{{ data_disk_subvolumes }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Give the subvolumes to their owner
+      ansible.builtin.file:
+        path: "{{ data_disk_mountpoint }}/{{ item.name }}"
+        state: directory
+        owner: "{{ data_disk_owner }}"
+        group: "{{ data_disk_owner }}"
+        mode: "0755"
+      loop: "{{ data_disk_subvolumes }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Check the link paths
+      ansible.builtin.stat:
+        path: "{{ item.link }}"
+        follow: false
+      register: data_disk_links
+      loop: "{{ data_disk_subvolumes | selectattr('link', 'defined') | list }}"
+      loop_control:
+        label: "{{ item.link }}"
+
+    # Never replace a real folder: a sync client would see all its files deleted
+    - name: Refuse to replace anything but the expected link
+      ansible.builtin.assert:
+        that: >-
+          not item.stat.exists
+          or (item.stat.islnk and item.stat.lnk_source == data_disk_mountpoint ~ '/' ~ item.item.name)
+        fail_msg: >-
+          {{ item.item.link }} exists and is not a link to {{ data_disk_mountpoint }}/{{ item.item.name }}:
+          migrate it by hand first (quit the application using it, copy, rename the old folder)
+      loop: "{{ data_disk_links.results }}"
+      loop_control:
+        label: "{{ item.item.link }}"
+
+    - name: Link the subvolumes
+      ansible.builtin.file:
+        src: "{{ data_disk_mountpoint }}/{{ item.name }}"
+        path: "{{ item.link }}"
+        state: link
+        owner: "{{ data_disk_owner }}"
+        group: "{{ data_disk_owner }}"
+        follow: false
+      loop: "{{ data_disk_subvolumes | selectattr('link', 'defined') | list }}"
+      loop_control:
+        label: "{{ item.link }} -> {{ data_disk_mountpoint }}/{{ item.name }}"
