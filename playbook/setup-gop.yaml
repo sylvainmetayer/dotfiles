@@ -9,7 +9,7 @@
       tags: [fedora_dependencies]
     - role: mise
       tags: [mise]
-    - role: sourcejedi.rpmfusion_free
+    - role: rpmfusion
       become: true
       tags: [rpm]
     - role: jaredhocutt.gnome_extensions

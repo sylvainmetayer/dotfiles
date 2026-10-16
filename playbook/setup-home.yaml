@@ -6,7 +6,7 @@
   roles:
     # RPM Fusion free + nonfree (nvidia) must come before fedora_dependencies:
     # steam is installed from rpmfusion-nonfree-steam
-    - role: sourcejedi.rpmfusion_free
+    - role: rpmfusion
       become: true
       tags: [rpm]
     - role: nvidia

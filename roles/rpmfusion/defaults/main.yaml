@@ -1,0 +1,9 @@
+---
+# RPM Fusion signs every Fedora release since 33 with the same "2020" key: https://rpmfusion.org/keys
+rpmfusion_free_key: "{{ role_path }}/files/RPM-GPG-KEY-rpmfusion-free-fedora-2020"
+rpmfusion_free_key_fingerprint: "E9A4 91A3 DE24 7814 E7E0  67EA E06F 8ECD D651 FF2E"
+
+# Master host rather than the mirrors.rpmfusion.org redirector, which can send to unreachable
+# mirrors; the GPG signature check makes the download source irrelevant security-wise.
+rpmfusion_free_release_url: >-
+  https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm

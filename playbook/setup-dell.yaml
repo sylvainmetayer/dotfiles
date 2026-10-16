@@ -4,7 +4,7 @@
   gather_facts: true
 
   roles:
-    - role: sourcejedi.rpmfusion_free
+    - role: rpmfusion
       become: true
       tags: [rpm]
     - role: fedora_dependencies

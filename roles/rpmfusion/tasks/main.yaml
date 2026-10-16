@@ -1,0 +1,13 @@
+---
+# Trust the key only after checking its pinned fingerprint, so the release
+# package below is installed with its GPG signature verified.
+- name: Import the RPM Fusion free signing key
+  ansible.builtin.rpm_key:
+    key: "{{ rpmfusion_free_key }}"
+    fingerprint: "{{ rpmfusion_free_key_fingerprint }}"
+    state: present
+
+- name: Install the RPM Fusion free release package
+  ansible.builtin.dnf:
+    name: "{{ rpmfusion_free_release_url }}"
+    state: present
