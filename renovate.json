@@ -41,6 +41,16 @@
         "# renovate: datasource=(?<datasource>[a-z.-]+) depName=(?<depName>\\S+)\\n\\s*jetbrains_toolbox_url: \"[^\"]*?-(?<currentValue>[0-9]+(?:\\.[0-9]+)+)\\.tar\\.gz\""
       ],
       "versioningTemplate": "loose"
+    },
+    {
+      "managerFilePatterns": [
+        "roles/git_credential_keepassxc/defaults/main.yaml"
+      ],
+      "customType": "regex",
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+)\\n\\s*git_credential_keepassxc_version: \"(?<currentValue>[^\"]+)\""
+      ],
+      "versioningTemplate": "semver"
     }
   ],
   "customDatasources": {

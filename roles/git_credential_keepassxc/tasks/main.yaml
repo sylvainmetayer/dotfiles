@@ -1,10 +1,9 @@
 ---
 # sudo dnf group install development-tools
-# FIXME
 - name: Install "git-credential-keepassxc" Rust package
   community.general.cargo:
     name: git-credential-keepassxc
-    version: "0.14."
+    version: "{{ git_credential_keepassxc_version }}"
 
 - name: Configuration instructions
   ansible.builtin.debug:
