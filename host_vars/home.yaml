@@ -117,3 +117,9 @@ mise_global_plugins:
   gitleaks: latest
   "github:fosrl/newt": latest
   "github:simulot/immich-go": latest
+
+# Former Windows "Data" SSD (Crucial MX500 2 To), LUKS + btrfs for the full kDrive sync.
+data_disk_device: /dev/disk/by-id/ata-CT2000MX500SSD1_2315E6C7D1A7
+data_disk_owner: sylvain
+data_disk_subvolumes:
+  - name: "@kdrive"
