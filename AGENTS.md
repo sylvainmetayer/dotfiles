@@ -10,6 +10,8 @@ Ansible-based provisioning for the author's personal Fedora workstations, packag
 
 Tooling is managed by **mise** (`mise.toml`), which provisions `uv` + Python and auto-activates `.venv`. Dependencies come from `pyproject.toml` via uv.
 
+The `.venv` is the *controller* only. `ansible.cfg` pins `interpreter_python = /usr/bin/python3` so modules execute on the system interpreter, which owns the C bindings they need (`python3-libselinux`, `python3-libdnf5`, `python3-psutil`). mise's standalone Python can never provide these, and its version drifts from Fedora's — do not remove that pin or add target-runtime shims such as the `selinux` PyPI package to `pyproject.toml`.
+
 ```bash
 mise run install     # ansible-galaxy role + collection install -r requirements.yml
 mise run lint        # ansible-lint
