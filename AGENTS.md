@@ -26,7 +26,7 @@ There is no test suite. CI (`.github/workflows/`) runs `--syntax-check` on every
 
 ## Architecture
 
-**Playbooks are flat and per-host.** `playbook/setup-<host>.yaml` maps 1:1 to a host in `inventory.yml`. Each playbook is a plain list of roles, every one carrying a `tags: [<role>]` entry so individual pieces can be re-run. Non-secret per-host config lives in `host_vars/<host>.yaml`; shared config in `group_vars/all.yaml`. `playbooks/` (plural, legacy) only still holds `playbooks/gop/locals.yml`, the vaulted GOP variables loaded via a `pre_tasks` `include_vars`.
+**Playbooks are flat and per-host.** `playbook/setup-<host>.yaml` maps 1:1 to a host in `inventory.yml`. Each playbook is a plain list of roles, every one carrying a `tags: [<role>]` entry so individual pieces can be re-run. Non-secret per-host config lives in `host_vars/<host>.yaml`; shared config in `group_vars/all.yaml`. GOP is the only host needing secrets, so it uses a `host_vars/gop/` directory instead of a single file: `host_vars/gop/vars.yaml` (plain) plus `host_vars/gop/vault.yml` (Ansible Vault encrypted), both auto-loaded by Ansible for the `gop` host — no `pre_tasks`/`include_vars` needed. The legacy `playbooks/` (plural) directory has been dropped.
 
 **`roles/generic_app` is the pattern for third-party apps.** Rather than one role per application, playbooks include `generic_app` repeatedly with `generic_app_name/_url/_folder/_icon/_exec/_autostart/_categories` vars — it downloads a binary/AppImage and renders a `.desktop` entry. To add an app, add another `generic_app` block to the host playbook, not a new role — unless the app ships its own updater, as kDrive does through `roles/kdrive`.
 
@@ -40,7 +40,7 @@ Vendored Galaxy content (`galaxy_roles/`, `collections/`) is gitignored and inst
 
 ## Secrets
 
-Three files are Ansible Vault encrypted: `playbooks/gop/locals.yml`, `roles/gop/templates/ssh_hosts.j2`, `roles/gop/templates/aws_config.j2`. The password is extracted from a KeePassXC database by `./scripts/extract-secrets.sh <db.kdbx>` into `~/.ansible_vault.txt`; vault commands and the GOP playbook expect `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt`. Never commit a decrypted version of these files.
+Three files are Ansible Vault encrypted: `host_vars/gop/vault.yml`, `roles/gop/templates/ssh_hosts.j2`, `roles/gop/templates/aws_config.j2`. The password is extracted from a KeePassXC database by `./scripts/extract-secrets.sh <db.kdbx>` into `~/.ansible_vault.txt`; vault commands and the GOP playbook expect `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt`. Never commit a decrypted version of these files.
 
 ## Conventions
 

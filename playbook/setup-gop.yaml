@@ -3,12 +3,6 @@
   hosts: gop
   gather_facts: true
 
-  pre_tasks:
-    - name: "Include vaulted locals variables"
-      ansible.builtin.include_vars:
-        file: "playbooks/gop/locals.yml"
-      tags: always
-
   roles:
     - role: fedora_dependencies
       become: true

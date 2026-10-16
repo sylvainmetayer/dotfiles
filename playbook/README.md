@@ -5,7 +5,7 @@ Ce dossier contient les playbooks principaux de provisioning des différentes ma
 Convention de nommage : `setup-<host>.yaml` où `<host>` correspond à l'entrée dans `inventory.yml`.
 
 Variables spécifiques non sensibles : `host_vars/<host>.yaml`.
-Variables sensibles ou chiffrées : rester dans les anciens `playbooks/<host>/locals.yml` (GOP chiffré).
+Variables sensibles ou chiffrées : `host_vars/<host>/vault.yml` (chiffré Ansible Vault, cf. `host_vars/gop/`).
 
 Pour l'exécution :
 

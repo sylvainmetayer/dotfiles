@@ -1,0 +1,60 @@
+---
+# HOSTNAME
+hostname_name: gop
+hostname_fqdn: gop.localhost
+
+fedora_dependencies_packages: [] # rely on host_vars/gop/vault.yml for specifics if needed
+fedora_dependencies_flatpak: []
+
+# Tool list captured from the existing ~/.config/mise/config.toml on this workstation so the
+# mise role (which fully re-renders config.toml) does not drop the already-installed tools.
+# Versions are deliberately `latest` globally (former pins: java temurin-21, quarkus 3.24.1,
+# velero 1.16.1, maven 3.9.1); java stays on the Temurin vendor (`temurin` = latest Temurin).
+# Pin per project with a local mise.toml when needed.
+mise_global_plugins:
+  helm: latest
+  node: latest
+  starship: latest
+  terraform: latest
+  terragrunt: latest
+  shellcheck: latest
+  awscli: latest
+  kubectl: latest
+  java: temurin
+  direnv: latest
+  kubectx: latest
+  k9s: latest
+  krew: latest
+  jq: latest
+  rust: latest
+  quarkus: latest
+  velero: latest
+  age: latest
+  gcloud: latest
+  ytt: latest
+  dive: latest
+  zoxide: latest
+  yq: latest
+  zellij: latest
+  github-cli: latest
+  maven: latest
+  kubent: latest
+  bat: latest
+  usage: latest
+  kubens: latest
+  sops: latest
+  ctop: latest
+  lazydocker: latest
+  rancher: latest
+  "github:fosrl/cli": latest
+  "github:github/copilot-cli": latest
+
+commons_custom_scripts:
+  - command: mise
+    script: 'eval "$(mise activate bash)"'
+  - command: starship
+    script: 'eval "$(starship init bash)"'
+  - command: direnv
+    script: 'eval "$(direnv hook bash)"'
+  - command: fzf
+    script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"

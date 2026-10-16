@@ -69,7 +69,7 @@ Fichiers sensibles :
 ```bash
 FILE=$HOME/dotfiles/roles/gop/templates/aws_config.j2
 FILE=$HOME/dotfiles/roles/gop/templates/ssh_hosts.j2
-FILE=$HOME/dotfiles/playbooks/gop/locals.yml
+FILE=$HOME/dotfiles/host_vars/gop/vault.yml
 ```
 
 Opérations Vault :

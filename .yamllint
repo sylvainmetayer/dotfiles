@@ -27,4 +27,4 @@ ignore: |
   /.direnv/
   /.venv/
   /.ansible/
-  playbooks/gop/locals.yml
+  host_vars/gop/vault.yml
