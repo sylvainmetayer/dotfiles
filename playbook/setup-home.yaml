@@ -79,5 +79,15 @@
         generic_app_autostart: "false"
         generic_app_categories: "Development;"
       tags: [github-copilot]
+    # Unversioned URL (redirects to the latest build): no Renovate comment, the launcher updates itself
+    - role: generic_app
+      vars:
+        generic_app_name: "epic-games-launcher"
+        generic_app_url: >-
+          https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/installer/download/EpicGamesLauncher-x86_64.AppImage
+        generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+        generic_app_autostart: "false"
+        generic_app_categories: "Game;"
+      tags: [epic-games-launcher]
     - role: gnome
       tags: [gnome]
