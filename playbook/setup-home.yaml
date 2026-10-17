@@ -86,6 +86,7 @@
         generic_app_url: >-
           https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/installer/download/EpicGamesLauncher-x86_64.AppImage
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+        generic_app_icon: "{{ ansible_facts['env']['HOME'] }}/dotfiles/assets/epic-games-launcher.png"
         generic_app_autostart: "false"
         generic_app_categories: "Game;"
       tags: [epic-games-launcher]
