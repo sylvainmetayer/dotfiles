@@ -86,14 +86,3 @@ Exécution :
 ```bash
 ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt ansible-playbook playbook/setup-gop.yaml -K
 ```
-
-## Ansible Galaxy
-
-La publication de la collection `sylvainmetayer.workstation` est automatique : un push sur `main` déclenche le workflow `Deploy Collection`, qui incrémente la version dans `galaxy.yml` puis build et publie sur Galaxy.
-
-Manuellement :
-
-```bash
-ansible-galaxy collection build
-ansible-galaxy collection publish sylvainmetayer-workstation-<version>.tar.gz --token TOKEN
-```
