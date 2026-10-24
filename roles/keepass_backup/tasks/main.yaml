@@ -38,7 +38,8 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: "0755"
+    # ~/.local/bin is shared with every other user-level tool: keep the usual mode, do not narrow it here.
+    mode: "0755" # NOSONAR
   loop:
     - "{{ keepass_backup_bin_dir }}"
 
@@ -46,7 +47,8 @@
   ansible.builtin.copy:
     src: keepass-backup
     dest: "{{ keepass_backup_bin_dir }}/keepass-backup"
-    mode: "0755"
+    # Only the owner runs it (shell, systemd user units).
+    mode: "0700"
 
 - name: Write the restic password file
   ansible.builtin.copy:
@@ -76,7 +78,8 @@
   ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "{{ keepass_backup_systemd_dir }}/{{ item }}"
-    mode: "0644"
+    # Read by the owner's systemd user manager only.
+    mode: "0600"
   loop:
     - keepass-backup.path
     - keepass-backup-local.service
