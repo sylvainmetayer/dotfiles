@@ -7,6 +7,9 @@
 #   init    create the restic repository once
 # Configuration: ~/.config/keepass-backup/env, written by Ansible (also loaded when run from a shell).
 set -euo pipefail
+# restic is a mise shim: from inside a mise project, the shim would load that project's env (AWS_* keys of
+# another bucket) over ours. Run from / so that only the global mise config applies.
+cd /
 
 env_file="${KEEPASS_BACKUP_ENV_FILE:-$HOME/.config/keepass-backup/env}"
 if [ -z "${KEEPASS_BACKUP_SOURCE_DIR:-}" ] && [ -r "$env_file" ]; then
