@@ -2,11 +2,12 @@
 Description=KeePass backup restore test (restic check + restore + compare)
 # Managed by Ansible (roles/keepass_backup)
 OnFailure=keepass-backup-notify@%n.service
-After=network-online.target
 
 [Service]
 Type=oneshot
 EnvironmentFile={{ keepass_backup_config_dir }}/env
+# Same as keepass-backup-remote.service: offline means skipped, not failed.
+ExecCondition=/usr/bin/nm-online --quiet --timeout=120
 ExecStart={{ keepass_backup_bin_dir }}/keepass-backup check
 Nice=10
 IOSchedulingClass=idle

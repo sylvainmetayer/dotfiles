@@ -2,14 +2,16 @@
 Description=KeePass databases backup, restic snapshot
 # Managed by Ansible (roles/keepass_backup)
 OnFailure=keepass-backup-notify@%n.service
-After=network-online.target
 
 [Service]
 Type=oneshot
 EnvironmentFile={{ keepass_backup_config_dir }}/env
+# A user unit cannot order itself after network-online.target (system manager): wait up to 2 min for
+# NetworkManager instead. Still offline: the run is skipped (not failed, no notification), the hourly timer retries.
+ExecCondition=/usr/bin/nm-online --quiet --timeout=120
 ExecStart={{ keepass_backup_bin_dir }}/keepass-backup run
 Nice=10
 IOSchedulingClass=idle
-# Login often happens before the network is up: retry instead of waiting for the next timer.
+# A real failure (S3 error, lock): retry instead of waiting for the next timer.
 Restart=on-failure
 RestartSec=10min
