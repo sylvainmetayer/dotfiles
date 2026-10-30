@@ -21,6 +21,9 @@
     - role: data_disk
       become: true
       tags: [data_disk]
+    - role: memory_tuning
+      become: true
+      tags: [memory_tuning]
     - role: mise
       tags: [mise]
     - role: jaredhocutt.gnome_extensions
