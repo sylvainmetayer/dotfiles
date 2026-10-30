@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.14'",
@@ -279,6 +279,7 @@ dependencies = [
     { name = "ansible" },
     { name = "ansible-lint" },
     { name = "psutil" },
+    { name = "yamllint" },
 ]
 
 [package.metadata]
@@ -286,6 +287,7 @@ requires-dist = [
     { name = "ansible", specifier = ">=13.2.0" },
     { name = "ansible-lint", specifier = ">=25.12.2" },
     { name = "psutil", specifier = ">=7.2.1" },
+    { name = "yamllint", specifier = ">=1.37" },
 ]
 
 [[package]]

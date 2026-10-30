@@ -8,4 +8,5 @@ dependencies = [
     "ansible>=13.2.0",
     "ansible-lint>=25.12.2",
     "psutil>=7.2.1",
+    "yamllint>=1.37",
 ]

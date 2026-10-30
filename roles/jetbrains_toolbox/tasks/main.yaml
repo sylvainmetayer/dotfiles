@@ -6,7 +6,7 @@
     state: directory
     owner: "{{ ansible_facts['user_uid'] }}"
     group: "{{ ansible_facts['user_gid'] }}"
-    mode: "0755"
+    mode: "0755" # NOSONAR (dossier de binaires, sans secret)
 
 - name: "Download Jetbrains toolbox"
   ansible.builtin.unarchive:
@@ -23,4 +23,4 @@
     dest: ~/.local/share/applications/jetbrains-toolbox.desktop
     owner: "{{ ansible_facts['user_uid'] }}"
     group: "{{ ansible_facts['user_gid'] }}"
-    mode: "0644"
+    mode: "0644" # NOSONAR (entrée .desktop standard, sans secret)
