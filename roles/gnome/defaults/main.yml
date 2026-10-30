@@ -1,0 +1,3 @@
+---
+# false leaves GNOME Software settings untouched (e.g. work machine with its own update policy)
+gnome_software_manage_updates: true

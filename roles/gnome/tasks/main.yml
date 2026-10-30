@@ -59,8 +59,10 @@
     key: "/org/gnome/software/download-updates"
     value: "false"
     state: present
+  when: gnome_software_manage_updates
 # Deployed by an earlier version of this role; XDG autostart does not start it anymore
 - name: Remove obsolete GNOME Software autostart override
   ansible.builtin.file:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/autostart/org.gnome.Software.desktop"
     state: absent
+  when: gnome_software_manage_updates

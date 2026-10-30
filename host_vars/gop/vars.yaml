@@ -58,3 +58,6 @@ commons_custom_scripts:
     script: 'eval "$(direnv hook bash)"'
   - command: fzf
     script: "[ -f /usr/share/fzf/shell/key-bindings.bash ] && source /usr/share/fzf/shell/key-bindings.bash || true"
+
+# Work machine: keep GNOME Software update settings as they are
+gnome_software_manage_updates: false
