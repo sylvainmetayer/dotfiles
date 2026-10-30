@@ -51,6 +51,17 @@
         "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+)\\n\\s*git_credential_keepassxc_version: \"(?<currentValue>[^\"]+)\""
       ],
       "versioningTemplate": "semver"
+    },
+    {
+      "managerFilePatterns": [
+        ".github/workflows/*.yml"
+      ],
+      "customType": "regex",
+      "matchStrings": [
+        "pip install [^\\n]*?\\buv==(?<currentValue>[0-9][^\\s]*)"
+      ],
+      "datasourceTemplate": "pypi",
+      "depNameTemplate": "uv"
     }
   ],
   "customDatasources": {
@@ -60,5 +71,14 @@
         "{\"releases\": [{\"version\": $.TBA[0].build}]}"
       ]
     }
-  }
+  },
+  "packageRules": [
+    {
+      "description": "uv de mise.toml et des workflows dans la même PR, pour que la CI lise uv.lock avec la version locale",
+      "matchDepNames": [
+        "uv"
+      ],
+      "groupName": "uv"
+    }
+  ]
 }
