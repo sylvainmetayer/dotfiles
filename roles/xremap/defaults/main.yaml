@@ -1,6 +1,6 @@
 ---
 # renovate: datasource=github-releases depName=xremap/xremap extractVersion=^v(?<version>.*)$
-xremap_version: "0.15.12"
+xremap_version: "0.16.6"
 # Release flavour matching the compositor: gnome, kde, x11, wlroots, hypr, niri, ...
 xremap_flavour: "gnome"
 xremap_arch: "x86_64"
