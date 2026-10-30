@@ -52,23 +52,15 @@
     value: "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
     state: present
 
-# gnome-software otherwise stays resident (with dnf5daemon) only to poll for updates
+# Updates go through dnf/flatpak, not GNOME Software's background downloads.
+# gnome-software itself stays resident: gnome-session-services.target wants it (GNOME 50).
 - name: Disable GNOME Software automatic update downloads
   community.general.dconf:
     key: "/org/gnome/software/download-updates"
     value: "false"
     state: present
-- name: Create user autostart directory
+# Deployed by an earlier version of this role; XDG autostart does not start it anymore
+- name: Remove obsolete GNOME Software autostart override
   ansible.builtin.file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.config/autostart"
-    state: directory
-    mode: "0755"
-- name: Do not start GNOME Software at login
-  ansible.builtin.copy:
-    dest: "{{ ansible_facts['env']['HOME'] }}/.config/autostart/org.gnome.Software.desktop"
-    content: |
-      [Desktop Entry]
-      Type=Application
-      Name=GNOME Software
-      Hidden=true
-    mode: "0644"
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/autostart/org.gnome.Software.desktop"
+    state: absent
