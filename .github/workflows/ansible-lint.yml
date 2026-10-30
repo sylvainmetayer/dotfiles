@@ -36,7 +36,7 @@ jobs:
       # uniquement : aucun script d'installation exécuté, aucune version non résolue.
       - name: Install dependencies
         run: |
-          pip install --quiet --only-binary :all: uv==0.13.5
+          pip install --quiet --only-binary :all: uv==0.13.6
           uv sync --locked --no-build --python "$(command -v python)"
           echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
