@@ -1,4 +1,6 @@
 ---
+# Clés post-quantiques d'environ 1 960 caractères, insécables.
+# yamllint disable rule:line-length
 # sops creation rules: encrypted Ansible vars files (host_vars/<host>.sops.yaml).
 # Destinataires age post-quantiques uniquement (age1pq1…, ML-KEM-768 + X25519,
 # age >= 1.3, sops >= 3.12), les mêmes clés que le homelab : perso, pro et la
