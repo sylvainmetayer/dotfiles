@@ -1,4 +1,4 @@
 ---
 # renovate: datasource=custom.jetbrains-toolbox depName=jetbrains-toolbox
-jetbrains_toolbox_url: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-3.9.0.88839.tar.gz"
+jetbrains_toolbox_url: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-3.9.1.89198.tar.gz"
 jetbrains_toolbox_folder: "/opt/toolbox"
