@@ -31,6 +31,8 @@
   loop:
     - "{{ xremap_bin_folder }}"
     - "{{ xremap_install_folder }}"
+    # unarchive refuses a missing dest
+    - "{{ xremap_install_folder }}/{{ xremap_version }}"
     - "{{ xremap_config_folder }}"
     - "{{ xremap_systemd_folder }}"
 
