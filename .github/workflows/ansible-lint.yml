@@ -2,20 +2,16 @@
 name: Ansible Lint
 
 on:
+  # Sans filtre de chemins : « lint » est requis par le ruleset de main, et un
+  # check requis qui ne tourne pas bloque la PR.
   pull_request:
-    paths:
-      - "**/*.yml"
-      - "**/*.yaml"
-      - "roles/**"
-      - "playbook/**"
-      - "host_vars/**"
-      - "inventory.yml"
-      - "pyproject.toml"
-      - "uv.lock"
   push:
     branches:
       - main
       - rework
+
+permissions:
+  contents: read
 
 jobs:
   lint:
@@ -26,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
@@ -51,7 +49,7 @@ jobs:
         run: |
           for p in playbook/setup-*.yaml; do \
             echo "Syntax check $p"; \
-            ansible-playbook $p --syntax-check || exit 1; \
+            ansible-playbook "$p" --syntax-check || exit 1; \
           done
 
       - name: ansible-lint
