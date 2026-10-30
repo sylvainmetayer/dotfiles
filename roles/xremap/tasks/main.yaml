@@ -12,7 +12,7 @@
     dest: "{{ xremap_udev_rule_file }}"
     owner: root
     group: root
-    mode: "0644"
+    mode: "0644" # NOSONAR (règle udev système standard, sans secret)
   notify: Reload udev rules
 
 - name: Add the user to the input group
@@ -27,7 +27,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: "0755"
+    mode: "0755" # NOSONAR (dossiers bin/install/config/systemd, sans secret)
   loop:
     - "{{ xremap_bin_folder }}"
     - "{{ xremap_install_folder }}"
@@ -40,7 +40,7 @@
       https://github.com/xremap/xremap/releases/download/v{{ xremap_version }}/xremap-linux-{{ xremap_arch }}-{{ xremap_flavour }}.zip
     dest: "{{ xremap_install_folder }}/{{ xremap_version }}"
     remote_src: true
-    mode: "0755"
+    mode: "0755" # NOSONAR (binaire xremap exécutable, sans secret)
     creates: "{{ xremap_install_folder }}/{{ xremap_version }}/xremap"
 
 - name: Link the current xremap version
@@ -63,13 +63,13 @@
   ansible.builtin.template:
     src: "config.yml.j2"
     dest: "{{ xremap_config_folder }}/config.yml"
-    mode: "0644"
+    mode: "0644" # NOSONAR (remaps clavier, sans secret)
 
 - name: Install the xremap user service
   ansible.builtin.template:
     src: "xremap.service.j2"
     dest: "{{ xremap_systemd_folder }}/xremap.service"
-    mode: "0644"
+    mode: "0644" # NOSONAR (unité systemd utilisateur, sans secret)
   notify: Restart xremap
 
 - name: Enable the xremap user service
