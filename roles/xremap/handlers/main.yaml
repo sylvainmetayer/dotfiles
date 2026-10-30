@@ -4,6 +4,13 @@
   ansible.builtin.command: udevadm control --reload-rules
   changed_when: true
 
+# Reloading alone leaves the existing /dev/uinput untouched until a reboot
+- name: Apply udev rules to uinput
+  become: true
+  ansible.builtin.command: udevadm trigger --sysname-match=uinput
+  changed_when: true
+  listen: Reload udev rules
+
 - name: Restart xremap
   ansible.builtin.systemd_service:
     name: xremap
