@@ -29,7 +29,7 @@
   ansible.builtin.file:
     path: "{{ generic_app_folder }}"
     state: directory
-    mode: "0755"
+    mode: "0755" # NOSONAR (dossier de binaires (PATH, /opt), sans secret)
 
 - name: Download app binary
   ansible.builtin.get_url:
@@ -67,7 +67,7 @@
   ansible.builtin.template:
     src: "app.desktop.j2"
     dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/{{ generic_app_name }}.desktop"
-    mode: "0644"
+    mode: "0644" # NOSONAR (entrée .desktop standard, sans secret)
 
 - name: Ensure autostart folder exists
   ansible.builtin.file:
@@ -80,7 +80,7 @@
   ansible.builtin.template:
     src: "app.desktop.j2"
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/autostart/{{ generic_app_name }}.desktop"
-    mode: "0644"
+    mode: "0644" # NOSONAR (entrée .desktop, dans ~/.config/autostart en 0700)
   when: generic_app_autostart | default('false') | bool
 
 - name: Remove autostart entry

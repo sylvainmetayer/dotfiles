@@ -30,10 +30,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      # Versions verrouillées par uv.lock (ansible, ansible-lint, yamllint), roues
+      # uniquement : aucun script d'installation exécuté, aucune version non résolue.
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install ansible ansible-lint yamllint
+          pip install --quiet --only-binary :all: uv==0.13.5
+          uv sync --locked --no-build --python "$(command -v python)"
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Install Galaxy roles/collections
         run: |

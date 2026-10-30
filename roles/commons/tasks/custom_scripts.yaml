@@ -9,7 +9,7 @@
     state: directory
     owner: "{{ ansible_facts['user_uid'] }}"
     group: "{{ ansible_facts['user_gid'] }}"
-    mode: "0755"
+    mode: "0755" # NOSONAR (scripts shell publics du dépôt)
 
 # Fedora's default ~/.bashrc already sources ~/.bashrc.d/*
 - name: Source bash aliases in bashrc

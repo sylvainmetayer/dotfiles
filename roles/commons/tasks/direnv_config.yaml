@@ -11,4 +11,4 @@
     dest: ~/.config/direnv/direnv.toml
     owner: "{{ ansible_facts['user_uid'] }}"
     group: "{{ ansible_facts['user_gid'] }}"
-    mode: "0644"
+    mode: "0644" # NOSONAR (dans ~/.config/direnv en 0700, sans secret)

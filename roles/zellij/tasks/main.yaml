@@ -3,7 +3,7 @@
   ansible.builtin.file:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/zellij"
     state: directory
-    mode: "0755"
+    mode: "0755" # NOSONAR (config zellij, sans secret)
 
 # https://tech.kibatic.com/linux/zellij-wayland-cut-paste/
 - name: Use wl-copy as zellij copy command

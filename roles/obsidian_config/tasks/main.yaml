@@ -8,7 +8,7 @@
   ansible.builtin.file:
     path: "{{ obsidian_config_vault }}/.obsidian"
     state: directory
-    mode: "0755"
+    mode: "0700"
   when: obsidian_config_vault_stat.stat.exists
 
 - name: Seed stable vault settings without overwriting existing ones
@@ -16,7 +16,7 @@
     src: "{{ item }}"
     dest: "{{ obsidian_config_vault }}/.obsidian/{{ item }}"
     force: false
-    mode: "0644"
+    mode: "0600"
   loop: "{{ obsidian_config_files }}"
   when: obsidian_config_vault_stat.stat.exists
 
@@ -31,7 +31,7 @@
   ansible.builtin.file:
     path: "{{ obsidian_config_vault }}/.obsidian/plugins/remotely-save"
     state: directory
-    mode: "0755"
+    mode: "0700"
   when: obsidian_config_vault_stat.stat.exists and obsidian_config_remotely_save.address | length > 0
 
 - name: Seed the remotely-save settings once, password left empty for manual entry in Obsidian

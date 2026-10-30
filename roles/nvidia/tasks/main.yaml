@@ -24,7 +24,7 @@
     value: "1"
     no_extra_spaces: true
     create: false
-    mode: "0644"
+    mode: "0644" # NOSONAR (fichier .repo système, lisible par dnf comme les autres dépôts)
   loop: "{{ nvidia_repositories }}"
 
 - name: Install NVIDIA driver packages

@@ -3,7 +3,7 @@
   ansible.builtin.file:
     path: "~/.local/bin"
     state: directory
-    mode: "0755"
+    mode: "0755" # NOSONAR (~/.local/bin, dossier du PATH)
 
 - name: Set timezone to Europe/Paris
   become: true

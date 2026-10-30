@@ -9,7 +9,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: "0755"
+    mode: "0755" # NOSONAR (dossiers bin/config/applications, sans secret)
   loop:
     - "{{ kdrive_bin_folder }}"
     - "{{ kdrive_config_folder }}"
@@ -25,14 +25,14 @@
   ansible.builtin.get_url:
     url: "https://raw.githubusercontent.com/oRiamn/kdrive-auto-update/{{ kdrive_auto_update_ref }}/kdrive-auto-update"
     dest: "{{ kdrive_bin_folder }}/kdrive-auto-update"
-    mode: "0755"
+    mode: "0755" # NOSONAR (script exécutable public)
     force: true
 
 - name: Configure the architecture watched by kdrive-auto-update
   ansible.builtin.copy:
     content: "{{ kdrive_architecture }}\n"
     dest: "{{ kdrive_config_folder }}/architecture"
-    mode: "0644"
+    mode: "0644" # NOSONAR (architecture seulement, sans secret)
 
 # Run before rendering kDrive.desktop, so a pending update does not leave the
 # Exec= line pointing at a fixed AppImage at the end of the run.
@@ -46,7 +46,7 @@
   ansible.builtin.template:
     src: "kdrive-auto-update.desktop.j2"
     dest: "{{ kdrive_autostart_folder }}/kdrive-auto-update.desktop"
-    mode: "0755"
+    mode: "0755" # NOSONAR (dans ~/.config/autostart en 0700)
 
 # Three writers touch this file:
 # - this role renders it with Exec=kdrive-launch, which resolves the newest
@@ -60,14 +60,14 @@
   ansible.builtin.template:
     src: "kdrive-autostart.desktop.j2"
     dest: "{{ kdrive_autostart_folder }}/kDrive.desktop"
-    mode: "0755"
+    mode: "0755" # NOSONAR (dans ~/.config/autostart en 0700)
     force: true
 
 - name: Install the kDrive launcher wrapper
   ansible.builtin.template:
     src: "kdrive-launch.j2"
     dest: "{{ kdrive_bin_folder }}/kdrive-launch"
-    mode: "0755"
+    mode: "0755" # NOSONAR (script exécutable, sans secret)
 
 # applications/kDrive.desktop is (re)written by the kDrive client to register
 # the kdrive:// URL handler, so the menu entry uses its own file name.
@@ -75,7 +75,7 @@
   ansible.builtin.template:
     src: "kdrive.desktop.j2"
     dest: "{{ kdrive_applications_folder }}/kdrive-launch.desktop"
-    mode: "0644"
+    mode: "0644" # NOSONAR (entrée .desktop standard, sans secret)
 
 - name: Remove the previous generic_app based installation
   become: true

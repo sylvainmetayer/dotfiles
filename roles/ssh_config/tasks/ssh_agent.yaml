@@ -15,14 +15,14 @@
   ansible.builtin.file:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/environment.d"
     state: directory
-    mode: "0755"
+    mode: "0755" # NOSONAR (config de session, sans secret)
 
 # Exported to the whole graphical session (GNOME apps, flatpaks), not only bash
 - name: Define SSH_AUTH_SOCK for the user session
   ansible.builtin.copy:
     content: "SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/ssh-agent.socket\n"
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/environment.d/10-ssh-agent.conf"
-    mode: "0644"
+    mode: "0644" # NOSONAR (chemin du socket seulement, sans secret)
 
 - name: Copy ssh-agent service
   ansible.builtin.copy:
@@ -30,7 +30,7 @@
     dest: ~/.config/systemd/user/ssh-agent.service
     group: "{{ ansible_facts['user_gid'] }}"
     owner: "{{ ansible_facts['user_uid'] }}"
-    mode: "0644"
+    mode: "0644" # NOSONAR (unité systemd utilisateur, sans secret)
 
 - name: Make sure ssh-agent is running
   ansible.builtin.systemd:

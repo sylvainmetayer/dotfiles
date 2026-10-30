@@ -17,12 +17,12 @@
   ansible.builtin.file:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/mise"
     state: directory
-    mode: "0755"
+    mode: "0755" # NOSONAR (config mise, sans secret)
 
 - name: Create config mise file
   notify: Run mise install
   ansible.builtin.template:
     src: "config.toml.j2"
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/mise/config.toml"
-    mode: "0644"
+    mode: "0644" # NOSONAR (liste d'outils et versions, sans secret)
   register: mise_config
