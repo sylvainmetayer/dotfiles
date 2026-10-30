@@ -31,4 +31,4 @@ export TRIVY_CACHE_DIR
 TF_PLUGIN_CACHE_DIR=~/.cache/tofu/plugins
 export TF_PLUGIN_CACHE_DIR
 # tofu does not create the plugin cache directory itself
-[ -d "$TF_PLUGIN_CACHE_DIR" ] || mkdir -p "$TF_PLUGIN_CACHE_DIR"
+[[ -d "$TF_PLUGIN_CACHE_DIR" ]] || mkdir -p "$TF_PLUGIN_CACHE_DIR"

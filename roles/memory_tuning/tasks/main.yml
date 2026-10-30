@@ -10,7 +10,7 @@
       compression-algorithm = {{ memory_tuning_zram_algorithm }}
     owner: root
     group: root
-    mode: "0644"
+    mode: "0600"
 
 - name: Set swap sysctls suited to zram
   ansible.posix.sysctl:
@@ -30,4 +30,4 @@
       e /tmp/claude-[0-9]* - - - {{ memory_tuning_claude_tmp_age }}
     owner: root
     group: root
-    mode: "0644"
+    mode: "0600"
