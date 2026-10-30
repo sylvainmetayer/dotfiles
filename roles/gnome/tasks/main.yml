@@ -51,3 +51,24 @@
     key: "/org/gnome/desktop/wm/keybindings/switch-windows-backward"
     value: "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
     state: present
+
+# gnome-software otherwise stays resident (with dnf5daemon) only to poll for updates
+- name: Disable GNOME Software automatic update downloads
+  community.general.dconf:
+    key: "/org/gnome/software/download-updates"
+    value: "false"
+    state: present
+- name: Create user autostart directory
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/autostart"
+    state: directory
+    mode: "0755"
+- name: Do not start GNOME Software at login
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/autostart/org.gnome.Software.desktop"
+    content: |
+      [Desktop Entry]
+      Type=Application
+      Name=GNOME Software
+      Hidden=true
+    mode: "0644"

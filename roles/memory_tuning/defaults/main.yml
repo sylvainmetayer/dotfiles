@@ -1,0 +1,10 @@
+---
+# zstd compresses ~3-4x vs ~2x for Fedora's default lzo-rle
+memory_tuning_zram_algorithm: zstd
+memory_tuning_zram_size: "min(ram, 8192)"
+# zram is far cheaper than evicting page cache: swap eagerly (Fedora/Pop!_OS values).
+# Overrides tuned's throughput-performance profile, which sets 10.
+memory_tuning_swappiness: 180
+memory_tuning_page_cluster: 0
+# Claude Code scratchpads live in /tmp (tmpfs, so RAM then zram): purge what nobody touched
+memory_tuning_claude_tmp_age: 3d

@@ -10,6 +10,9 @@
     - role: fedora_dependencies
       become: true
       tags: [fedora_dependencies]
+    - role: memory_tuning
+      become: true
+      tags: [memory_tuning]
     - role: mise
       tags: [mise]
     - role: hostname

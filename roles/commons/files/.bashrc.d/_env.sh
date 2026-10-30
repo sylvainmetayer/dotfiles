@@ -24,3 +24,11 @@ export EDITOR=$EDITOR
 
 SOPS_AGE_KEY_FILE=~/.age.key
 export SOPS_AGE_KEY_FILE=$SOPS_AGE_KEY_FILE
+
+# Keep tool caches on disk, not in /tmp (tmpfs, ends up in zram)
+TRIVY_CACHE_DIR=~/.cache/trivy
+export TRIVY_CACHE_DIR
+TF_PLUGIN_CACHE_DIR=~/.cache/tofu/plugins
+export TF_PLUGIN_CACHE_DIR
+# tofu does not create the plugin cache directory itself
+mkdir -p "$TF_PLUGIN_CACHE_DIR"

@@ -1,0 +1,33 @@
+---
+# No restart handler: re-creating zram0 means swapping everything back into RAM.
+# The new algorithm applies at next boot.
+- name: Configure zram compression
+  ansible.builtin.copy:
+    dest: /etc/systemd/zram-generator.conf
+    content: |
+      [zram0]
+      zram-size = {{ memory_tuning_zram_size }}
+      compression-algorithm = {{ memory_tuning_zram_algorithm }}
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Set swap sysctls suited to zram
+  ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/99-memory-tuning.conf
+    reload: true
+  loop:
+    - { name: vm.swappiness, value: "{{ memory_tuning_swappiness }}" }
+    - { name: vm.page-cluster, value: "{{ memory_tuning_page_cluster }}" }
+
+# 'e' only ages the content of existing directories, it never creates them
+- name: Purge stale Claude Code scratchpads from /tmp
+  ansible.builtin.copy:
+    dest: /etc/tmpfiles.d/claude-scratchpad.conf
+    content: |
+      e /tmp/claude-[0-9]* - - - {{ memory_tuning_claude_tmp_age }}
+    owner: root
+    group: root
+    mode: "0644"
