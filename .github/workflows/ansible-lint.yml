@@ -10,6 +10,8 @@ on:
       - "playbook/**"
       - "host_vars/**"
       - "inventory.yml"
+      - "pyproject.toml"
+      - "uv.lock"
   push:
     branches:
       - main
