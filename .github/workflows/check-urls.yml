@@ -1,0 +1,40 @@
+---
+name: URLs
+
+# Toujours lancé (pas de filtre de chemins) : le check est requis par le
+# ruleset de main, et un check requis qui ne tourne pas bloque la PR.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: "3.14"
+
+      # PyYAML et Jinja2 viennent d'ansible, verrouillés par uv.lock, roues uniquement.
+      - name: Install dependencies
+        run: |
+          pip install --quiet --only-binary :all: uv==0.13.6
+          uv sync --locked --no-build --python "$(command -v python)"
+
+      # URL de téléchargement présentes dans la PR et absentes de la base, rendues
+      # par Jinja, puis curl -fsIL sur chacune : une URL morte rend le check rouge.
+      - name: Check changed download URLs
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/base" "$BASE_SHA"
+          .venv/bin/python -I .github/scripts/check_download_urls.py --base "$RUNNER_TEMP/base" --head .
