@@ -15,7 +15,6 @@
   "automergeType": "pr",
   "automergeStrategy": "rebase",
   "platformAutomerge": false,
-  "rebaseWhen": "conflicted",
   "customManagers": [
     {
       "managerFilePatterns": [
@@ -23,8 +22,8 @@
       ],
       "customType": "regex",
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\n]+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s+generic_app_url: \\\"[^\\\"]*?[-/]v?(?<currentValue>[0-9]+(?:\\.[0-9]+)+)[-/\\\"]",
-        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\n]+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s+generic_app_url: \\\"[^\\\"]*?[-/]v?[0-9]+(?:\\.[0-9]+)+[-/][^\\\"]*?[-/]v?(?<currentValue>[0-9]+(?:\\.[0-9]+)+)[.\\-/\\\"]"
+        "# renovate: datasource=(?<datasource>[a-z.-]+) depName=(?<depName>[^\\n]+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s+generic_app_url: \\\"[^\\\"]*?[-/]v?(?<currentValue>[0-9]+(?:\\.[0-9]+)+)[-/\\\"]",
+        "# renovate: datasource=(?<datasource>[a-z.-]+) depName=(?<depName>[^\\n]+?)(?:\\s+extractVersion=(?<extractVersion>[^\\n]+?))?\\n\\s+generic_app_url: \\\"[^\\\"]*?[-/]v?[0-9]+(?:\\.[0-9]+)+[-/][^\\\"]*?[-/]v?(?<currentValue>[0-9]+(?:\\.[0-9]+)+)[.\\-/\\\"]"
       ]
     },
     {
@@ -79,6 +78,13 @@
     }
   ],
   "customDatasources": {
+    "ledger-live": {
+      "defaultRegistryUrlTemplate": "https://download.live.ledger.com/latest-linux.yml",
+      "format": "yaml",
+      "transformTemplates": [
+        "{\"releases\": [{\"version\": $.version}]}"
+      ]
+    },
     "jetbrains-toolbox": {
       "defaultRegistryUrlTemplate": "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release",
       "transformTemplates": [
@@ -95,7 +101,17 @@
       "groupName": "uv"
     },
     {
-      "description": "Automerge, liste blanche (1/4) : applications de bureau téléchargées par generic_app, mises à jour mineures et correctives. Renovate fusionne la PR lui-même (rebase, comme les fusions à la main ; platformAutomerge désactivé car l'auto-merge GitHub est coupé sur le dépôt) quand tous les checks du commit sont verts, mais la CI ne télécharge aucune URL (syntax-check, ansible-lint, yamllint) : une URL cassée ne se voit qu'au prochain lancement du playbook, à la main. D'où le délai de 3 jours (une version retirée ou re-publiée dans les jours qui suivent ne fait jamais de PR) et une liste blanche, pas une liste noire : une application absente d'ici reste manuelle. Jamais ici : Ledger Live (le tag GitHub précède de plusieurs jours l'AppImage sur download.live.ledger.com, 4.25.0 renvoyait 404 huit jours après le tag ; logiciel financier), une fusion ne lance rien sur les postes",
+      "description": "Python de mise.toml jamais suivi : Renovate remplace le gabarit get_env(PYTHON_VERSION, default='3.14') par une version figée (PR #185, 3.15.2), alors qu'ansible-core 2.20 ne supporte pas 3.15 côté contrôleur et qu'uv.lock n'a aucune roue cp315. La montée de Python se fait à la main, avec le défaut du gabarit",
+      "matchManagers": [
+        "mise"
+      ],
+      "matchDepNames": [
+        "python"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Automerge, liste blanche (1/4) : applications de bureau téléchargées par generic_app, mises à jour mineures et correctives. Renovate fusionne la PR lui-même (rebase, comme les fusions à la main ; platformAutomerge désactivé car l'auto-merge GitHub est coupé sur le dépôt) quand tous les checks du commit sont verts, mais la CI ne télécharge aucune URL (syntax-check, ansible-lint, yamllint) : une URL cassée ne se voit qu'au prochain lancement du playbook, à la main (une fusion ne lance rien sur les postes). D'où le délai de 3 jours (une version retirée ou re-publiée dans les jours qui suivent ne fait jamais de PR) et une liste blanche, pas une liste noire : une application absente d'ici reste manuelle. Jamais ici : Ledger Live (logiciel financier ; sa source est latest-linux.yml de download.live.ledger.com depuis que le tag GitHub 4.25.0 a ouvert une PR dont l'AppImage renvoyait encore 404 huit jours après)",
       "matchDepNames": [
         "obsidianmd/obsidian-releases",
         "github/app"
@@ -140,7 +156,7 @@
       "automerge": true
     },
     {
-      "description": "Automerge : actions officielles actions/* (checkout, setup-python), mises à jour de digest sous le même tag majeur (# v7). Les tags majeurs bougent à chaque version, c'est donc la mise à jour normale de ces actions. Le risque d'un tag déplacé par un attaquant est accepté pour l'organisation de GitHub seule : l'action tourne déjà sur la branche Renovate avant la fusion, et aucun workflow n'a de secret. Jamais ludeeus/action-shellcheck (épinglé sur master : un digest de branche, sans version ni relecture possible). Sans minimumReleaseAge : un digest n'a pas de date de publication",
+      "description": "Automerge : actions officielles actions/* (checkout, setup-python), mises à jour de digest sous le même tag majeur (# v7). Les tags majeurs bougent à chaque version, c'est donc la mise à jour normale de ces actions. Le risque d'un tag déplacé par un attaquant est accepté pour l'organisation de GitHub seule : l'action tourne déjà sur la branche Renovate avant la fusion, et aucun workflow n'utilise de secret du dépôt ; le GITHUB_TOKEN (en écriture par défaut, sans bloc permissions) est déjà exposé à l'action lors du push de la branche, la fusion n'ajoute rien. Jamais ludeeus/action-shellcheck (épinglé sur master : un digest de branche, sans version ni relecture possible). Sans minimumReleaseAge : un digest n'a pas de date de publication",
       "matchManagers": [
         "github-actions"
       ],
@@ -151,13 +167,12 @@
         "actions/**"
       ],
       "matchUpdateTypes": [
-        "digest",
-        "patch"
+        "digest"
       ],
       "automerge": true
     },
     {
-      "description": "Garde-fous, toujours manuels même si une règle plus haut est élargie : toute majeure, Python (mise.toml : ansible-core 2.20 ne supporte pas 3.15 côté contrôleur, uv.lock n'a aucune roue cp315, et la PR remplace le gabarit get_env(PYTHON_VERSION) par une version figée), Ledger Live (voir plus haut), les collections et rôles Galaxy (exécutés en become sur les postes), kdrive-auto-update (script tiers suivi par digest de master), git-credential-keepassxc (accès au coffre KeePassXC)",
+      "description": "Garde-fous, toujours manuels même si une règle plus haut est élargie : toute majeure, Ledger Live (voir plus haut), les collections et rôles Galaxy (exécutés en become sur les postes), kdrive-auto-update (script tiers suivi par digest de master), git-credential-keepassxc (accès au coffre KeePassXC)",
       "matchUpdateTypes": [
         "major"
       ],
@@ -166,8 +181,7 @@
     {
       "description": "Garde-fous (suite) : paquets jamais automergés, quel que soit le type de mise à jour",
       "matchDepNames": [
-        "python",
-        "LedgerHQ/ledger-live",
+        "ledger-live",
         "https://github.com/oRiamn/kdrive-auto-update",
         "git-credential-keepassxc",
         "ludeeus/action-shellcheck"
