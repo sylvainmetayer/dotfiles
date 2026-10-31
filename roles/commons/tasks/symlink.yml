@@ -1,7 +1,7 @@
 ---
 - name: "Collect file info {{ item }}"
   ansible.builtin.stat:
-    path: "~/{{ item }}"
+    path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
   register: commons_dotfile
 
 - name: "Ensure parent folder exists for link {{ item }}"
@@ -10,11 +10,19 @@
     path: "~/{{ item | dirname }}"
     state: directory
 
-- name: "Delete regular file {{ item }}"
-  ansible.builtin.file:
-    path: "~/{{ item }}"
-    state: absent
-  when: commons_dotfile.stat.islnk is defined and commons_dotfile.stat is defined and commons_dotfile.stat.isreg
+# A regular file (local edit, or shipped by the distribution on a fresh
+# workstation) is moved aside, never deleted: once replaced by the link, the next
+# run sees a link and leaves it alone.
+- name: "Back up the regular file before linking {{ item }}"
+  ansible.builtin.command:
+    argv:
+      - mv
+      - --no-clobber
+      - --
+      - "{{ commons_dotfile.stat.path }}"
+      - "{{ commons_dotfile.stat.path }}.bak-{{ ansible_facts['date_time']['iso8601_basic_short'] }}"
+    creates: "{{ commons_dotfile.stat.path }}.bak-{{ ansible_facts['date_time']['iso8601_basic_short'] }}"
+  when: commons_dotfile.stat.exists and commons_dotfile.stat.isreg
 
 - name: "Update commons_dotfile symlink {{ item }}"
   ansible.builtin.file:
