@@ -1,4 +1,6 @@
 ---
 # renovate: datasource=custom.jetbrains-toolbox depName=jetbrains-toolbox
 jetbrains_toolbox_url: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-3.9.1.89198.tar.gz"
+# Version read off the URL (Renovate only updates the URL): names the marker that skips the 155 MB download
+jetbrains_toolbox_version: "{{ jetbrains_toolbox_url | regex_search('[0-9]+(\\.[0-9]+)+(?=\\.tar\\.gz$)') }}"
 jetbrains_toolbox_folder: "/opt/toolbox"
