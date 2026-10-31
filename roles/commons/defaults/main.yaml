@@ -46,5 +46,4 @@ commons_folder_modes:
   .bashrc.d: "0755"
 
 commons_setup_direnv: true
-commons_setup_starship_init_script: true
 commons_symlink_as_link: true
