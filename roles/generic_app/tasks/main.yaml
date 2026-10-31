@@ -24,12 +24,15 @@
     generic_app_file: "{{ generic_app_folder }}/{{ generic_app_file_name }}"
     generic_app_versioned: "{{ generic_app_file_name != generic_app_name }}"
 
-# Root is only needed outside the home (e.g. /opt): a folder under the home stays user-owned, no sudo prompt
+# Root is only needed outside the home (e.g. /opt): a folder under the home stays user-owned, no sudo prompt.
+# The folder is owned by the user either way: the download below runs without become.
 - name: Ensure app folder exists
   become: "{{ generic_app_folder is not match('~|' ~ (ansible_facts['env']['HOME'] | regex_escape)) }}"
   ansible.builtin.file:
     path: "{{ generic_app_folder }}"
     state: directory
+    owner: "{{ ansible_facts['user_uid'] }}"
+    group: "{{ ansible_facts['user_gid'] }}"
     mode: "0755" # NOSONAR (dossier de binaires (PATH, /opt), sans secret)
 
 - name: Download app binary
