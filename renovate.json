@@ -15,6 +15,12 @@
   "automergeType": "pr",
   "automergeStrategy": "rebase",
   "platformAutomerge": false,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "* 0-5 * * 1"
+    ]
+  },
   "customManagers": [
     {
       "managerFilePatterns": [
@@ -192,6 +198,13 @@
       "description": "Garde-fous (suite) : dépendances Galaxy (requirements.yml)",
       "matchManagers": [
         "ansible-galaxy"
+      ],
+      "automerge": false
+    },
+    {
+      "description": "Garde-fous (suite) : maintenance hebdomadaire de uv.lock (lockFileMaintenance, le lundi avant 6 h UTC), jamais automergée. pyproject.toml ne déclare que des plages >= déjà satisfaites (pep621 les voit sans rien proposer) et ansible-core n'y est pas : seule cette PR fait avancer le contrôleur, ansible-core compris (dépendance transitive du paquet ansible, qui l'épingle en ~=). Elle regroupe toutes les dépendances Python, mineures comprises (ansible-core 2.20 → 2.21), et ansible-core exécute les playbooks en become sur les postes : relecture à la main. uv résout pour requires-python >=3.12, donc ne prend jamais une version qui lâche Python 3.12 ; les jobs lint (3.12|3.13|3.14) rejouent uv sync --locked sur les trois Pythons du contrôleur",
+      "matchUpdateTypes": [
+        "lockFileMaintenance"
       ],
       "automerge": false
     }
