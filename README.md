@@ -3,7 +3,6 @@
 🔧 🏠 Always WIP
 
 [![https://www.shellcheck.net/](https://img.shields.io/badge/%F0%9F%9B%A1-ShellCheck-brightgreen.svg)](https://www.shellcheck.net/)
-[![Ansible](https://github.com/sylvainmetayer/dotfiles/actions/workflows/ansible.yml/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions/workflows/ansible.yml)
 [![Ansible Lint](https://github.com/sylvainmetayer/dotfiles/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions/workflows/ansible-lint.yml)
 [![Lint](https://github.com/sylvainmetayer/dotfiles/actions/workflows/lint.yml/badge.svg)](https://github.com/sylvainmetayer/dotfiles/actions/workflows/lint.yml)
 

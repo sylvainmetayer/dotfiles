@@ -7,6 +7,8 @@ permissions:
   contents: read
 
 jobs:
+  # « build » est un check requis par le ruleset de main : ne pas renommer ce job
+  # ni filtrer ce workflow par chemins, sinon toutes les PR restent bloquées.
   build:
     runs-on: ubuntu-latest
     steps:
