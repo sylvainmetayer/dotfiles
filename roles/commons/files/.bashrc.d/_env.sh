@@ -22,8 +22,9 @@ export ANSIBLE_NOCOWS
 EDITOR=$(which vim)
 export EDITOR=$EDITOR
 
-# Same path as sops' default and the <role>_age_keyfile of the roles, set explicitly
-# so a stale value inherited from elsewhere cannot point sops at another file.
+# Same path as sops' default and the <role>_age_keyfile of the roles. sops reads it
+# anyway (it adds this variable's file to its default one); exported for the tools
+# that only honour the variable.
 SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 export SOPS_AGE_KEY_FILE
 

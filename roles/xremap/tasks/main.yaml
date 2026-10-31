@@ -21,6 +21,8 @@
     path: "{{ xremap_udev_legacy_rule_file }}"
     state: absent
   notify: Reload udev rules
+  # An override putting the rule back under the former name must not delete it
+  when: xremap_udev_legacy_rule_file != xremap_udev_rule_file
 
 - name: Add the user to the input group
   become: true
