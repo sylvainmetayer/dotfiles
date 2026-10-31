@@ -2,7 +2,6 @@
 # Architecture key exposed by https://www.infomaniak.com/drive/latest
 kdrive_architecture: "linux-amd64"
 
-kdrive_auto_update_repo: "https://github.com/oRiamn/kdrive-auto-update"
 # renovate: datasource=git-refs depName=https://github.com/oRiamn/kdrive-auto-update currentValue=master
 kdrive_auto_update_ref: "7be4cd28a418f75a0a4d6f29e35d1e94ada0b8b5"
 

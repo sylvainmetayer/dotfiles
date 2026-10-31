@@ -8,10 +8,7 @@ collections:
     version: 13.5.0
   - name: community.sops
     version: 2.5.0
-  - name: donhector.workstation
-    version: 1.1.0
 roles:
-  # TODO See https://github.com/PeterMosmans/ansible-role-customize-gnome as this one is archived ?
   # Dépôt archivé depuis 2021, et sa page Galaxy n'a aucune version : installé depuis git, épinglé sur le dernier
   # commit de master, celui que les postes ont déjà. Le tag v0.1.2 a un commit de retard (« check for supported
   # extensions » : une extension non publiée pour la version de GNOME est sautée au lieu de faire échouer le run).
@@ -21,5 +18,3 @@ roles:
     scm: git
     # renovate: datasource=git-refs depName=https://github.com/jaredhocutt/ansible-gnome-extensions currentValue=master
     version: 0b8a556f3c655b6815f77f352532e7c9a5ddfec1
-  - src: petermosmans.customize-gnome
-    version: 0.2.12
