@@ -8,7 +8,8 @@
     group: "{{ ansible_facts['user_gid'] }}"
     mode: "0755" # NOSONAR (dossier de binaires, sans secret)
 
-- name: "Download Jetbrains toolbox"
+# Toolbox updates itself once installed: the archive is only fetched when the URL's version changes
+- name: Download Jetbrains toolbox {{ jetbrains_toolbox_version }}
   ansible.builtin.unarchive:
     mode: "0700"
     src: "{{ jetbrains_toolbox_url }}"
@@ -16,6 +17,13 @@
     remote_src: true
     extra_opts:
       - "--strip-components=1"
+    creates: "{{ jetbrains_toolbox_folder }}/.ansible-installed-{{ jetbrains_toolbox_version }}"
+
+- name: Mark the installed Jetbrains toolbox version {{ jetbrains_toolbox_version }}
+  ansible.builtin.copy:
+    content: ""
+    dest: "{{ jetbrains_toolbox_folder }}/.ansible-installed-{{ jetbrains_toolbox_version }}"
+    mode: "0644" # NOSONAR (marqueur vide, sans secret)
 
 - name: Create desktop icon
   ansible.builtin.template:
