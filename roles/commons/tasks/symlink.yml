@@ -12,16 +12,21 @@
 
 # A regular file (local edit, or shipped by the distribution on a fresh
 # workstation) is moved aside, never deleted: once replaced by the link, the next
-# run sees a link and leaves it alone.
+# run sees a link and leaves it alone. The backup is hidden (.<name>.bak-<time>):
+# Fedora's ~/.bashrc sources every ~/.bashrc.d/* file, a visible backup there
+# would be sourced after the linked script and override it. The timestamp comes
+# from now(), not ansible_facts['date_time'], which the fact cache keeps 30 min.
 - name: "Back up the regular file before linking {{ item }}"
+  vars:
+    commons_dotfile_backup: ".{{ item | basename | regex_replace('^[.]', '') }}.bak-{{ now(fmt='%Y%m%dT%H%M%S') }}"
   ansible.builtin.command:
     argv:
       - mv
       - --no-clobber
       - --
       - "{{ commons_dotfile.stat.path }}"
-      - "{{ commons_dotfile.stat.path }}.bak-{{ ansible_facts['date_time']['iso8601_basic_short'] }}"
-    creates: "{{ commons_dotfile.stat.path }}.bak-{{ ansible_facts['date_time']['iso8601_basic_short'] }}"
+      - "{{ commons_dotfile.stat.path | dirname }}/{{ commons_dotfile_backup }}"
+  changed_when: true
   when: commons_dotfile.stat.exists and commons_dotfile.stat.isreg
 
 - name: "Update commons_dotfile symlink {{ item }}"
