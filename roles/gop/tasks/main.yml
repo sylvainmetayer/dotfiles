@@ -38,6 +38,7 @@
   ansible.builtin.set_fact:
     gop_ssh_work_config: "{{ lookup('template', 'ssh_hosts.j2') }}"
     gop_aws_work_config: "{{ lookup('template', 'aws_config.j2') }}"
+  no_log: true
 
 - name: Template SSH Config with work hosts
   ansible.builtin.blockinfile:
