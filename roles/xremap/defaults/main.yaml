@@ -15,7 +15,10 @@ xremap_packages:
 
 # Lets xremap open /dev/uinput without running as root
 xremap_udev_rule: 'KERNEL=="uinput", GROUP="input", TAG+="uaccess"'
-xremap_udev_rule_file: "/etc/udev/rules.d/input.rules"
+# Numbered below 73-seat-late.rules, which turns the uaccess tag into an ACL: a later file's TAG+="uaccess" has no effect
+xremap_udev_rule_file: "/etc/udev/rules.d/70-xremap-uinput.rules"
+# Former name of the rule, removed
+xremap_udev_legacy_rule_file: "/etc/udev/rules.d/input.rules"
 # Needed to read /dev/input/event*, takes effect at the next login
 xremap_add_user_to_input_group: true
 

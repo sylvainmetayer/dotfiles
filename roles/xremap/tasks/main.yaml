@@ -15,6 +15,13 @@
     mode: "0644" # NOSONAR (règle udev système standard, sans secret)
   notify: Reload udev rules
 
+- name: Remove the rule under its former name
+  become: true
+  ansible.builtin.file:
+    path: "{{ xremap_udev_legacy_rule_file }}"
+    state: absent
+  notify: Reload udev rules
+
 - name: Add the user to the input group
   become: true
   ansible.builtin.user:
