@@ -57,4 +57,4 @@ Two mechanisms coexist.
 - Task/defaults files use both `.yml` and `.yaml` inconsistently — match whatever the role you are editing already uses.
 - Prefer `ansible_facts['env']['HOME']` over `~` in new tasks (newer roles do this; older ones use `~`).
 - yamllint config allows 140-char lines and forbids octal values — quote file modes (`"0755"`).
-- Each role carries a `meta/main.yml` and a `README.md`; a new role gets them by copying an existing role's, and its README documents what is specific to it.
+- Each role carries a `meta/main.yml` and a `README.md`; a new role gets them by copying an existing role's (then setting `galaxy_info.role_name` to the new role), and its README documents what is specific to it.
