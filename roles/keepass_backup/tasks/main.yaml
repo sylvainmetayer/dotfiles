@@ -3,6 +3,7 @@
   community.sops.load_vars:
     file: "{{ keepass_backup_sops_file }}"
     age_keyfile: "{{ keepass_backup_age_keyfile }}"
+    sops_binary: "{{ keepass_backup_sops_bin }}"
     name: keepass_backup_sops
   when: keepass_backup_sops_file is file
   no_log: true

@@ -26,3 +26,9 @@
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/mise/config.toml"
     mode: "0644" # NOSONAR (liste d'outils et versions, sans secret)
   register: mise_config
+
+# Installs the tools now, not at the end of the play: later roles need them on a fresh workstation
+# (sops for community.sops.load_vars in keepass_backup and obsidian_config, cargo for git_credential_keepassxc).
+# They reach them through the mise shims, as the running play's PATH predates the install.
+- name: Run mise install before the next roles
+  ansible.builtin.meta: flush_handlers

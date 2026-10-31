@@ -38,7 +38,7 @@ Renovate automerges an **allowlist** only (`packageRules` of `renovate.json`, ea
 
 **`roles/commons` owns the shell environment.** It symlinks (or copies, per `commons_symlink_as_link`) everything in `commons_symlinks` from `roles/commons/files/` into `$HOME`, injects `~/.bashrc.d` sourcing and a rendered `commons_custom_scripts` block into `~/.bashrc` via `blockinfile` markers, and manages PATH additions. Shell helpers live in `roles/commons/files/.bashrc.d/*.sh`. `commons_custom_scripts` entries are `{command, script}` pairs; the script is only emitted when `command` exists on the machine.
 
-**`roles/mise` bootstraps mise from COPR** and templates `~/.config/mise/config.toml` from `mise_global_plugins` (defaults in the role, overridden in `host_vars`), with a handler running `mise install`.
+**`roles/mise` bootstraps mise from COPR** and templates `~/.config/mise/config.toml` from `mise_global_plugins` (defaults in the role, overridden in `host_vars`), with a handler running `mise install`, flushed at the end of the role so the next roles find the tools on a fresh workstation. Roles calling a mise tool use its shim path (`~/.local/share/mise/shims/<tool>`), never the PATH of the running play.
 
 Vendored Galaxy content (`galaxy_roles/`, `collections/`) is gitignored and installed from `requirements.yml`; `ansible.cfg` sets `roles_path`/`collections_path` to those directories. Facts are cached in `./facts` (gitignored), and every run appends to `./run.log` (gitignored, ~1.4 MB — do not read it wholesale).
 
