@@ -24,8 +24,9 @@ keepass_backup_keepassxc_config: >-
 keepass_backup_keepassxc_manage: true
 
 # Layer 2: restic repository on S3-compatible object storage (OVH, bucket created by OpenTofu in the homelab repo).
-# restic comes from mise (mise_global_plugins: restic), hence the shim path.
+# restic and sops come from mise (mise_global_plugins), hence the shim paths.
 keepass_backup_restic_bin: "{{ ansible_facts['env']['HOME'] }}/.local/share/mise/shims/restic"
+keepass_backup_sops_bin: "{{ ansible_facts['env']['HOME'] }}/.local/share/mise/shims/sops"
 keepass_backup_sops_file: "{{ inventory_dir }}/host_vars/{{ inventory_hostname }}.sops.yaml"
 keepass_backup_age_keyfile: "{{ ansible_facts['env']['HOME'] }}/.config/sops/age/keys.txt"
 # Overridden by keepass_backup_restic in the sops file (repository, password, access_key_id, secret_access_key).

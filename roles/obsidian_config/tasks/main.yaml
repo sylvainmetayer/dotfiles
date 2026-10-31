@@ -24,6 +24,7 @@
   community.sops.load_vars:
     file: "{{ obsidian_config_sops_file }}"
     age_keyfile: "{{ obsidian_config_age_keyfile }}"
+    sops_binary: "{{ obsidian_config_sops_bin }}"
     name: obsidian_config_sops
   when: obsidian_config_sops_file is file
 

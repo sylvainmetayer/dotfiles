@@ -4,6 +4,7 @@
   community.general.cargo:
     name: git-credential-keepassxc
     version: "{{ git_credential_keepassxc_version }}"
+    executable: "{{ git_credential_keepassxc_cargo_bin }}"
 
 - name: Configuration instructions
   ansible.builtin.debug:

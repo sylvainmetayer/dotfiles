@@ -1,4 +1,6 @@
 ---
+# rust comes from mise (mise_global_plugins: rust), hence the shim path.
+git_credential_keepassxc_cargo_bin: "{{ ansible_facts['env']['HOME'] }}/.local/share/mise/shims/cargo"
 # >= 0.14.1 required: 0.14.0 no longer builds with recent Rust toolchains (time crate)
 # renovate: datasource=crate depName=git-credential-keepassxc
 git_credential_keepassxc_version: "0.14.4"

@@ -11,6 +11,8 @@ obsidian_config_files:
 # remotely-save (community plugin) settings, seeded once as well. The WebDAV password is never managed here:
 # it stays empty in the seed and is typed in Obsidian (Settings → Remotely Save). The plugin re-saves the file
 # obfuscated after the first run. Connection details live in a sops-encrypted vars file (see obsidian_config_sops_file).
+# sops comes from mise (mise_global_plugins: sops), hence the shim path.
+obsidian_config_sops_bin: "{{ ansible_facts['env']['HOME'] }}/.local/share/mise/shims/sops"
 obsidian_config_sops_file: "{{ inventory_dir }}/host_vars/{{ inventory_hostname }}.sops.yaml"
 obsidian_config_age_keyfile: "{{ ansible_facts['env']['HOME'] }}/.config/sops/age/keys.txt"
 obsidian_config_remotely_save_defaults:
