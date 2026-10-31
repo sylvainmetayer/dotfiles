@@ -22,8 +22,10 @@ export ANSIBLE_NOCOWS
 EDITOR=$(which vim)
 export EDITOR=$EDITOR
 
-SOPS_AGE_KEY_FILE=~/.age.key
-export SOPS_AGE_KEY_FILE=$SOPS_AGE_KEY_FILE
+# Same path as sops' default and the <role>_age_keyfile of the roles, set explicitly
+# so a stale value inherited from elsewhere cannot point sops at another file.
+SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
+export SOPS_AGE_KEY_FILE
 
 # Keep tool caches on disk, not in /tmp (tmpfs, ends up in zram)
 TRIVY_CACHE_DIR=~/.cache/trivy
