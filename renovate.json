@@ -43,6 +43,15 @@
     },
     {
       "managerFilePatterns": [
+        "requirements.yml"
+      ],
+      "customType": "regex",
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+) currentValue=(?<currentValue>\\S+)\\n\\s*version: (?<currentDigest>[a-f0-9]{40})"
+      ]
+    },
+    {
+      "managerFilePatterns": [
         "roles/jetbrains_toolbox/defaults/main.yaml"
       ],
       "customType": "regex",
@@ -189,13 +198,14 @@
       "matchDepNames": [
         "ledger-live",
         "https://github.com/oRiamn/kdrive-auto-update",
+        "https://github.com/jaredhocutt/ansible-gnome-extensions",
         "git-credential-keepassxc",
         "ludeeus/action-shellcheck"
       ],
       "automerge": false
     },
     {
-      "description": "Garde-fous (suite) : dépendances Galaxy (requirements.yml)",
+      "description": "Garde-fous (suite) : dépendances Galaxy (requirements.yml). Le rôle jaredhocutt.gnome_extensions, épinglé par commit, est suivi par le gestionnaire regex (git-refs) et gardé dans la liste ci-dessus",
       "matchManagers": [
         "ansible-galaxy"
       ],
