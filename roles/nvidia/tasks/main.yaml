@@ -1,6 +1,6 @@
 ---
 # Trust the nonfree key (distinct from the free one) only after checking its pinned
-# fingerprint, so the release package below is installed with its signature verified.
+# fingerprint; dnf then checks the release package below against the rpm keyring.
 - name: Import the RPM Fusion nonfree signing key
   ansible.builtin.rpm_key:
     key: "{{ nvidia_rpmfusion_nonfree_key }}"
