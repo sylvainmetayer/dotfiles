@@ -28,7 +28,7 @@ There is no test suite. CI (`.github/workflows/`) runs `--syntax-check` on every
 
 ## Architecture
 
-**Playbooks are flat and per-host.** `playbook/setup-<host>.yaml` maps 1:1 to a host in `inventory.yml`. Each playbook is a plain list of roles, every one carrying a `tags: [<role>]` entry so individual pieces can be re-run. Non-secret per-host config lives in `host_vars/<host>.yaml`; shared config in `group_vars/all.yaml`. GOP is the only host needing secrets, so it uses a `host_vars/gop/` directory instead of a single file: `host_vars/gop/vars.yaml` (plain) plus `host_vars/gop/vault.yml` (Ansible Vault encrypted), both auto-loaded by Ansible for the `gop` host — no `pre_tasks`/`include_vars` needed. The legacy `playbooks/` (plural) directory has been dropped.
+**Playbooks are flat and per-host.** `playbook/setup-<host>.yaml` maps 1:1 to a host in `inventory.yml`. Each playbook is a plain list of roles, every one carrying a `tags: [<role>]` entry so individual pieces can be re-run. Non-secret per-host config lives in `host_vars/<host>.yaml`; shared config in `group_vars/all.yaml`. GOP keeps its Ansible Vault secrets in a `host_vars/gop/` directory instead of a single file: `host_vars/gop/vars.yaml` (plain) plus `host_vars/gop/vault.yml` (Ansible Vault encrypted), both auto-loaded by Ansible for the `gop` host — no `pre_tasks`/`include_vars` needed. `home` has a SOPS file instead (see Secrets). The legacy `playbooks/` (plural) directory has been dropped.
 
 **`roles/generic_app` is the pattern for third-party apps.** Rather than one role per application, playbooks include `generic_app` repeatedly with `generic_app_name/_url/_folder/_icon/_exec/_autostart/_categories` vars — it downloads a binary/AppImage and renders a `.desktop` entry. To add an app, add another `generic_app` block to the host playbook, not a new role — unless the app ships its own updater, as kDrive does through `roles/kdrive`.
 
@@ -44,7 +44,11 @@ Vendored Galaxy content (`galaxy_roles/`, `collections/`) is gitignored and inst
 
 ## Secrets
 
-Three files are Ansible Vault encrypted: `host_vars/gop/vault.yml`, `roles/gop/templates/ssh_hosts.j2`, `roles/gop/templates/aws_config.j2`. The password is extracted from a KeePassXC database by `./scripts/extract-secrets.sh <db.kdbx>` into `~/.ansible_vault.txt`; vault commands and the GOP playbook expect `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt`. Never commit a decrypted version of these files.
+Two mechanisms coexist.
+
+**SOPS/age** (`home`): `host_vars/home.sops.yaml` holds the `keepass_backup_restic` (restic repository, password, S3 keys of the homelab bucket `tofu/keepass_backup`) and `obsidian_config_remotely_save` values (WebDAV address and user, never the password). The values did not rotate when the recipients went post-quantum: the old X25519 version in the public history still opens them, until the rotation noted in `.sops.yaml` is done. Its `.sops.yaml` creation rule lists post-quantum age recipients only (`age1pq1…`: perso, pro, offline secours). Ansible never auto-loads it (the `.sops.yaml` suffix is not a host_vars file name): `keepass_backup` and `obsidian_config` read it themselves with `community.sops.load_vars` (`<role>_sops_file`, `<role>_age_keyfile` = `~/.config/sops/age/keys.txt`, sops' default path) and skip it when the file is absent. Edit it with `sops host_vars/home.sops.yaml`.
+
+**Ansible Vault** (`gop`): three files are Ansible Vault encrypted: `host_vars/gop/vault.yml`, `roles/gop/templates/ssh_hosts.j2`, `roles/gop/templates/aws_config.j2`. The password is extracted from a KeePassXC database by `./scripts/extract-secrets.sh <db.kdbx>` into `~/.ansible_vault.txt`; vault commands and the GOP playbook expect `ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault.txt`. Never commit a decrypted version of these files.
 
 ## Conventions
 
