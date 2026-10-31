@@ -75,6 +75,8 @@
       register: gop_ssm_plugin_tmp
       # Download and check also run under --check (temporary folder only), so a
       # dry run reports a bad signature; dnf below honours check mode.
+      # Scratch files only: the install below alone reports a change.
+      changed_when: false
       check_mode: false
 
     - name: Download the Session Manager plugin and its signature
@@ -85,6 +87,7 @@
       loop:
         - { url: "{{ gop_ssm_plugin_url }}", dest: session-manager-plugin.rpm }
         - { url: "{{ gop_ssm_plugin_signature_url }}", dest: session-manager-plugin.rpm.sig }
+      changed_when: false
       check_mode: false
 
     - name: Copy the AWS Session Manager signing key
@@ -92,6 +95,7 @@
         src: "{{ gop_ssm_plugin_key }}"
         dest: "{{ gop_ssm_plugin_tmp.path }}/key.asc"
         mode: "0600"
+      changed_when: false
       check_mode: false
 
     # gpgv only reads a binary keyring; its status output names the primary key
@@ -108,7 +112,10 @@
 
     - name: Check the signing key fingerprint
       ansible.builtin.assert:
-        that: gop_ssm_plugin_gpgv.stdout is regex('^\[GNUPG:\] VALIDSIG \S+ .* ' ~ gop_ssm_plugin_key_fingerprint ~ '$', multiline=True)
+        # Same fingerprint format as rpm_key accepts elsewhere (spaces, any case).
+        that: >-
+          gop_ssm_plugin_gpgv.stdout is regex('^\[GNUPG:\] VALIDSIG \S+ .* '
+          ~ (gop_ssm_plugin_key_fingerprint | replace(' ', '') | upper) ~ '$', multiline=True)
         fail_msg: "session-manager-plugin.rpm is not signed by {{ gop_ssm_plugin_key_fingerprint }}"
         quiet: true
 
@@ -126,6 +133,7 @@
         path: "{{ gop_ssm_plugin_tmp.path }}"
         state: absent
       when: gop_ssm_plugin_tmp.path is defined
+      changed_when: false
       check_mode: false
 
 - name: Copy onepoint-keepassxc.pub to .ssh folder
