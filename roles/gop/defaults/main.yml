@@ -1,0 +1,8 @@
+---
+# The plugin RPM carries no embedded signature: AWS signs it with a detached .sig,
+# checked with gpgv against its key before install.
+# Key and fingerprint: https://docs.aws.amazon.com/systems-manager/latest/userguide/install-plugin-linux-verify-signature.html
+gop_ssm_plugin_url: "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm"
+gop_ssm_plugin_signature_url: "{{ gop_ssm_plugin_url }}.sig"
+gop_ssm_plugin_key: "{{ role_path }}/files/session-manager-plugin.asc"
+gop_ssm_plugin_key_fingerprint: "7959637124CE093AD501D47A2C4D4AFF6F6757EE"
