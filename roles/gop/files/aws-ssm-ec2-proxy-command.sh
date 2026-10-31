@@ -41,8 +41,8 @@ ssh_public_key="$(cat "${ssh_public_key_path}")"
 
 if echo "${ec2_instance_id}" | grep -qe "${REGION_SEPARATOR}"
 then
-  export AWS_DEFAULT_REGION="${ec2_instance_id##*${REGION_SEPARATOR}}"
-  ec2_instance_id="${ec2_instance_id%%${REGION_SEPARATOR}*}"
+  export AWS_DEFAULT_REGION="${ec2_instance_id##*"${REGION_SEPARATOR}"}"
+  ec2_instance_id="${ec2_instance_id%%"${REGION_SEPARATOR}"*}"
 fi
 
 >/dev/stderr echo "Add public key ${ssh_public_key_path} to instance ${ec2_instance_id} for 60 seconds"

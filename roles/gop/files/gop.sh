@@ -16,12 +16,12 @@ set_aws_creds_tf () {
     unset AWS_SECRET_ACCESS_KEY
     unset AWS_SESSION_TOKEN
 
-    ROLE="$( aws configure get role_arn --profile $AWS_PROFILE )"
-    MFA_ARN="$( aws configure get mfa_serial --profile $AWS_PROFILE )"
-    SOURCE_PROFILE="$( aws configure get source_profile --profile $AWS_PROFILE )"
+    ROLE="$( aws configure get role_arn --profile "$AWS_PROFILE" )"
+    MFA_ARN="$( aws configure get mfa_serial --profile "$AWS_PROFILE" )"
+    SOURCE_PROFILE="$( aws configure get source_profile --profile "$AWS_PROFILE" )"
     echo "Enter OTP to allow define credentials for Terraform on account $AWS_PROFILE"
     read -r OTP
-    read AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN <<< $(aws --profile "$SOURCE_PROFILE" sts assume-role --role-arn "$ROLE" --role-session-name set-aws-creds-session-tf --output text --serial-number "$MFA_ARN" --token-code "$OTP" | awk '/^CREDENTIALS/ {print $2, $4, $5 }')
+    read -r AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN <<< "$(aws --profile "$SOURCE_PROFILE" sts assume-role --role-arn "$ROLE" --role-session-name set-aws-creds-session-tf --output text --serial-number "$MFA_ARN" --token-code "$OTP" | awk '/^CREDENTIALS/ {print $2, $4, $5 }')"
     export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN

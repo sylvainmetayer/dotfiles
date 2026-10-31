@@ -14,10 +14,8 @@ jobs:
         with:
           persist-credentials: false
       # Tout le dépôt : les .sh, .bash_aliases, et les exécutables sans extension
-      # à shebang shell (keepass-backup, switch-gpu). Les scripts de gop restent
-      # exclus tant que leurs avertissements (citations) ne sont pas corrigés.
+      # à shebang shell (keepass-backup, switch-gpu).
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
         with:
           scandir: "."
-          ignore_paths: "roles/gop/files"
