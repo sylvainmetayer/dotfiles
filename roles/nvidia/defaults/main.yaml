@@ -2,8 +2,14 @@
 # GTX 1070 (Pascal): 580xx is the last driver series supporting it
 nvidia_driver_series: "580xx"
 
+# RPM Fusion signs every Fedora release since 33 with the same "2020" keys: https://rpmfusion.org/keys
+nvidia_rpmfusion_nonfree_key: "{{ role_path }}/files/RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
+nvidia_rpmfusion_nonfree_key_fingerprint: "79BD B88F 9BBF 7391 0FD4  095B 6A2A F961 9484 3C65"
+
+# Master host rather than the mirrors.rpmfusion.org redirector, as in the rpmfusion role;
+# the GPG signature check makes the download source irrelevant security-wise.
 nvidia_rpmfusion_release_url: >-
-  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm
+  https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm
 
 # Repositories shipped (disabled) by fedora-workstation-repositories
 nvidia_repositories:

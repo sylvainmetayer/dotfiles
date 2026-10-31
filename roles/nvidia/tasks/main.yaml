@@ -1,11 +1,16 @@
 ---
-# The release RPM is signed with the RPM Fusion key, which is not imported yet
-# on a fresh install: this is the bootstrap step of https://rpmfusion.org/Configuration
+# Trust the nonfree key (distinct from the free one) only after checking its pinned
+# fingerprint, so the release package below is installed with its signature verified.
+- name: Import the RPM Fusion nonfree signing key
+  ansible.builtin.rpm_key:
+    key: "{{ nvidia_rpmfusion_nonfree_key }}"
+    fingerprint: "{{ nvidia_rpmfusion_nonfree_key_fingerprint }}"
+    state: present
+
 - name: Install the RPM Fusion nonfree release package
   ansible.builtin.dnf:
     name: "{{ nvidia_rpmfusion_release_url }}"
     state: present
-    disable_gpg_check: true
 
 # The tainted release package has no stable URL, it is published in the nonfree
 # repository installed by the previous task.

@@ -67,11 +67,66 @@
   no_log: true
 
 - name: Install AWS Session Manager plugin
-  become: true
-  ansible.builtin.dnf:
-    disable_gpg_check: true
-    name: https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm
-    state: present
+  block:
+    - name: Create a download folder for the Session Manager plugin
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: ssm-plugin
+      register: gop_ssm_plugin_tmp
+      # Download and check also run under --check (temporary folder only), so a
+      # dry run reports a bad signature; dnf below honours check mode.
+      check_mode: false
+
+    - name: Download the Session Manager plugin and its signature
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ gop_ssm_plugin_tmp.path }}/{{ item.dest }}"
+        mode: "0600"
+      loop:
+        - { url: "{{ gop_ssm_plugin_url }}", dest: session-manager-plugin.rpm }
+        - { url: "{{ gop_ssm_plugin_signature_url }}", dest: session-manager-plugin.rpm.sig }
+      check_mode: false
+
+    - name: Copy the AWS Session Manager signing key
+      ansible.builtin.copy:
+        src: "{{ gop_ssm_plugin_key }}"
+        dest: "{{ gop_ssm_plugin_tmp.path }}/key.asc"
+        mode: "0600"
+      check_mode: false
+
+    # gpgv only reads a binary keyring; its status output names the primary key
+    # that made a good signature, checked against the pinned fingerprint below.
+    - name: Verify the Session Manager plugin signature
+      ansible.builtin.shell:
+        cmd: >-
+          gpg --dearmor < key.asc > key.gpg &&
+          gpgv --status-fd 1 --keyring ./key.gpg session-manager-plugin.rpm.sig session-manager-plugin.rpm
+        chdir: "{{ gop_ssm_plugin_tmp.path }}"
+      register: gop_ssm_plugin_gpgv
+      changed_when: false
+      check_mode: false
+
+    - name: Check the signing key fingerprint
+      ansible.builtin.assert:
+        that: gop_ssm_plugin_gpgv.stdout is regex('^\[GNUPG:\] VALIDSIG \S+ .* ' ~ gop_ssm_plugin_key_fingerprint ~ '$', multiline=True)
+        fail_msg: "session-manager-plugin.rpm is not signed by {{ gop_ssm_plugin_key_fingerprint }}"
+        quiet: true
+
+    # The RPM has no embedded signature for dnf to check: its detached signature
+    # was verified above, so dnf's own check is turned off for this file only.
+    - name: Install the verified Session Manager plugin
+      become: true
+      ansible.builtin.dnf:
+        disable_gpg_check: true
+        name: "{{ gop_ssm_plugin_tmp.path }}/session-manager-plugin.rpm"
+        state: present
+  always:
+    - name: Remove the Session Manager plugin download folder
+      ansible.builtin.file:
+        path: "{{ gop_ssm_plugin_tmp.path }}"
+        state: absent
+      when: gop_ssm_plugin_tmp.path is defined
+      check_mode: false
 
 - name: Copy onepoint-keepassxc.pub to .ssh folder
   ansible.builtin.copy:
