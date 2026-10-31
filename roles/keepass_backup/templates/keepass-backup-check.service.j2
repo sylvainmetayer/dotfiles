@@ -3,8 +3,9 @@ Description=KeePass backup restore test (restic check + restore + compare)
 # Managed by Ansible (roles/keepass_backup)
 # Three attempts an hour apart, then one notification. With RestartMode=direct, an automatic restart skips the
 # failed state, so OnFailure fires only once the start limit refuses the 4th start (about 3 h after the first failure).
-# The 6 h window holds the three runs whatever they last; a manual start inside it is refused too:
-# `systemctl --user reset-failed keepass-backup-check.service` first.
+# TimeoutStartSec bounds a failing run so that the 4th start falls inside the 6 h window (3 x (45 + 60) min < 6 h):
+# a slower or hung run would push it past the window, and the retries would go on forever without a notification.
+# A manual start inside the window is refused too: `systemctl --user reset-failed keepass-backup-check.service` first.
 OnFailure=keepass-backup-notify@%n.service
 StartLimitIntervalSec=6h
 StartLimitBurst=3
@@ -20,3 +21,4 @@ IOSchedulingClass=idle
 Restart=on-failure
 RestartMode=direct
 RestartSec=1h
+TimeoutStartSec=45min
