@@ -43,7 +43,12 @@
         generic_app_url: "https://github.com/fosrl/cli/releases/download/0.19.1/pangolin-cli_linux_amd64"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         # CLI, pas d'autostart : lancée sans sous-commande, elle affiche son aide et
-        # s'arrête. Connexion permanente : sudo pangolin service install (systemd).
+        # s'arrête. Connexion permanente (client machine, systemd) : sudo pangolin
+        # service install client --id … --secret … --endpoint …, depuis une copie
+        # du binaire hors du home (/usr/local/bin) : sudo ne cherche pas dans
+        # ~/.local/bin, et un service root ne doit pas exécuter un fichier
+        # modifiable par l'utilisateur (ni un pangolin-<version> que la montée
+        # suivante supprime).
         generic_app_autostart: "false"
         generic_app_categories: "Network;"
       tags: [pangolin]
