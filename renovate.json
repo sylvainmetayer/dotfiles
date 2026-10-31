@@ -116,10 +116,7 @@
       "groupName": "uv"
     },
     {
-      "description": "Python de mise.toml jamais suivi : Renovate remplace le gabarit get_env(PYTHON_VERSION, default='3.14') par une version figée (PR #185, 3.15.2), alors qu'ansible-core 2.20 ne supporte pas 3.15 côté contrôleur et qu'uv.lock n'a aucune roue cp315. La montée de Python se fait à la main, avec le défaut du gabarit",
-      "matchManagers": [
-        "mise"
-      ],
+      "description": "Python jamais suivi, quel que soit le manager : dans mise.toml, Renovate remplace le gabarit get_env(PYTHON_VERSION, default='3.14') par une version figée (PR #185, 3.15.2) ; dans les workflows, il propose le python-version de setup-python (check-urls.yml, PR #212 fermée). Or ansible-core 2.20 ne supporte pas 3.15 côté contrôleur et uv.lock n'a aucune roue cp315. La montée de Python se fait à la main, partout à la fois",
       "matchDepNames": [
         "python"
       ],
