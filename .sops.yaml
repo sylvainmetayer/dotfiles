@@ -7,9 +7,13 @@
 # clé de secours hors ligne. Un seul destinataire X25519 suffirait à exposer la
 # clé de données. Après un changement ici : sops updatekeys <fichier>, puis
 # sops rotate -i <fichier>.
-# Valeurs non changées lors du passage en post-quantique (choix du 30/10/2026) :
-# l'ancienne version X25519 du fichier, dans l'historique public, donne encore
-# les valeurs actuelles. Les faire tourner pour qu'elles soient protégées.
+# Rotation en attente : les valeurs n'ont pas changé lors du passage en
+# post-quantique (choix du 30/10/2026), et l'ancienne version X25519 de
+# host_vars/home.sops.yaml, dans l'historique public, les donne encore. À faire
+# tourner : clés S3 (homelab tofu/keepass_backup) et mot de passe du dépôt restic
+# (restic key passwd), puis sops host_vars/home.sops.yaml (remotely-save n'y a
+# qu'adresse et identifiant WebDAV, pas de mot de passe). Retirer ce paragraphe
+# une fois fait.
 creation_rules:
   - path_regex: host_vars/.*\.sops\.ya?ml$
     key_groups:
