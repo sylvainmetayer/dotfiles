@@ -24,7 +24,7 @@ ansible-playbook playbook/setup-home.yaml -K --tags gnome  # run one role (every
 yamllint .
 ```
 
-There is no test suite. CI (`.github/workflows/`) runs `--syntax-check` on every `playbook/setup-*.yaml`, `ansible-lint`, `yamllint .`, shellcheck over every shell script of the repo (`.sh` files and extensionless executables with a shell shebang, `roles/gop/files` excluded until its warnings are fixed), and on PRs `check-urls`: `.github/scripts/check_download_urls.py` renders every http(s) URL of the YAML (role defaults, `group_vars/all`, each host's `host_vars`) and runs `curl -fsIL --retry 3` on those the PR adds or changes (`--all` checks them all, locally). URLs built from `ansible_facts` cannot be rendered off a host and are skipped with a notice. Every workflow runs with `permissions: contents: read` and `persist-credentials: false`.
+There is no test suite. CI (`.github/workflows/`) runs `--syntax-check` on every `playbook/setup-*.yaml`, `ansible-lint`, `yamllint .`, shellcheck over the repo's shell scripts (`.sh` files, `.bash_aliases`, and executables with a shell shebang; `roles/gop/files` excluded until its warnings are fixed; Jinja templates such as `roles/kdrive/templates/kdrive-launch.j2` are not scanned), and on PRs `check-urls`: `.github/scripts/check_download_urls.py` renders every http(s) URL of the YAML (role defaults, `group_vars/all`, each host's `host_vars`) and runs `curl -fsIL --retry 3` on those the PR adds or changes (`--all` checks them all, locally). URLs built from `ansible_facts` cannot be rendered off a host and are skipped with a notice. Every workflow runs with `permissions: contents: read` and `persist-credentials: false`.
 
 ## Architecture
 

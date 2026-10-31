@@ -11,7 +11,9 @@
 # post-quantique (choix du 30/10/2026), et l'ancienne version X25519 de
 # host_vars/home.sops.yaml, dans l'historique public, les donne encore. À faire
 # tourner : clés S3 (homelab tofu/keepass_backup) et mot de passe du dépôt restic
-# (restic key passwd), puis sops host_vars/home.sops.yaml (remotely-save n'y a
+# (restic key passwd : la clé maître du dépôt ne change pas, une copie de keys/
+# faite avec les anciennes valeurs l'ouvre encore ; seul un nouveau dépôt, restic
+# init puis restic copy, la change), puis sops host_vars/home.sops.yaml (remotely-save n'y a
 # qu'adresse et identifiant WebDAV, pas de mot de passe). Retirer ce paragraphe
 # une fois fait.
 creation_rules:
