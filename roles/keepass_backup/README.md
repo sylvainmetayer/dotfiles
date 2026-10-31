@@ -9,8 +9,20 @@ outside that folder and never overwritten. Born from a sync failure that nearly 
 | 1 | timestamped copy of every database whose content changed (KDBX signature checked), on each change (path unit) and hourly (timer) | deletion or overwrite propagated by the sync | `~/.local/share/keepass-backup/history/<db>/` |
 | 2 | hourly restic snapshot on S3 object storage, writer key without delete rights, Object Lock bucket | lost machine, ransomware, mass deletion | OVH bucket, see `homelab/tofu/keepass_backup` |
 
-A monthly timer runs `restic check`, restores the latest snapshot and compares it with the source. Any failure raises a
-desktop notification (`keepass-backup-notify@.service`); the remote and check services retry on failure.
+A monthly timer runs `restic check`, restores the latest snapshot and compares it with the source. A failure raises a
+desktop notification (`keepass-backup-notify@.service`, through `OnFailure=`), once per incident: the remote and check
+services retry on failure with `RestartMode=direct` (an automatic restart skips the failed state, so `OnFailure=` does
+not fire on it) and notify only when their start limit refuses the next attempt.
+
+| Service | Retries | Notification |
+|---|---|---|
+| `keepass-backup-check` | 3 runs, 1 h apart (`StartLimitBurst=3` per 6 h) | ~3 h after the first failure |
+| `keepass-backup-remote` | every 10 min, 3 to 6 runs (`StartLimitBurst=6` per 3 h, the hourly successes count too) | 30 to 60 min after the first failure, then about every 3 h while it keeps failing |
+| `keepass-backup-local` | none (the path unit re-triggers on the next change) | on each failure |
+
+Inside the window, a further start (the next hourly timer run, or a manual `systemctl --user start`) is refused
+silently: `systemctl --user reset-failed <unit>` before starting it by hand. To see the alert path without breaking
+anything, see « Testing the failure path » below.
 
 Units: `keepass-backup.path` → `keepass-backup-local.service`; `keepass-backup-remote.timer` (hourly) →
 `keepass-backup-remote.service` (local + restic); `keepass-backup-check.timer` (monthly) → `keepass-backup-check.service`.
@@ -48,6 +60,17 @@ admin key from KeePassXC (procedure in `homelab/tofu/keepass_backup/README.md`):
 
 ```bash
 restic forget --tag keepass --keep-within 1y --keep-monthly 24 --keep-yearly unlimited --prune
+```
+
+## Testing the failure path
+
+A transient copy of the check service whose command always fails, with short delays (nothing of the real units changes; it raises one real desktop notification):
+
+```bash
+systemd-run --user --no-block --unit=kpb-fail-test -p Type=oneshot -p Restart=on-failure -p RestartMode=direct -p RestartSec=5s \
+  -p StartLimitIntervalSec=2min -p StartLimitBurst=3 -p OnFailure=keepass-backup-notify@kpb-fail-test.service false
+journalctl --user -u kpb-fail-test -f   # three runs 5 s apart, then a single notification ~15 s after the first
+systemctl --user reset-failed kpb-fail-test
 ```
 
 ## Requirements
