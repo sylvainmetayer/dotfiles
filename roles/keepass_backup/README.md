@@ -16,12 +16,14 @@ not fire on it) and notify only when their start limit refuses the next attempt.
 
 | Service | Retries | Notification |
 |---|---|---|
-| `keepass-backup-check` | 3 runs, 1 h apart (`StartLimitBurst=3` per 6 h) | ~3 h after the first failure |
-| `keepass-backup-remote` | every 10 min, 3 to 6 runs (`StartLimitBurst=6` per 3 h, the hourly successes count too) | 30 to 60 min after the first failure, then about every 3 h while it keeps failing |
+| `keepass-backup-check` | 3 runs, 1 h apart (`StartLimitBurst=3` per 6 h, a run cut at 45 min) | ~3 h after the first failure |
+| `keepass-backup-remote` | every 10 min, 4 to 7 runs (`StartLimitBurst=6` per 3 h, the hourly successes count too; a run cut at 15 min) | 40 to 70 min after the first failure, then about every 3 h while it keeps failing |
 | `keepass-backup-local` | none (the path unit re-triggers on the next change) | on each failure |
 
 Inside the window, a further start (the next hourly timer run, or a manual `systemctl --user start`) is refused
-silently: `systemctl --user reset-failed <unit>` before starting it by hand. To see the alert path without breaking
+silently: `systemctl --user reset-failed <unit>` before starting it by hand. Windows and retry delays count awake time
+only (monotonic clock): a suspend stretches them. `TimeoutStartSec=` keeps a slow or hung failing run from pushing the
+next start past the window, which would retry forever without a notification. To see the alert path without breaking
 anything, see « Testing the failure path » below.
 
 Units: `keepass-backup.path` → `keepass-backup-local.service`; `keepass-backup-remote.timer` (hourly) →
@@ -69,7 +71,7 @@ A transient copy of the check service whose command always fails, with short del
 ```bash
 systemd-run --user --no-block --unit=kpb-fail-test -p Type=oneshot -p Restart=on-failure -p RestartMode=direct -p RestartSec=5s \
   -p StartLimitIntervalSec=2min -p StartLimitBurst=3 -p OnFailure=keepass-backup-notify@kpb-fail-test.service false
-journalctl --user -u kpb-fail-test -f   # three runs 5 s apart, then a single notification ~15 s after the first
+journalctl --user -u kpb-fail-test -f   # three runs 5 s apart, then a single notification ~15 s after the first; Ctrl-C
 systemctl --user reset-failed kpb-fail-test
 ```
 

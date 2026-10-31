@@ -2,9 +2,12 @@
 Description=KeePass databases backup, restic snapshot
 # Managed by Ansible (roles/keepass_backup)
 # Retries 10 min apart, one notification when the start limit refuses the next start (RestartMode=direct: an automatic
-# restart skips the failed state, so OnFailure does not fire on it). The hourly successes count in the window too,
-# up to 4 of them (timer delay +/-5 min): 3 to 6 attempts, alert 30 to 60 min after the first failure. Starts refused
-# inside the window (the next hourly timer runs) are silent: a persistent failure notifies about every 3 h.
+# restart skips the failed state, so OnFailure does not fire on it). The window is fixed (it opens at its first start)
+# and the hourly successes count in it: a failure on its 1st, 2nd or 3rd hourly run gets 6, 5 or 4 attempts, alert 60,
+# 50 or 40 min later; on a 4th run just before the window closes, the retries open a new one (alert ~70 min). Starts
+# refused inside the window (the next hourly timer runs) are silent: a persistent failure notifies about every 3 h.
+# TimeoutStartSec bounds a failing run, so that the 7th start always falls inside the window (6 x (15 + 10) min < 3 h):
+# a slower or hung run would push the retries past it and they would go on forever without a notification.
 OnFailure=keepass-backup-notify@%n.service
 StartLimitIntervalSec=3h
 StartLimitBurst=6
@@ -22,3 +25,4 @@ IOSchedulingClass=idle
 Restart=on-failure
 RestartMode=direct
 RestartSec=10min
+TimeoutStartSec=15min
