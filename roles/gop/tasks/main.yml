@@ -49,10 +49,18 @@
     marker: "#{mark} ANSIBLE MANAGED BLOCK WORK SSH"
   no_log: true
 
+- name: Ensure the AWS config folder exists
+  ansible.builtin.file:
+    path: ~/.aws
+    state: directory
+    mode: "0700"
+
 - name: Template AWS work config
   ansible.builtin.blockinfile:
     insertbefore: BOF
     dest: "~/.aws/config"
+    create: true
+    mode: "0600"
     block: |
       {{ gop_aws_work_config }}
     marker: "#{mark} ANSIBLE MANAGED BLOCK WORK AWS"
