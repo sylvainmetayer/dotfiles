@@ -27,7 +27,7 @@ jobs:
       # PyYAML et Jinja2 viennent d'ansible, verrouillés par uv.lock, roues uniquement.
       - name: Install dependencies
         run: |
-          pip install --quiet --only-binary :all: uv==0.13.6
+          pip install --quiet --only-binary :all: uv==0.13.7
           uv sync --locked --no-build --python "$(command -v python)"
 
       # URL de téléchargement présentes dans la PR et absentes de la base, rendues
