@@ -40,7 +40,7 @@
       vars:
         generic_app_name: "pangolin"
         # renovate: datasource=github-releases depName=fosrl/cli
-        generic_app_url: "https://github.com/fosrl/cli/releases/download/0.19.1/pangolin-cli_linux_amd64"
+        generic_app_url: "https://github.com/fosrl/cli/releases/download/0.21.0/pangolin-cli_linux_amd64"
         generic_app_folder: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
         # CLI, pas d'autostart : lancée sans sous-commande, elle affiche son aide et
         # s'arrête. Connexion permanente (client machine, systemd) : sudo pangolin
