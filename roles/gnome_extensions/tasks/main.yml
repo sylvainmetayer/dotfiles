@@ -1,0 +1,25 @@
+---
+- name: Parse Gnome Shell version
+  ansible.builtin.command: gnome-shell --version
+  register: gnome_extensions_shell_version_output
+  changed_when: false
+
+- name: Set Gnome Shell version
+  ansible.builtin.set_fact:
+    gnome_extensions_shell_version: "{{ gnome_extensions_shell_version_output.stdout | regex_search('[0-9][0-9.]*') }}"
+
+- name: Get Gnome Shell extension info
+  ansible.builtin.uri:
+    url: https://extensions.gnome.org/extension-info/?pk={{ item }}&shell_version={{ gnome_extensions_shell_version }}
+    return_content: true
+  loop: "{{ gnome_extension_ids }}"
+  register: gnome_extensions_info
+  # An extension not published for this Gnome Shell version is skipped, not fatal
+  ignore_errors: true
+
+- name: Install Gnome Shell extension
+  ansible.builtin.include_tasks: install_extension.yml
+  vars:
+    gnome_extensions_extension: "{{ item.json }}"
+  loop: "{{ gnome_extensions_info.results }}"
+  when: item.status == 200

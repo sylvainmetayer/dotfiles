@@ -26,7 +26,7 @@
       tags: [memory_tuning]
     - role: mise
       tags: [mise]
-    - role: jaredhocutt.gnome_extensions
+    - role: gnome_extensions
       tags: [gnome_extensions]
     - role: ssh_config
       tags: [ssh_config]

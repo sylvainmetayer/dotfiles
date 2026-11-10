@@ -1,0 +1,47 @@
+---
+- name: Check if Gnome Shell extension is already installed - {{ gnome_extensions_extension.name }}
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['user_dir'] }}/.local/share/gnome-shell/extensions/{{ gnome_extensions_extension.uuid }}/metadata.json"
+  register: gnome_extensions_existing
+
+- name: Download, install and enable Gnome Shell extension - {{ gnome_extensions_extension.name }}
+  when: not gnome_extensions_existing.stat.exists
+  block:
+    - name: Create temporary download directory
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: ".gnome_extension_download"
+      register: gnome_extensions_download_dir
+      changed_when: false
+
+    - name: Download Gnome Shell extension - {{ gnome_extensions_extension.name }}
+      ansible.builtin.get_url:
+        url: https://extensions.gnome.org{{ gnome_extensions_extension.download_url }}
+        dest: "{{ gnome_extensions_download_dir.path }}/{{ gnome_extensions_extension.uuid }}.zip"
+        mode: "0644"
+      register: gnome_extensions_download
+
+    - name: Create install directory - {{ gnome_extensions_extension.name }}
+      ansible.builtin.file:
+        path: "{{ ansible_facts['user_dir'] }}/.local/share/gnome-shell/extensions/{{ gnome_extensions_extension.uuid }}"
+        state: directory
+        owner: "{{ ansible_facts['user_uid'] }}"
+        group: "{{ ansible_facts['user_gid'] }}"
+        mode: "0775"
+
+    - name: Install Gnome Shell extension - {{ gnome_extensions_extension.name }}
+      ansible.builtin.unarchive:
+        src: "{{ gnome_extensions_download.dest }}"
+        dest: "{{ ansible_facts['user_dir'] }}/.local/share/gnome-shell/extensions/{{ gnome_extensions_extension.uuid }}"
+        remote_src: true
+
+    - name: Enable Gnome Shell extension - {{ gnome_extensions_extension.name }}
+      ansible.builtin.command: gnome-shell-extension-tool --enable-extension {{ gnome_extensions_extension.uuid }}
+      changed_when: true
+  always:
+    - name: Delete temporary download directory
+      ansible.builtin.file:
+        path: "{{ gnome_extensions_download_dir.path }}"
+        state: absent
+      changed_when: false
+      when: gnome_extensions_download_dir.path is defined

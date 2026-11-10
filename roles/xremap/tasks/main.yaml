@@ -63,9 +63,9 @@
 
 - name: Install the xremap gnome extension
   ansible.builtin.include_role:
-    name: jaredhocutt.gnome_extensions
+    name: gnome_extensions
   vars:
-    gnome_extension_ids:
+    gnome_extension_ids: # noqa: var-naming[no-role-prefix]
       - "{{ xremap_gnome_extension_id }}"
   when: xremap_install_gnome_extension | bool
 
