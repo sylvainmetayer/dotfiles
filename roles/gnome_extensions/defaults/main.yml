@@ -1,0 +1,3 @@
+---
+# Unprefixed so the existing declarations (group_vars/all.yaml, the xremap role) keep working
+gnome_extension_ids: [] # noqa: var-naming[no-role-prefix]

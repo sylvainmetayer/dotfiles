@@ -17,7 +17,7 @@ Two privileged bits are needed for xremap to run without root:
 
 Under Wayland xremap cannot see the focused window by itself, so the
 [gnome extension](https://extensions.gnome.org/extension/5060/xremap/) is installed as well through
-`jaredhocutt.gnome_extensions`. Set `xremap_install_gnome_extension: false` on X11 or another desktop.
+the local `gnome_extensions` role. Set `xremap_install_gnome_extension: false` on X11 or another desktop.
 
 `xremap_version` is pinned and tracked by Renovate.
 

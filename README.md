@@ -18,7 +18,7 @@
 
 `mise` installe `uv` et Python, et active automatiquement le virtualenv `.venv` (dépendances déclarées dans `pyproject.toml`).
 
-Les rôles et collections Galaxy s'installent avec :
+Les collections Galaxy s'installent avec :
 
 ```bash
 mise run install
