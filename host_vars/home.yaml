@@ -73,8 +73,6 @@ fedora_dependencies_packages:
   - lutris
   - evolution
   # GPU tooling
-  - corectrl
-  - radeontop
   - vulkan-tools
   - mesa-demos
   - libva-utils
@@ -89,6 +87,8 @@ fedora_dependencies_remove_packages:
   - gnome-documents
   - rhythmbox
   - rclone # pinned per project by mise
+  - corectrl # AMD only, this host has an NVIDIA GTX 1070
+  - radeontop
 
 fedora_dependencies_flatpak:
   - https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
