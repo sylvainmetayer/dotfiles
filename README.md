@@ -60,7 +60,7 @@ Le playbook GOP ajoute le rôle `gop` contenant des tâches spécifiques. Certai
 
 Pré-requis :
 
-1. Base de données `selfhosted.kdbx` disponible (sinon la télécharger depuis <https://r.sylvain.dev/dotfiles-database>).
+1. Base de données `selfhosted.kdbx` disponible (sinon la télécharger depuis <https://r.sylvain.dev/passwords>).
 2. Exécuter `./scripts/extract-secrets.sh DATABASE_LOCATION` pour extraire le mot de passe (stocké dans `~/.ansible_vault.txt`).
 
 Fichiers sensibles :
