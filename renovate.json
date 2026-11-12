@@ -81,6 +81,17 @@
       ],
       "datasourceTemplate": "pypi",
       "depNameTemplate": "uv"
+    },
+    {
+      "managerFilePatterns": [
+        ".github/workflows/verify-lockfile.yml"
+      ],
+      "customType": "regex",
+      "matchStrings": [
+        "--pin (?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "github/gh-actions-lock"
     }
   ],
   "customDatasources": {
@@ -188,6 +199,13 @@
         "https://github.com/oRiamn/kdrive-auto-update",
         "git-credential-keepassxc",
         "ludeeus/action-shellcheck"
+      ],
+      "automerge": false
+    },
+    {
+      "description": "Garde-fous (suite) : l'extension gh-actions-lock du workflow verify-lockfile.yml (0.x, format du verrou encore mouvant)",
+      "matchDepNames": [
+        "github/gh-actions-lock"
       ],
       "automerge": false
     },
