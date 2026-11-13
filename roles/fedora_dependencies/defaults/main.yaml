@@ -1,6 +1,9 @@
 ---
 fedora_dependencies_autoremove: true
 
+# Nom trompeur : `true` ne désactive pas SELinux, il le passe en mode permissif
+# (`ansible.posix.selinux`, state: permissive, voir tasks/selinux.yaml). `false` ne
+# fait rien : le mode n'est pas remis en enforcing. Choix assumé le 2026-11-13, voir le README.
 fedora_dependencies_disable_selinux: true
 
 fedora_dependencies_repositories:
